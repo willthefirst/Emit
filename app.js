@@ -22,19 +22,32 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('express-jquery')('/jquery.js'));
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+
 /**
  * Set up Gmail mailing.
  */
 
-var smtp_options;
+var smtp_options = {
+    service: "Gmail",
+    auth: {
+        XOAuth2: {
+            user: "363206404232@developer.gserviceaccount.com",
+            clientId: "363206404232.apps.googleusercontent.com",
+            clientSecret: "Dnd6HuZBwpZnh6XNF1Pgyx2h",
+            accessToken: "",
+            timeout: 3600
+        }
+    }
+};
 
-var transport = nodemailer.createTransport("SMTP", {smtp_options});
+var transport = nodemailer.createTransport("SMTP", smtp_options);
 
 transport.sendMail({
     from: "test@will.com",
