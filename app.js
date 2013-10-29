@@ -61,29 +61,13 @@ if ('development' == app.get('env')) {
   });
 }
 
-/**
- * Set up Gmail mailing.
- */
+// OAUTH INFO
 
-// var smtp_options = {
-//     service: "Gmail",
-//     auth: {
-//         XOAuth2: {
-//             user: "363206404232@developer.gserviceaccount.com",
-//             clientId: "363206404232.apps.googleusercontent.com",
-//             clientSecret: "Dnd6HuZBwpZnh6XNF1Pgyx2h",
-//             accessToken: "",
-//             timeout: 3600
-//         }
-//     }
-// };
-
-// var transport = nodemailer.createTransport("SMTP", smtp_options);
-
-// transport.sendMail({
-//     from: "test@will.com",
-//     to: "willthefirst@gmail.com"
-// });
+var GOOGLE_CLIENT_ID = '363206404232.apps.googleusercontent.com',
+    GOOGLE_CLIENT_SECRET = 'Dnd6HuZBwpZnh6XNF1Pgyx2h',
+    GOOGLE_ACCESS_TOKEN,
+    GOOGLE_REFRESH_TOKEN,
+    GOOGLE_USER;
 
 
 app.get('/', routes.index);
@@ -135,32 +119,96 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-var GoogleStrategy = require('passport-google').Strategy;
+
+
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 passport.use(new GoogleStrategy({
-    returnURL: 'http://localhost:3000/auth/google/return',
-    realm: 'http://localhost:3000/'
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/callback"
   },
-  function(identifier, profile, done) {
-    console.log(profile.emails[0].value);
-    User.findOrCreate({ gmailId: profile.emails[0].value }, function(err, user) {
-      console.log(user);
-      done(err, user);
+  function(accessToken, refreshToken, profile, done) {
+    GOOGLE_ACCESS_TOKEN = accessToken;
+    GOOGLE_REFRESH_TOKEN = refreshToken;
+    GOOGLE_USER = profile._json.email;
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return done(err, user);
     });
   }
 ));
 
-// Redirect the user to Google for authentication.  When complete, Google
-// will redirect the user back to the application at
-//     /auth/google/return
-app.get('/auth/google', passport.authenticate('google'));
+// GET /auth/google
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  The first step in Google authentication will involve
+//   redirecting the user to google.com.  After authorization, Google
+//   will redirect the user back to this application at /auth/google/callback
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile',
+                                            'https://www.googleapis.com/auth/userinfo.email'] ,
+                                            accessType: 'offline', approvalPrompt: 'force' } ),
+  function(req, res){
+    // The request will be redirected to Google for authentication, so this
+    // function will not be called.
+  });
 
-// Google will redirect the user to this URL after authentication.  Finish
-// the process by verifying the assertion.  If valid, the user will be
-// logged in.  Otherwise, authentication has failed.
-app.get('/auth/google/return',
-  passport.authenticate('google', { successRedirect: '/test',
-                                    failureRedirect: '/' }));
+// GET /auth/google/callback
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  If authentication fails, the user will be redirected back to the
+//   login page.  Otherwise, the primary route function function will be called,
+//   which, in this example, will redirect the user to the home page.
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/test' }),
+  function(req, res) {
+    res.redirect('/');
+
+    /**
+     * Set up Gmail mailing.
+     */
+
+    console.log(
+      'user:', GOOGLE_USER,
+      'clientId:', GOOGLE_CLIENT_ID,
+      'clientSecret:', GOOGLE_CLIENT_SECRET,
+      'refreshToken:', GOOGLE_REFRESH_TOKEN,
+      'accessToken:', GOOGLE_ACCESS_TOKEN,
+      'timeout:', 3600
+
+    );
+
+    var smtp_options = {
+        service: "Gmail",
+        auth: {
+            XOAuth2: {
+                user: GOOGLE_USER,
+                clientId: GOOGLE_CLIENT_ID,
+                clientSecret: GOOGLE_CLIENT_SECRET,
+                refreshToken: GOOGLE_REFRESH_TOKEN,
+                accessToken: GOOGLE_ACCESS_TOKEN,
+                timeout: 3600
+            }
+        }
+    };
+
+    var transport = nodemailer.createTransport("SMTP", smtp_options);
+
+    transport.sendMail({
+        from: "test@will.com",
+        to: "willthefirst@gmail.com",
+        subject: "yes?"
+    }, function(error, response){
+    if(error){
+        console.log(error);
+    }else{
+        console.log("Message sent: " + response.message);
+    }
+
+    // if you don't want to use this transport object anymore, uncomment following line
+    //smtpTransport.close(); // shut down the connection pool, no more messages
+});
+  });
+
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
