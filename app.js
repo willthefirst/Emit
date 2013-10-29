@@ -17,27 +17,6 @@ var findOrCreate = require('mongoose-findorcreate');
 
 var app = express();
 
-// Connect to DB
-// http://mongoosejs.com/docs/index.html
-mongoose.connect('mongodb://localhost/test');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback () {
-
-
-    // Set up User schema
-
-    var userSchema = mongoose.Schema({
-       gmailId: String,
-       facebookId: String
-    });
-
-    ClickSchema.plugin(findOrCreate);
-
-    var User = mongoose.model('User', userSchema);
-
-});
-
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -47,13 +26,39 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(passport.initialize());
+app.use(passport.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('express-jquery')('/jquery.js'));
 
+
+
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
+  var mongoose_uri = 'mongodb://localhost/emit';
+  mongoose.connect( mongoose_uri );
+
+  // http://mongoosejs.com/docs/index.html
+
+  var User;
+
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'connection error:'));
+  db.once('open', function callback () {
+
+      // Set up User schema
+
+      var userSchema = mongoose.Schema({
+         gmailId: String,
+         facebookId: String
+      });
+
+      userSchema.plugin(findOrCreate);
+
+      User = mongoose.model('User', userSchema);
+
+  });
 }
 
 /**
@@ -98,9 +103,20 @@ passport.use('google', new OAuth2Strategy({
   function(accessToken, refreshToken, profile, done) {
     User.findOrCreate({ gmailId: profile.id }, function (err, user) {
         return done(err, user);
+
     });
   }
 ));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
 
 // Redirect the user to the OAuth 2.0 provider for authentication.  When
 // complete, the provider will redirect the user back to the application at
