@@ -145,7 +145,8 @@ passport.use(new GoogleStrategy({
 //   will redirect the user back to this application at /auth/google/callback
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile',
-                                            'https://www.googleapis.com/auth/userinfo.email'] ,
+                                            'https://www.googleapis.com/auth/userinfo.email' ,
+                                            'https://mail.google.com/' ] ,
                                             accessType: 'offline', approvalPrompt: 'force' } ),
   function(req, res){
     // The request will be redirected to Google for authentication, so this
@@ -185,7 +186,6 @@ app.get('/auth/google/callback',
                 clientSecret: GOOGLE_CLIENT_SECRET,
                 refreshToken: GOOGLE_REFRESH_TOKEN,
                 accessToken: GOOGLE_ACCESS_TOKEN,
-                timeout: 3600
             }
         }
     };
@@ -193,9 +193,10 @@ app.get('/auth/google/callback',
     var transport = nodemailer.createTransport("SMTP", smtp_options);
 
     transport.sendMail({
-        from: "test@will.com",
-        to: "willthefirst@gmail.com",
-        subject: "yes?"
+      from: "me@tr.ee",
+      to: "willthefirst@gmail.com",
+      subject: "Hello world!",
+      text: "Plaintext body"
     }, function(error, response){
     if(error){
         console.log(error);
