@@ -4,30 +4,12 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="/jquery.js"></script>
-    <script src="/javascripts/script.js"></script>
   </head>
   <body>
-  	<style>
-  	  .hidden {
-  	    display: none;
-  	  }
-  	</style>
-
   	<div class="authenticate hidden">
-  	  <a class="connect" href="">Connect</a>
+  	  <a class="connect" href="/auth/google">Connect with Gmail</a>
   	</div>
 
-  	<div class="authenticated hidden">
-  	  <p>
-  	    You are using token
-  	    <span class="token">[no token]</span>.
-  	  </p>
-
-  	  <p>
-  	    Your SoundCloud username is
-  	    <span class="user">[no username]</span>.
-  	  </p>
-  	</div>
     <h1><%= title %></h1>
     <h2>Gmail</h2>
     <form action="">

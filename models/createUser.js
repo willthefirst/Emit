@@ -1,5 +1,5 @@
 var userSchema = mongoose.Schema({
-   gmailId: String,
+   openId: String,
    facebookId: String
 });
 

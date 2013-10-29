@@ -90,23 +90,40 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/test', routes.test);
 
-var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+// Probably will end up using this for Facebook.
 
-passport.use('google', new OAuth2Strategy({
-    authorizationURL: 'https://accounts.google.com/o/oauth2/auth',
-    tokenURL: 'https://accounts.google.com/o/oauth2/token',
-    clientID: '363206404232.apps.googleusercontent.com',
-    scope: 'https://www.googleapis.com/auth/userinfo.email',
-    clientSecret: 'Dnd6HuZBwpZnh6XNF1Pgyx2h',
-    callbackURL: 'http://localhost:3000/auth/google/callback'
-  },
-  function(accessToken, refreshToken, profile, done) {
-    User.findOrCreate({ gmailId: profile.id }, function (err, user) {
-        return done(err, user);
+// var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
-    });
-  }
-));
+// passport.use('google', new OAuth2Strategy({
+//     authorizationURL: 'https://accounts.google.com/o/oauth2/auth',
+//     tokenURL: 'https://accounts.google.com/o/oauth2/token',
+//     clientID: '363206404232.apps.googleusercontent.com',
+//     clientSecret: 'Dnd6HuZBwpZnh6XNF1Pgyx2h',
+//     callbackURL: 'http://localhost:3000/auth/google/callback'
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//     console.log(profile);
+//     User.findOrCreate({ gmailId: profile }, function (err, user) {
+//         console.log(user);
+//         return done(err, user);
+//     });
+//   }
+// ));
+
+
+
+// // Redirect the user to the OAuth 2.0 provider for authentication.  When
+// // complete, the provider will redirect the user back to the application at
+// //     /auth/provider/callback
+// app.get('/auth/google', passport.authenticate('google', { scope: 'email' }));
+
+// // The OAuth 2.0 provider has redirected the user back to the application.
+// // Finish the authentication process by attempting to obtain an access
+// // token.  If authorization was granted, the user will be logged in.
+// // Otherwise, authentication has failed.
+// app.get('/auth/google/callback',
+//   passport.authenticate('google', { successRedirect: '/test',
+//                                       failureRedirect: '/' }));
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -118,18 +135,32 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-// Redirect the user to the OAuth 2.0 provider for authentication.  When
-// complete, the provider will redirect the user back to the application at
-//     /auth/provider/callback
+var GoogleStrategy = require('passport-google').Strategy;
+
+passport.use(new GoogleStrategy({
+    returnURL: 'http://localhost:3000/auth/google/return',
+    realm: 'http://localhost:3000/'
+  },
+  function(identifier, profile, done) {
+    console.log(profile.emails[0].value);
+    User.findOrCreate({ gmailId: profile.emails[0].value }, function(err, user) {
+      console.log(user);
+      done(err, user);
+    });
+  }
+));
+
+// Redirect the user to Google for authentication.  When complete, Google
+// will redirect the user back to the application at
+//     /auth/google/return
 app.get('/auth/google', passport.authenticate('google'));
 
-// The OAuth 2.0 provider has redirected the user back to the application.
-// Finish the authentication process by attempting to obtain an access
-// token.  If authorization was granted, the user will be logged in.
-// Otherwise, authentication has failed.
-app.get('/auth/google/callback',
+// Google will redirect the user to this URL after authentication.  Finish
+// the process by verifying the assertion.  If valid, the user will be
+// logged in.  Otherwise, authentication has failed.
+app.get('/auth/google/return',
   passport.authenticate('google', { successRedirect: '/test',
-                                      failureRedirect: '/' }));
+                                    failureRedirect: '/' }));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
