@@ -8,6 +8,7 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var auth = require('./routes/auth');
 var http = require('http');
+var https = require("https");
 var path = require('path');
 var nodemailer = require("nodemailer");
 var passport = require('passport');
@@ -30,8 +31,6 @@ app.use(passport.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('express-jquery')('/jquery.js'));
-
-
 
 // development only
 if ('development' == app.get('env')) {
@@ -146,7 +145,8 @@ passport.use(new GoogleStrategy({
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile',
                                             'https://www.googleapis.com/auth/userinfo.email' ,
-                                            'https://mail.google.com/' ] ,
+                                            'https://mail.google.com/',
+                                            'https://www.google.com/m8/feeds'  ] ,
                                             accessType: 'offline', approvalPrompt: 'force' } ),
   function(req, res){
     // The request will be redirected to Google for authentication, so this
@@ -163,19 +163,33 @@ app.get('/auth/google/callback',
   function(req, res) {
     res.redirect('/');
 
-    /**
-     * Set up Gmail mailing.
-     */
+    // Get all contacts
+    var options = {
+      host: 'www.google.com',
+      path: '/m8/feeds/contacts/'+ GOOGLE_USER +'/full?access_token=' + GOOGLE_ACCESS_TOKEN
+    };
 
-    console.log(
-      'user:', GOOGLE_USER,
-      'clientId:', GOOGLE_CLIENT_ID,
-      'clientSecret:', GOOGLE_CLIENT_SECRET,
-      'refreshToken:', GOOGLE_REFRESH_TOKEN,
-      'accessToken:', GOOGLE_ACCESS_TOKEN,
-      'timeout:', 3600
+    var buffer = '';
 
-    );
+    https.get(options, function(res){
+      res.on('data', function(chunk){
+        buffer += chunk.toString();
+        console.log(buffer);
+      });
+    }).on("error", function(e){
+      console.log("Got error: " + e.message);
+    });
+
+    // Spit out all of there contacts
+
+    // console.log(
+    //   'user:', GOOGLE_USER,
+    //   'clientId:', GOOGLE_CLIENT_ID,
+    //   'clientSecret:', GOOGLE_CLIENT_SECRET,
+    //   'refreshToken:', GOOGLE_REFRESH_TOKEN,
+    //   'accessToken:', GOOGLE_ACCESS_TOKEN,
+    //   'timeout:', 3600
+    // );
 
     var smtp_options = {
         service: "Gmail",
@@ -192,22 +206,19 @@ app.get('/auth/google/callback',
 
     var transport = nodemailer.createTransport("SMTP", smtp_options);
 
-    transport.sendMail({
-      from: "me@tr.ee",
-      to: "willthefirst@gmail.com",
-      subject: "Hello world!",
-      text: "Plaintext body"
-    }, function(error, response){
-    if(error){
-        console.log(error);
-    }else{
-        console.log("Message sent: " + response.message);
-    }
-
-    // if you don't want to use this transport object anymore, uncomment following line
-    //smtpTransport.close(); // shut down the connection pool, no more messages
+    // transport.sendMail({
+    //   from: "me@tr.ee",
+    //   to: "cbisnar@gmail.com",
+    //   subject: "Hello world!",
+    //   text: "Plaintext body"
+    // }, function(error, response){
+    //   if(error){
+    //       console.log(error);
+    //   }else{
+    //       console.log("Message sent: " + response.message);
+    //   }
+    // });
 });
-  });
 
 
 
