@@ -1,3 +1,5 @@
+"use strict";
+
 /*
  * This is a collection of well known SMTP service providers
  */
@@ -121,6 +123,14 @@ module.exports = {
         port: 465,
         requiresAuth: true,
         domains: ["qq.com"]
+    },
+    "QQex":{
+        transport: "SMTP",
+        host: "smtp.exmail.qq.com",
+        secureConnection: true,
+        port: 465,
+        requiresAuth: true,
+        domains: ["exmail.qq.com"]
     },
     "Godaddy": {
         transport: "SMTP",
