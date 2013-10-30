@@ -49,8 +49,10 @@ if ('development' == app.get('env')) {
       // Set up User schema
 
       var userSchema = mongoose.Schema({
-         gmailId: String,
-         facebookId: String
+         google : {
+          id: String,
+          contacts: Array
+         }
       });
 
       userSchema.plugin(findOrCreate);
@@ -73,40 +75,14 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/test', routes.test);
 
-// Probably will end up using this for Facebook.
+// Google contacts
 
-// var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+// // Save contacts returned from Contacts API
+// app.post('/google/contacts', routes.);
 
-// passport.use('google', new OAuth2Strategy({
-//     authorizationURL: 'https://accounts.google.com/o/oauth2/auth',
-//     tokenURL: 'https://accounts.google.com/o/oauth2/token',
-//     clientID: '363206404232.apps.googleusercontent.com',
-//     clientSecret: 'Dnd6HuZBwpZnh6XNF1Pgyx2h',
-//     callbackURL: 'http://localhost:3000/auth/google/callback'
-//   },
-//   function(accessToken, refreshToken, profile, done) {
-//     console.log(profile);
-//     User.findOrCreate({ gmailId: profile }, function (err, user) {
-//         console.log(user);
-//         return done(err, user);
-//     });
-//   }
-// ));
+// // Get contacts for autocomplete
+// app.get('/google/contacts', routes.gcontacts);
 
-
-
-// // Redirect the user to the OAuth 2.0 provider for authentication.  When
-// // complete, the provider will redirect the user back to the application at
-// //     /auth/provider/callback
-// app.get('/auth/google', passport.authenticate('google', { scope: 'email' }));
-
-// // The OAuth 2.0 provider has redirected the user back to the application.
-// // Finish the authentication process by attempting to obtain an access
-// // token.  If authorization was granted, the user will be logged in.
-// // Otherwise, authentication has failed.
-// app.get('/auth/google/callback',
-//   passport.authenticate('google', { successRedirect: '/test',
-//                                       failureRedirect: '/' }));
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -119,8 +95,8 @@ passport.deserializeUser(function(id, done) {
 });
 
 
-
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var contacts = '';
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
@@ -131,7 +107,7 @@ passport.use(new GoogleStrategy({
     GOOGLE_ACCESS_TOKEN = accessToken;
     GOOGLE_REFRESH_TOKEN = refreshToken;
     GOOGLE_USER = profile._json.email;
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    User.findOrCreate({ google : {id : GOOGLE_USER }}, function (err, user) {
       return done(err, user);
     });
   }
@@ -163,21 +139,28 @@ app.get('/auth/google/callback',
   function(req, res) {
     res.redirect('/');
 
+    var query_params = {
+      access_token : '?access_token=' + GOOGLE_ACCESS_TOKEN,
+      res_type : '&alt=json',
+      max_results: '&max-results=100'
+    };
+
     // Get all contacts
     var options = {
       host: 'www.google.com',
-      path: '/m8/feeds/contacts/'+ GOOGLE_USER +'/full?access_token=' + GOOGLE_ACCESS_TOKEN
+      path: '/m8/feeds/contacts/'+ GOOGLE_USER +'/full/' + query_params.access_token + query_params.res_type + query_params.max_results
     };
 
-    var buffer = '';
+    console.log(options.path);
 
     https.get(options, function(res){
       res.on('data', function(chunk){
-        buffer += chunk.toString();
-        console.log(buffer);
+        contacts += chunk.toString();
+        console.log('Contacts:', contacts);
+        // console.log(User);
       });
     }).on("error", function(e){
-      console.log("Got error: " + e.message);
+      console.log("Failed to gather user contacts: " + e.message);
     });
 
     // Spit out all of there contacts

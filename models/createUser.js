@@ -1,6 +1,8 @@
 var userSchema = mongoose.Schema({
-   openId: String,
-   facebookId: String
+   google : {
+   	id: String,
+   	contacts: Array
+   }
 });
 
 userSchema.plugin(findOrCreate);
