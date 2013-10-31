@@ -106,7 +106,7 @@ passport.use(new GoogleStrategy({
     GOOGLE_ACCESS_TOKEN = accessToken;
     GOOGLE_REFRESH_TOKEN = refreshToken;
     GOOGLE_USER = profile._json.email;
-    User.findOrCreate({ google : {id : GOOGLE_USER }}, function (err, user) {
+    User.findOrCreate({ 'google.id' : GOOGLE_USER }, function (err, user) {
       return done(err, user);
     });
   }
@@ -185,7 +185,7 @@ app.get('/auth/google/callback',
     var query_params = {
       access_token : '?access_token=' + GOOGLE_ACCESS_TOKEN,
       res_type : '&alt=json',
-      max_results: '&max-results=10'
+      max_results: '&max-results=2'
     };
 
     // Get all contacts
@@ -205,8 +205,15 @@ app.get('/auth/google/callback',
 
       // Strip that shit
       res.on('end', function(){
-        console.log(json);
-        console.log(stripContacts(json));
+
+        //Save returned contacts from Google connect to the user's contact list
+        User.findOrCreate({ 'google.id' : GOOGLE_USER }, function(err, user, created) {
+          user.google.contacts = stripContacts(json);
+          user.save(function(err) {
+            if (err) return handleError(err);
+          });
+        });
+        // console.log(typeof (stripContacts(json)));
       });
 
     }).on("error", function(e){
