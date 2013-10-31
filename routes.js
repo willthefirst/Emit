@@ -1,6 +1,5 @@
-exports.initalize(function(app){
-	app.get('/', routes.index);
-	app.get('/users', user.list);
-	app.get('/test', routes.test);
+var home = require('./controllers/index');
 
-});
+exports.initialize = function(app){
+	app.get('/', home.index);
+};

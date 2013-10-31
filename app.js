@@ -45,6 +45,9 @@ mongoose.connection.on('open', function(){
   console.log("Connected to Mongoose") ;
 });
 
+// set up routes
+
+routes.initialize(app);
 
 // OAUTH INFO
 
