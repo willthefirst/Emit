@@ -5,15 +5,13 @@
 
 var express = require('express');
 var routes = require('./routes');
-var user = require('./routes/user');
-var auth = require('./routes/auth');
+var user = require('./routes.js');
 var http = require('http');
 var https = require("https");
 var path = require('path');
 var nodemailer = require("nodemailer");
 var passport = require('passport');
 var mongoose = require('mongoose');
-var findOrCreate = require('mongoose-findorcreate');
 
 
 var app = express();
@@ -35,32 +33,18 @@ app.use(require('express-jquery')('/jquery.js'));
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
+
+  // set the db to the local one
   var mongoose_uri = 'mongodb://localhost/emit';
-  mongoose.connect( mongoose_uri );
-
-  // http://mongoosejs.com/docs/index.html
-
-  var User;
-
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'connection error:'));
-  db.once('open', function callback () {
-
-      // Set up User schema
-
-      var userSchema = mongoose.Schema({
-         google : {
-          id: String,
-          contacts: Array
-         }
-      });
-
-      userSchema.plugin(findOrCreate);
-
-      User = mongoose.model('User', userSchema);
-
-  });
 }
+
+// connect to the db
+
+mongoose.connect( mongoose_uri );
+mongoose.connection.on('open', function(){
+  console.log("Connected to Mongoose") ;
+});
+
 
 // OAUTH INFO
 
@@ -69,11 +53,6 @@ var GOOGLE_CLIENT_ID = '363206404232.apps.googleusercontent.com',
     GOOGLE_ACCESS_TOKEN,
     GOOGLE_REFRESH_TOKEN,
     GOOGLE_USER;
-
-
-app.get('/', routes.index);
-app.get('/users', user.list);
-app.get('/test', routes.test);
 
 // Google contacts
 
@@ -106,7 +85,7 @@ passport.use(new GoogleStrategy({
     GOOGLE_ACCESS_TOKEN = accessToken;
     GOOGLE_REFRESH_TOKEN = refreshToken;
     GOOGLE_USER = profile._json.email;
-    User.findOrCreate({ 'google.id' : GOOGLE_USER }, function (err, user) {
+    User.findOrCreate({ 'google.id' : GOOGLE_USER } , function (err, user) {
       return done(err, user);
     });
   }
