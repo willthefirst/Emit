@@ -3,10 +3,9 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes.js');
+var routes = require('./app/routes.js');
+var helpers = require('./app/helpers.js');
 var http = require('http');
-var https = require('https');
 var path = require('path');
 var nodemailer = require('nodemailer');
 var mongoose = require('mongoose');
@@ -44,6 +43,9 @@ mongoose.connection.on('open', function(){
 
 // Set up routing
 routes.initialize(app);
+
+// Set up passport
+helpers.passport(passport);
 
 // Spin up the server
 http.createServer(app).listen(app.get('port'), function(){
