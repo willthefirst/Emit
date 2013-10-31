@@ -70,6 +70,8 @@ var stripContacts = function(json) {
 /*
  * Connect to Google with OAuth2.0
  */
+
+ //https://github.com/rockbot/CrowdNotes
 exports.authenticate = function(req, res) {
     return passport.authenticate('google', { scope: [  'https://www.googleapis.com/auth/userinfo.profile',
                                                     'https://www.googleapis.com/auth/userinfo.email' ,
