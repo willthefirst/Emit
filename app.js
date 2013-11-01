@@ -3,8 +3,9 @@
  */
 
 var express = require('express');
+var UserModel = require('./models/User');
 var routes = require('./app/routes.js');
-var helpers = require('./app/helpers.js');
+var api = require('./app/api.js');
 var http = require('http');
 var path = require('path');
 var nodemailer = require('nodemailer');
@@ -45,7 +46,7 @@ mongoose.connection.on('open', function(){
 routes.initialize(app);
 
 // Set up passport
-helpers.passport(passport);
+api.googlePassport(passport);
 
 // Spin up the server
 http.createServer(app).listen(app.get('port'), function(){
