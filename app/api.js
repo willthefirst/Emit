@@ -16,6 +16,17 @@ exports.google = google_params;
 // Google Passport credentials
 exports.googlePassport = function(passport) {
 
+  // Don't totally understand how this works, http://passportjs.org/guide/configure/
+  passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+      done(err, user);
+    });
+  });
+
   console.log(google_params.client_id, google_params.client_secret);
   // Google OAuth2 variables
   passport.use(new GoogleStrategy({
@@ -33,16 +44,7 @@ exports.googlePassport = function(passport) {
       });
     }
   ));
-  // Don't totally understand how this works, http://passportjs.org/guide/configure/
-  passport.serializeUser(function(user, done) {
-    done(null, user.id);
-  });
 
-  passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-      done(err, user);
-    });
-  });
 };
 
 // Returns Google contacts name and emails in array
