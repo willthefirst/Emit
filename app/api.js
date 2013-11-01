@@ -27,7 +27,6 @@ exports.googlePassport = function(passport) {
     });
   });
 
-  console.log(google_params.client_id, google_params.client_secret);
   // Google OAuth2 variables
   passport.use(new GoogleStrategy({
       clientID: google_params.client_id,
@@ -35,7 +34,6 @@ exports.googlePassport = function(passport) {
       callbackURL: "http://localhost:3000/user/auth/google/callback"
     },
     function(accessToken, refreshToken, profile, done) {
-      console.log("AcessToken: "+ accessToken);
       google_params.access_token = accessToken;
       google_params.refresh_token = refreshToken;
       google_params.user = profile._json.email;
@@ -44,7 +42,6 @@ exports.googlePassport = function(passport) {
       });
     }
   ));
-
 };
 
 // Returns Google contacts name and emails in array

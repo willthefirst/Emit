@@ -9,6 +9,6 @@ exports.initialize = function(app){
                                                 'https://mail.google.com/',
                                                 'https://www.google.com/m8/feeds'  ] ,
                                                 accessType: 'offline', approvalPrompt: 'force' } ));
-	app.get('/user/auth/google/callback', user.saveGoogleAccount);
+	app.get('/user/auth/google/callback',  passport.authenticate('google', { failureRedirect: '/FAILLED' }), user.saveGoogleAccount);
 
 };
