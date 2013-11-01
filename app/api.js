@@ -15,6 +15,8 @@ exports.google = google_params;
 
 // Google Passport credentials
 exports.googlePassport = function(passport) {
+
+  console.log(google_params.client_id, google_params.client_secret);
   // Google OAuth2 variables
   passport.use(new GoogleStrategy({
       clientID: google_params.client_id,

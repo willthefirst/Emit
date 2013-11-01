@@ -8,6 +8,7 @@ var api = require('../app/api');
  * On succesful Google authorization
  */
 exports.saveGoogleAccount = function(req, res){
+    console.log('saveGoogleAccount');
     res.redirect('/');
 
     /*   Save Google contact info
