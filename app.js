@@ -42,11 +42,11 @@ mongoose.connection.on('open', function(){
   console.log("Connected to Mongoose") ;
 });
 
-// Set up routing
-routes.initialize(app);
-
 // Set up passport
 api.googlePassport(passport);
+
+// Set up routing
+routes.initialize(app);
 
 // Spin up the server
 http.createServer(app).listen(app.get('port'), function(){
