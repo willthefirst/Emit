@@ -22,6 +22,7 @@ exports.googlePassport = function(passport) {
       callbackURL: "http://localhost:3000/user/auth/google/callback"
     },
     function(accessToken, refreshToken, profile, done) {
+      console.log("AcessToken: "+ accessToken);
       google_params.access_token = accessToken;
       google_params.refresh_token = refreshToken;
       google_params.user = profile._json.email;
