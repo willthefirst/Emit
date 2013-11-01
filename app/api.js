@@ -1,6 +1,8 @@
 // Configure Google strategy
 // https://github.com/jaredhanson/passport-google-oauth
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 
 // Google API params
 var google_params = {
@@ -37,7 +39,7 @@ exports.googlePassport = function(passport) {
       google_params.access_token = accessToken;
       google_params.refresh_token = refreshToken;
       google_params.user = profile._json.email;
-      User.findOrCreate({ 'google.id' : google_params_user } , function (err, user) {
+      User.findOrCreate({ 'google.id' : google_params.user } , function (err, user) {
         return done(err, user);
       });
     }
