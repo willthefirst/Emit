@@ -15,9 +15,10 @@ var passport = require('passport');
 var app = express();
 
 // All environments
-app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
+app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
+app.set("view options", { layout: false });
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
