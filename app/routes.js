@@ -11,4 +11,5 @@ exports.initialize = function(app){
                                                 accessType: 'offline', approvalPrompt: 'force' } ));
 	app.get('/user/auth/google/callback',  passport.authenticate('google', { failureRedirect: '/FAILLED' }), user.saveGoogleAccount);
 	app.get('/user/gcontacts', user.show);
+	app.post('/user/gsend', user.sendEmail);
 };

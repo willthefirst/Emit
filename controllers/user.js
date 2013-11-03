@@ -3,6 +3,7 @@ var https = require('https');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var api = require('../app/api');
+var nodemailer = require('nodemailer');
 
 /*
  * On succesful Google authorization
@@ -61,36 +62,34 @@ exports.show = function(req, res) {
 
 };
 
+exports.sendEmail = function(req, res) {
+  var smtp_options = {
+      service: "Gmail",
+      auth: {
+          XOAuth2: {
+              user: api.google.user,
+              clientId: api.google.client_id,
+              clientSecret: api.google.client_secret,
+              refreshToken: api.google.refresh_token,
+              accessToken: api.google.access_token,
+          }
+      }
+  };
 
+  var transport = nodemailer.createTransport("SMTP", smtp_options);
 
-
-    //     var smtp_options = {
-    //         service: "Gmail",
-    //         auth: {
-    //             XOAuth2: {
-    //                 user: GOOGLE_USER,
-    //                 clientId: GOOGLE_CLIENT_ID,
-    //                 clientSecret: GOOGLE_CLIENT_SECRET,
-    //                 refreshToken: GOOGLE_REFRESH_TOKEN,
-    //                 accessToken: GOOGLE_ACCESS_TOKEN,
-    //             }
-    //         }
-    //     };
-
-    //     var transport = nodemailer.createTransport("SMTP", smtp_options);
-
-    //     // transport.sendMail({
-    //     //   from: "me@tr.ee",
-    //     //   to: "willthefist@gmail.com",
-    //     //   subject: "Hello world!",
-    //     //   text: "Plaintext body"
-    //     // }, function(error, response){
-    //     //   if(error){
-    //     //       console.log(error);
-    //     //   }else{
-    //     //       console.log("Message sent: " + response.message);
-    //     //   }
-    //     // });
-    // });
-
+  transport.sendMail({
+    from: api.google.user,
+    to: req.body.email,
+    subject: "Sent with Emit",
+    text: req.body.body
+  }, function(error, response){
+    if(error){
+        console.log(error);
+    }else{
+        console.log("Message sent: " + response.message);
+    }
+  });
+  res.render('index');
+};
 

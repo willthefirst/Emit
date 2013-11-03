@@ -11,18 +11,12 @@
 
       <h2>Gmail</h2>
 
-      <label for="contacts">Contacts: </label>
-      <input id="contacts" />
-      <ul ng-repeat="contact in contacts">
-        <li>
-          <span class="name">{{contact.name}}</span>
-          <span class="email">{{contact.email}}</span>
-        </li>
-      </ul>
-      <form action="">
-        <textarea name="" id="" cols="30" rows="10"></textarea>
-        <input type="submit">
-      </form>
+        <form action="/user/gsend" method="post">
+          <label for="contacts">Contacts: </label>
+          <input name="email" id="contacts" />
+          <textarea name="body" cols="30" rows="10"></textarea>
+          <input type="submit">
+        </form>
     </div>
     <script src="/jquery.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>

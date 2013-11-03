@@ -8,7 +8,6 @@ var routes = require('./app/routes.js');
 var api = require('./app/api.js');
 var http = require('http');
 var path = require('path');
-var nodemailer = require('nodemailer');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
