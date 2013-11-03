@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="emit" class="ng-scope">
   <head>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="/jquery.js"></script>
-    <script src="/javascripts/script.js"></script>
   </head>
   <body>
-  	<div class="authenticate hidden">
-  	  <a class="connect" href="user/auth/google">Connect with Gmail</a>
-  	</div>
+    <div ng-controller="AppCtrl">
+      <div class="authenticate hidden">
+        <a class="connect" href="user/auth/google">Connect with Gmail</a>
+      </div>
 
-    <h2>Gmail</h2>
-    <form action="">
-      <p class="contacts">
-
-      </p>
-	    <textarea name="" id="" cols="30" rows="10"></textarea>
-		  <input type="submit">
-    </form>
+      <h2>Gmail</h2>
+      <p>{{contacts}}</p>
+      <form action="">
+        <textarea name="" id="" cols="30" rows="10"></textarea>
+        <input type="submit">
+      </form>
+    </div>
+    <script src="/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="/javascripts/controllers.js"></script>
+    <script src="/javascripts/app.js"></script>
+    <script src="/javascripts/script.js"></script>
   </body>
 </html>

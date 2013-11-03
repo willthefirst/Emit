@@ -3,7 +3,6 @@ var https = require('https');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var api = require('../app/api');
-var hbs = require('hbs');
 
 /*
  * On succesful Google authorization
@@ -52,16 +51,6 @@ exports.saveGoogleAccount = function(req, res){
       console.log("Failed to gather user contacts: " + e.message);
     });
 };
-
-hbs.registerHelper('list', function(locals, options) {
-  var out = "<ul>";
-  console.log(locals);
-  for(var i=0, l=locals.length; i<l; i++) {
-    out = out + "<li>" + options.fn(locals[i]) + "</li>";
-  }
-
-  return out + "</ul>";
-});
 
 exports.show = function(req, res) {
   var google_contacts;
