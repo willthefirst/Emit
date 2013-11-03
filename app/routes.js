@@ -10,5 +10,5 @@ exports.initialize = function(app){
                                                 'https://www.google.com/m8/feeds'  ] ,
                                                 accessType: 'offline', approvalPrompt: 'force' } ));
 	app.get('/user/auth/google/callback',  passport.authenticate('google', { failureRedirect: '/FAILLED' }), user.saveGoogleAccount);
-	app.get('/user', user.show);
+	app.get('/user/gcontacts', user.show);
 };

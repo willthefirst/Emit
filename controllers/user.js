@@ -55,13 +55,11 @@ exports.saveGoogleAccount = function(req, res){
 exports.show = function(req, res) {
   var google_contacts;
 
+  console.log('in the controller');
 
   User.findOne({ 'google.id': 'willthefirst@gmail.com' }, function(err, user) {
     google_contacts = user.google.contacts;
-    res.locals = {
-      list: ['cat', 'dog']
-    };
-    res.render('user');
+    res.json(google_contacts);
   });
 
 

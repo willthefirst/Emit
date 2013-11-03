@@ -5,14 +5,16 @@
 angular.module('emit.controllers', []).
   controller('AppCtrl', function ($scope, $http) {
 
-    $scope.contacts = "Here is the list of contacts static."
-
-  }).
-  controller('MyCtrl1', function ($scope) {
-    // write Ctrl here
-
-  }).
-  controller('MyCtrl2', function ($scope) {
-    // write Ctrl here
+    $http({
+      method: 'GET',
+      url: '/user/gcontacts'
+    }).
+    success(function (data, status, headers, config) {
+      console.log(data);
+      $scope.contacts = data;
+    }).
+    error(function (data, status, headers, config) {
+      $scope.contacts = 'Shitastic!';
+    });
 
   });
