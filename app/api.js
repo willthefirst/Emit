@@ -59,12 +59,13 @@ exports.stripGoogleContacts = function(json) {
 
   // Empty array to be returned
   var contacts_arr = [];
+  var obj;
+  var current_contact;
 
   // For every contact in the returned list
   for (var key in contacts_list) {
-
-     var obj = contacts_list[key];
-     var current_contact = new contact();
+    obj = contacts_list[key];
+    current_contact = new contact();
 
      // Loop through single contacts properties
      for (var prop in obj) {
@@ -80,7 +81,10 @@ exports.stripGoogleContacts = function(json) {
           }
         }
      }
-    contacts_arr.push(current_contact);
+    // Don't add the contacts with a null email address
+    if (current_contact.email != null) {
+      contacts_arr.push(current_contact);
+    }
   }
   return contacts_arr;
 };

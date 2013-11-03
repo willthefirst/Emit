@@ -11,6 +11,9 @@ angular.module('emit.controllers', []).
     }).
     success(function (data, status, headers, config) {
 
+      // Strip out contacts without emails from contacts
+
+
       // Set up autocomplete for email form
       $("#contacts").autocomplete({
         source: function(req, res) {
@@ -18,7 +21,7 @@ angular.module('emit.controllers', []).
           // in autocomplete.
             var array = [];
             for(var i=0; i < data.length; i++){
-              array.push(data[i].name + ' ' + data[i].email);
+                array.push(data[i].name + ' ' + data[i].email);
             }
             var resultsArray = [];
             var re = $.ui.autocomplete.escapeRegex(req.term);
@@ -34,9 +37,17 @@ angular.module('emit.controllers', []).
         matchContains: true,
         delay: 0
       }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-      return $( "<li>" )
-        .append( '<span class="google-contact-name">'+ item.name + '</span><br /><span class="google-contact-email">' + item.email + "</span>" )
-        .appendTo( ul );
+
+        // Just display emails if there is no corresponsding first name.
+        if (item.name === "") {
+          return $( "<li>" )
+            .append( '<span class="google-contact-email">' + item.email + "</span>" )
+            .appendTo( ul );
+        } else {
+          return $( "<li>" )
+            .append( '<span class="google-contact-name">'+ item.name + '</span><br /><span class="google-contact-email">' + item.email + "</span>" )
+            .appendTo( ul );
+        }
       };
 
       $scope.contacts = data;

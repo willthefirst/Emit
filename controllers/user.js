@@ -18,7 +18,7 @@ exports.saveGoogleAccount = function(req, res){
     var query_params = {
       access_token : '?access_token=' + api.google.access_token,
       res_type : '&alt=json',
-      max_results: '&max-results=2000'
+      max_results: '&max-results=250'
     };
 
     var options = {
