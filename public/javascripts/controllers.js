@@ -25,7 +25,7 @@ angular.module('emit.controllers', []).
             var j = 0;
 
             for(var i=0; i < data.length; i++){
-                array.push(data[i].name + ' ' + data[i].email);
+                array.push(data[i].label + ' ' + data[i].value);
             }
             var resultsArray = [];
             var re = $.ui.autocomplete.escapeRegex(req.term);
@@ -39,18 +39,21 @@ angular.module('emit.controllers', []).
             });
             res( resultsArray );
         },
-        matchContains: true,
+        select: function(event, ui) {
+          $("#contacts").val(ui.item.value);
+          return false;
+        },
         delay: 0
       }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
 
         // Just display emails if there is no corresponsding first name.
-        if (item.name === "") {
+        if (item.label === "") {
           return $( "<li>" )
-            .append( '<span class="google-contact-email">' + item.email + "</span>" )
+            .append( '<a><span class="google-contact-email">' + item.value + "</span></a>" )
             .appendTo( ul );
         } else {
           return $( "<li>" )
-            .append( '<span class="google-contact-name">'+ item.name + '</span><br /><span class="google-contact-email">' + item.email + "</span>" )
+            .append( '<a><span class="google-contact-name">'+ item.label + '</span><br /><span class="google-contact-email">' + item.value + "</span></a>" )
             .appendTo( ul );
         }
       };

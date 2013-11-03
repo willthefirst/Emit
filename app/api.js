@@ -53,8 +53,8 @@ exports.stripGoogleContacts = function(json) {
 
   // Creates the contact object
   function contact( user_name, user_email ) {
-    this.name = user_name;
-    this.email = user_email;
+    this.label = user_name;
+    this.value = user_email;
   }
 
   // Empty array to be returned
@@ -74,15 +74,15 @@ exports.stripGoogleContacts = function(json) {
         // not from prototype prop inherited
         if(obj.hasOwnProperty(prop)){
           if (prop === 'title') {
-            current_contact.name = obj[prop]['$t'];
+            current_contact.label = obj[prop]['$t'];
           }
           else if (prop === 'gd$email') {
-            current_contact.email = obj[prop]['0']['address'];
+            current_contact.value = obj[prop]['0']['address'];
           }
         }
      }
     // Don't add the contacts with a null email address
-    if (current_contact.email != null) {
+    if (current_contact.value != null) {
       contacts_arr.push(current_contact);
     }
   }

@@ -43,3 +43,6 @@ a {
 .ui-autocomplete {
 	background-color: #ccc;
 }
+.ui-state-focus {
+	background-color: yellow;
+}
