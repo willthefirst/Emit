@@ -16,7 +16,7 @@ var app = express();
 
 // All environments
 app.set('views', path.join(__dirname, 'views'));
-app.set('port', process.env.PORT || 4000);
+app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
 app.set("view options", { layout: true });
 app.use(express.favicon());

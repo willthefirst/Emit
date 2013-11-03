@@ -14,7 +14,7 @@ angular.module('emit.controllers', []).
       $scope.contacts = data;
     }).
     error(function (data, status, headers, config) {
-      $scope.contacts = 'Shitastic!';
+      $scope.contacts = 'No GContact data!';
     });
 
   });

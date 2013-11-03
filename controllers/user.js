@@ -18,7 +18,7 @@ exports.saveGoogleAccount = function(req, res){
     var query_params = {
       access_token : '?access_token=' + api.google.access_token,
       res_type : '&alt=json',
-      max_results: '&max-results=2'
+      max_results: '&max-results=20'
     };
 
     var options = {
@@ -55,13 +55,10 @@ exports.saveGoogleAccount = function(req, res){
 exports.show = function(req, res) {
   var google_contacts;
 
-  console.log('in the controller');
-
   User.findOne({ 'google.id': 'willthefirst@gmail.com' }, function(err, user) {
     google_contacts = user.google.contacts;
     res.json(google_contacts);
   });
-
 
 };
 
