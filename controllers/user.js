@@ -18,7 +18,7 @@ exports.saveGoogleAccount = function(req, res){
     var query_params = {
       access_token : '?access_token=' + api.google.access_token,
       res_type : '&alt=json',
-      max_results: '&max-results=20'
+      max_results: '&max-results=2000'
     };
 
     var options = {
@@ -37,7 +37,6 @@ exports.saveGoogleAccount = function(req, res){
 
       // Strip that shit
       res.on('end', function(){
-        // WHERE TO PUT THIS??
         //Save returned contacts from Google connect to the user's contact list
         User.findOrCreate({ 'google.id' : api.google.user }, function(err, user, created) {
           user.google.contacts = api.stripGoogleContacts(json);

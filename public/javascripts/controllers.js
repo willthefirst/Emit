@@ -14,16 +14,13 @@ angular.module('emit.controllers', []).
       // Set up autocomplete for email form
       $("#contacts").autocomplete({
         source: function(req, res) {
-          // http://jsbin.com/utojoh/2/edit
-            // console.log(data);
-
+          // Search name and email for a match with input, and show in a custom format
+          // in autocomplete.
             var array = [];
-            var arrayIndexes = [];
-            var resultsArray = [];
             for(var i=0; i < data.length; i++){
               array.push(data[i].name + ' ' + data[i].email);
             }
-
+            var resultsArray = [];
             var re = $.ui.autocomplete.escapeRegex(req.term);
             var matcher = new RegExp( "\\b" + re, "i" );
             var a = $.grep( array, function(item,index){
@@ -32,7 +29,6 @@ angular.module('emit.controllers', []).
                   return true;
                 }
             });
-            console.log(resultsArray);
             res( resultsArray );
         },
         matchContains: true,
