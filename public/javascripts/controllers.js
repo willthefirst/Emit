@@ -20,6 +20,10 @@ angular.module('emit.controllers', []).
           // Search name and email for a match with input, and show in a custom format
           // in autocomplete.
             var array = [];
+
+            var max = 10; // maximum results to display
+            var j = 0;
+
             for(var i=0; i < data.length; i++){
                 array.push(data[i].name + ' ' + data[i].email);
             }
@@ -27,8 +31,9 @@ angular.module('emit.controllers', []).
             var re = $.ui.autocomplete.escapeRegex(req.term);
             var matcher = new RegExp( "\\b" + re, "i" );
             var a = $.grep( array, function(item,index){
-                if (matcher.test(item)){
+                if (matcher.test(item) && j < max){
                   resultsArray.push(data[(array.indexOf(item))]);
+                  j++;
                   return true;
                 }
             });
