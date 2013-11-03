@@ -2047,16 +2047,22 @@ $.widget( "ui.autocomplete", $.ui.autocomplete, {
 
 	__response: function( content ) {
 		var message;
+
+
+
 		this._superApply( arguments );
 		if ( this.options.disabled || this.cancelSearch ) {
 			return;
 		}
-		if ( content && content.length ) {
-			message = this.options.messages.results( content.length );
-		} else {
-			message = this.options.messages.noResults;
-		}
-		this.liveRegion.text( message );
+
+		//EMIT: Disable options message.
+
+		// if ( content && content.length ) {
+		// 	message = this.options.messages.results( content.length );
+		// } else {
+		// 	message = this.options.messages.noResults;
+		// }
+		// this.liveRegion.text( message );
 	}
 });
 

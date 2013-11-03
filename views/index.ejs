@@ -11,14 +11,14 @@
 
       <h2>Gmail</h2>
 
+      <label for="contacts">Contacts: </label>
+      <input id="contacts" />
       <ul ng-repeat="contact in contacts">
         <li>
           <span class="name">{{contact.name}}</span>
           <span class="email">{{contact.email}}</span>
         </li>
       </ul>
-
-      <p>{{name}}{{email}}</p>
       <form action="">
         <textarea name="" id="" cols="30" rows="10"></textarea>
         <input type="submit">
@@ -28,6 +28,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
     <script src="/javascripts/controllers.js"></script>
     <script src="/javascripts/app.js"></script>
+    <script src="/javascripts/plugins/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js"></script>
     <script src="/javascripts/script.js"></script>
   </body>
 </html>
