@@ -4,11 +4,17 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var api = require('../app/api');
 var nodemailer = require('nodemailer');
-
 /*
  * On succesful Google authorization
  */
 exports.saveGoogleAccount = function(req, res){
+
+    req.session.property = 'Logged in';
+
+    if(typeof req.cookies['connect.sid'] !== 'undefined'){
+        console.log(req.cookies['connect.sid']);
+    }
+
     res.redirect('/');
 
     /*   Save Google contact info
@@ -19,7 +25,7 @@ exports.saveGoogleAccount = function(req, res){
     var query_params = {
       access_token : '?access_token=' + api.google.access_token,
       res_type : '&alt=json',
-      max_results: '&max-results=250'
+      max_results: '&max-results=10'
     };
 
     var options = {
@@ -55,7 +61,7 @@ exports.saveGoogleAccount = function(req, res){
 exports.show = function(req, res) {
   var google_contacts;
 
-  User.findOne({ 'google.id': 'willthefirst@gmail.com' }, function(err, user) {
+  User.findOne({ 'google.id': api.google.user }, function(err, user) {
     google_contacts = user.google.contacts;
     res.json(google_contacts);
   });
@@ -85,11 +91,14 @@ exports.sendEmail = function(req, res) {
     text: req.body.body
   }, function(error, response){
     if(error){
-        console.log(error);
-    }else{
-        console.log("Message sent: " + response.message);
+      res.json({
+        result: "Problem: " + error
+      });
+    } else{
+      res.json({
+        result: "Message sent"
+      });
     }
   });
-  res.render('index');
 };
 

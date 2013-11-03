@@ -15,7 +15,7 @@ var google_params = {
 
 exports.google = google_params;
 
-// Google Passport credentials
+// Google Passport strategy
 exports.googlePassport = function(passport) {
 
   // Don't totally understand how this works, http://passportjs.org/guide/configure/
@@ -24,9 +24,11 @@ exports.googlePassport = function(passport) {
   });
 
   passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-      done(err, user);
-    });
+    User
+        .findOne({ 'google.id': id })
+        .exec(function(err, user) {
+          done(err, user);    // Now req.user == user
+        });
   });
 
   // Google OAuth2 variables
@@ -40,6 +42,11 @@ exports.googlePassport = function(passport) {
       google_params.refresh_token = refreshToken;
       google_params.user = profile._json.email;
       User.findOrCreate({ 'google.id' : google_params.user } , function (err, user) {
+        user.google.refresh_token = google_params.refresh_token;
+        user.save(function(err) {
+          if (err) return handleError(err);
+          console.log(user);
+        });
         return done(err, user);
       });
     }

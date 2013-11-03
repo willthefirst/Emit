@@ -2,10 +2,11 @@ var mongoose = require('mongoose');
 var findOrCreate = require('mongoose-findorcreate');
 
 var userSchema = mongoose.Schema({
-   google : {
-    id: String,
-    contacts: Array
-   }
+	google : {
+		id: String,
+		contacts: Array,
+		refresh_token: String
+	}
 });
 
 // add the findOrCreate plugin to our the schema

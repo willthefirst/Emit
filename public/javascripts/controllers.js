@@ -13,7 +13,6 @@ angular.module('emit.controllers', []).
 
       // Strip out contacts without emails from contacts
 
-
       // Set up autocomplete for email form
       $("#contacts").autocomplete({
         source: function(req, res) {
@@ -63,5 +62,8 @@ angular.module('emit.controllers', []).
     error(function (data, status, headers, config) {
       $scope.contacts = 'No GContact data!';
     });
+
+  })
+  .controller('Login', function($scope, $http){
 
   });
