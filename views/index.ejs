@@ -5,19 +5,19 @@
   </head>
   <body>
     <div ng-controller="AppCtrl">
-      <form action="/user/gsend" method="post">
+      <form id="gmail-form" action="/user/gsend" method="post">
         <div class="msg-to wrapper-vert">
-          <div class="wrapper-hor">
+          <div class="wrapper-hor relative">
             <label for="contacts" class="msg-to__label">to:</label>
-            <input name="email" id="contacts" class="msg-to__input"/>
+            <input name="email" id="contacts" class="msg-to__input" tabindex="1"/>
+            <input class="msg-submit" type="submit" value="⌘ + return to send" tabindex="3"/>
           </div>
         </div>
         <div class="msg-body wrapper-vert">
           <div class="wrapper-hor">
-            <textarea name="body" cols="60" rows="10" class="msg-body__textarea"></textarea>
+            <textarea name="body" cols="60" rows="10" class="msg-body__textarea" tabindex="2"></textarea>
           </div>
         </div>
-        <input type="submit">
       </form>
       <div class="authenticate hidden">
         <a class="connect" href="user/auth/google">Connect with Gmail</a>

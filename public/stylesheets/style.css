@@ -101,18 +101,18 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 /* line 45, ../sass/base.scss */
-body, .msg-body__textarea {
+body, .msg-submit, .msg-body__textarea, .hiddendiv {
   font-family: "TeX Gyre Pagella", "Palatino", "Georgia", "Times New Roman", "Hoefler Text", "Baskerville", serif;
 }
 
 /* line 70, ../sass/base.scss */
-body, .msg-body__textarea {
+body, .msg-body__textarea, .hiddendiv {
   font-size: 30px;
   line-height: 45px;
 }
 
 /* line 75, ../sass/base.scss */
-.google-contact-name, .google-contact-email-only {
+.msg-submit, .google-contact-name, .google-contact-email-only {
   font-size: 24px;
   line-height: 36px;
 }
@@ -141,14 +141,22 @@ body {
 
 /* line 105, ../sass/base.scss */
 .wrapper-hor {
+  overflow: hidden;
+  *zoom: 1;
   width: 92%;
   margin: auto;
 }
 
+/* 	Utility
+	------------------------------------------------------- */
+/* line 114, ../sass/base.scss */
+.relative {
+  position: relative;
+}
+
 /* 	Generic message styles
 	------------------------------------------------------- */
-/* 	Message:To
-	------------------------------------------------------- */
+/* 	Message:to  -------------------------------------------- */
 /* line 6, ../sass/modules.scss */
 .msg-to {
   border-bottom: 1px solid #bbbbbb;
@@ -177,38 +185,77 @@ body {
   outline: none;
 }
 
-/* 	Message:Body
-	------------------------------------------------------- */
-/* line 35, ../sass/modules.scss */
-.msg-body__textarea {
+/* 	Message:submit  -------------------------------------------- */
+/* line 34, ../sass/modules.scss */
+.msg-submit {
+  display: block;
+  background-color: #bbbbbb;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  border: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding-left: 12px;
+  padding-right: 12px;
+  -webkit-box-shadow: 0px 0px 3px #999999 inset;
+  -moz-box-shadow: 0px 0px 3px #999999 inset;
+  box-shadow: 0px 0px 3px #999999 inset;
+  cursor: pointer;
+}
+/* line 50, ../sass/modules.scss */
+.msg-submit:focus {
+  outline: none;
+}
+
+/* 	Message:body -------------------------------------------- */
+/* line 57, ../sass/modules.scss */
+.msg-body__textarea, .hiddendiv {
   display: block;
   background-color: inherit;
   border: none;
   resize: none;
   width: 90%;
 }
-/* line 44, ../sass/modules.scss */
-.msg-body__textarea:focus {
+/* line 66, ../sass/modules.scss */
+.msg-body__textarea:focus, .hiddendiv:focus {
   outline: none;
+}
+
+/* line 71, ../sass/modules.scss */
+.hiddendiv {
+  display: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+/* line 80, ../sass/modules.scss */
+.no-scroll {
+  overflow: hidden;
 }
 
 /* 	Autocomplete
 	------------------------------------------------------- */
-/* line 53, ../sass/modules.scss */
+/* line 87, ../sass/modules.scss */
 .ui-autocomplete {
   margin-top: 20px;
   background-color: #efefef;
   padding: 10px 20px;
 }
 
-/* line 67, ../sass/modules.scss */
+/* line 101, ../sass/modules.scss */
 .google-contact-email {
   font-style: italic;
   color: #8b8b8b;
   padding-left: 10px;
 }
 
-/* line 74, ../sass/modules.scss */
+/* line 108, ../sass/modules.scss */
 .ui-state-focus {
   border-bottom: 1px solid #bbbbbb;
 }

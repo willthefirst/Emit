@@ -103,6 +103,14 @@ body {
 }
 
 .wrapper-hor {
+	@include clearfix;
 	width:  92%;
 	margin: auto;
+}
+
+/* 	Utility
+	------------------------------------------------------- */
+
+.relative {
+	position: relative;
 }
