@@ -1,0 +1,28 @@
+/* 	Generic message styles
+	------------------------------------------------------- */
+
+.msg-to {
+	@extend .block;
+	border-bottom: 1px solid $gray-dark;
+}
+
+.msg-to__label {
+	float: left;
+}
+
+.msg-to__input {
+	float: left;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	background-color: inherit;
+	border: none;
+	display: block;
+	margin: 0 0 0 20px;
+	padding: 0;
+	width: 80%;
+
+	&:focus {
+		outline: none;
+	}
+}

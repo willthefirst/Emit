@@ -1,48 +1,120 @@
+/* line 17, ../../../../.rvm/gems/ruby-1.9.3-p194@cf/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../.rvm/gems/ruby-1.9.3-p194@cf/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../.rvm/gems/ruby-1.9.3-p194@cf/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../.rvm/gems/ruby-1.9.3-p194@cf/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../.rvm/gems/ruby-1.9.3-p194@cf/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../.rvm/gems/ruby-1.9.3-p194@cf/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../.rvm/gems/ruby-1.9.3-p194@cf/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../.rvm/gems/ruby-1.9.3-p194@cf/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../.rvm/gems/ruby-1.9.3-p194@cf/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/* 	Colors
+	------------------------------------------------------- */
+/* 	Base styles
+	------------------------------------------------------- */
+/* line 10, ../sass/base.scss */
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #cccccc;
+  font-size: 34px;
+  line-height: 51px;
+  color: #1d1d1d;
 }
 
-a {
-  color: #00B7FF;
+/* line 17, ../sass/base.scss */
+.wrapper-vert {
+  overflow: hidden;
+  *zoom: 1;
+  padding-bottom: 20px;
+  padding-top: 20px;
 }
 
-/* From jQuery autocomplete */
+/* line 23, ../sass/base.scss */
+.wrapper-hor {
+  width: 92%;
+  margin: auto;
+}
 
-#dialog-link {
-	padding: .4em 1em .4em 20px;
-	text-decoration: none;
-	position: relative;
+/* 	Generic message styles
+	------------------------------------------------------- */
+/* line 4, ../sass/modules.scss */
+.msg-to {
+  border-bottom: 1px solid #bbbbbb;
 }
-#dialog-link span.ui-icon {
-	margin: 0 5px 0 0;
-	position: absolute;
-	left: .2em;
-	top: 50%;
-	margin-top: -8px;
+
+/* line 9, ../sass/modules.scss */
+.msg-to__label {
+  float: left;
 }
-#icons {
-	margin: 0;
-	padding: 0;
+
+/* line 13, ../sass/modules.scss */
+.msg-to__input {
+  float: left;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  background-color: inherit;
+  border: none;
+  display: block;
+  margin: 0 0 0 20px;
+  padding: 0;
+  width: 80%;
 }
-#icons li {
-	margin: 2px;
-	position: relative;
-	padding: 4px 0;
-	cursor: pointer;
-	float: left;
-	list-style: none;
-}
-#icons span.ui-icon {
-	float: left;
-	margin: 0 4px;
-}
-.fakewindowcontain .ui-widget-overlay {
-	position: absolute;
-}
-.ui-autocomplete {
-	background-color: #ccc;
-}
-.ui-state-focus {
-	background-color: yellow;
+/* line 25, ../sass/modules.scss */
+.msg-to__input:focus {
+  outline: none;
 }

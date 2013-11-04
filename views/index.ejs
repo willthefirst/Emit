@@ -5,17 +5,28 @@
   </head>
   <body>
     <div ng-controller="AppCtrl">
+      <form action="/user/gsend" method="post">
+        <div class="msg-to wrapper-vert">
+          <div class="wrapper-hor">
+            <label for="contacts" class="msg-to__label">to:</label>
+            <input name="email" id="contacts" class="msg-to__input"/>
+          </div>
+        </div>
+        <textarea name="body" cols="30" rows="10"></textarea>
+        <input type="submit">
+      </form>
       <div class="authenticate hidden">
         <a class="connect" href="user/auth/google">Connect with Gmail</a>
       </div>
+    </div>
+    <div>
+      <div class="authenticate hidden">
+        <a class="connect" href="user/auth/facebook">Connect to Facebook</a>
+      </div>
 
-      <h2>Gmail</h2>
-
-        <form action="/user/gsend" method="post">
-          <label for="contacts">Contacts: </label>
-          <input name="email" id="contacts" />
-          <textarea name="body" cols="30" rows="10"></textarea>
-          <input type="submit">
+      <h2>Facebook</h2>
+        <form action="/user/fsend" method="post">
+          <label for="friends">Friends: </label>
         </form>
         <p class="msg-result">
 
