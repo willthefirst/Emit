@@ -101,12 +101,12 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 /* line 45, ../sass/base.scss */
-body {
+body, .msg-body__textarea {
   font-family: "TeX Gyre Pagella", "Palatino", "Georgia", "Times New Roman", "Hoefler Text", "Baskerville", serif;
 }
 
 /* line 70, ../sass/base.scss */
-body {
+body, .msg-body__textarea {
   font-size: 30px;
   line-height: 45px;
 }
@@ -147,17 +147,19 @@ body {
 
 /* 	Generic message styles
 	------------------------------------------------------- */
-/* line 4, ../sass/modules.scss */
+/* 	Message:To
+	------------------------------------------------------- */
+/* line 6, ../sass/modules.scss */
 .msg-to {
   border-bottom: 1px solid #bbbbbb;
 }
 
-/* line 9, ../sass/modules.scss */
+/* line 11, ../sass/modules.scss */
 .msg-to__label {
   float: left;
 }
 
-/* line 13, ../sass/modules.scss */
+/* line 15, ../sass/modules.scss */
 .msg-to__input {
   float: left;
   font-family: inherit;
@@ -170,28 +172,43 @@ body {
   padding: 0;
   width: 80%;
 }
-/* line 25, ../sass/modules.scss */
+/* line 27, ../sass/modules.scss */
 .msg-to__input:focus {
+  outline: none;
+}
+
+/* 	Message:Body
+	------------------------------------------------------- */
+/* line 35, ../sass/modules.scss */
+.msg-body__textarea {
+  display: block;
+  background-color: inherit;
+  border: none;
+  resize: none;
+  width: 90%;
+}
+/* line 44, ../sass/modules.scss */
+.msg-body__textarea:focus {
   outline: none;
 }
 
 /* 	Autocomplete
 	------------------------------------------------------- */
-/* line 33, ../sass/modules.scss */
+/* line 53, ../sass/modules.scss */
 .ui-autocomplete {
   margin-top: 20px;
   background-color: #efefef;
   padding: 10px 20px;
 }
 
-/* line 47, ../sass/modules.scss */
+/* line 67, ../sass/modules.scss */
 .google-contact-email {
   font-style: italic;
   color: #8b8b8b;
   padding-left: 10px;
 }
 
-/* line 54, ../sass/modules.scss */
+/* line 74, ../sass/modules.scss */
 .ui-state-focus {
   border-bottom: 1px solid #bbbbbb;
 }

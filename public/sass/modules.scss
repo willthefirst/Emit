@@ -1,6 +1,8 @@
 /* 	Generic message styles
 	------------------------------------------------------- */
 
+/* 	Message:To
+	------------------------------------------------------- */
 .msg-to {
 	@extend .block;
 	border-bottom: 1px solid $gray-dark;
@@ -26,6 +28,24 @@
 		outline: none;
 	}
 }
+
+/* 	Message:Body
+	------------------------------------------------------- */
+
+.msg-body__textarea {
+	display: block;
+	background-color: inherit;
+	border: none;
+	resize: none;
+	@extend %size-2;
+	@extend %font;
+	width: 90%;
+
+	&:focus {
+		outline: none;
+	}
+}
+
 
 /* 	Autocomplete
 	------------------------------------------------------- */
