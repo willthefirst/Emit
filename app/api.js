@@ -8,9 +8,7 @@ var User = mongoose.model('User');
 var google_params = {
 	client_id : '363206404232.apps.googleusercontent.com',
 	client_secret : 'Dnd6HuZBwpZnh6XNF1Pgyx2h',
-	access_token : '',
-	refresh_token: '',
-	user: ''
+	access_token : ''
 };
 
 exports.google = google_params;
