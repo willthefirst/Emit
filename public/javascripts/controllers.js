@@ -42,17 +42,20 @@ angular.module('emit.controllers', []).
           $("#contacts").val(ui.item.value);
           return false;
         },
+        open: function() {
+          $('.ui-menu').width('75%').marginTop(20);
+         },
         delay: 0
       }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
 
         // Just display emails if there is no corresponsding first name.
         if (item.label === "") {
           return $( "<li>" )
-            .append( '<a><span class="google-contact-email">' + item.value + "</span></a>" )
+            .append( '<a><span class="google-contact-email-only">' + item.value + "</span></a>" )
             .appendTo( ul );
         } else {
           return $( "<li>" )
-            .append( '<a><span class="google-contact-name">'+ item.label + '</span><br /><span class="google-contact-email">' + item.value + "</span></a>" )
+            .append( '<a><span class="google-contact-name">'+ item.label + '</span><span class="google-contact-email">' + item.value + "</span></a>" )
             .appendTo( ul );
         }
       };

@@ -2,15 +2,97 @@
 	------------------------------------------------------- */
 $gray: #ccc;
 $gray-dark: #bbb;
+$gray-light: #efefef;
 
 $black: #1d1d1d;
+$black-1: #8B8B8B;
+
+/* 	Fonts
+	------------------------------------------------------- */
+@font-face {
+	font-family: 'TeX Gyre Pagella';
+	src: url('/fonts/texgyrepagella-regular-webfont.eot');
+	src: local('☺'), url('/fonts/texgyrepagella-regular-webfont.woff') format('woff'), url('/fonts/texgyrepagella-regular-webfont.ttf') format('truetype'), url('/fonts/texgyrepagella-regular-webfont.svg#webfontX4pGz9fc') format('svg');
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'TeX Gyre Pagella';
+	src: url('/fonts/texgyrepagella-bold-webfont.eot');
+	src: local('☺'), url('/fonts/texgyrepagella-bold-webfont.woff') format('woff'), url('/fonts/texgyrepagella-bold-webfont.ttf') format('truetype'), url('/fonts/texgyrepagella-bold-webfont.svg#webfontX4pGz9fc') format('svg');
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'TeX Gyre Pagella';
+	src: url('/fonts/texgyrepagella-bolditalic-webfont.eot');
+	src: local('☺'), url('/fonts/texgyrepagella-bolditalic-webfont.woff') format('woff'), url('/fonts/texgyrepagella-bolditalic-webfont.ttf') format('truetype'), url('/fonts/texgyrepagella-bolditalic-webfont.svg#webfontX4pGz9fc') format('svg');
+	font-weight: 700;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'TeX Gyre Pagella';
+	src: url('/fonts/texgyrepagella-italic-webfont.eot');
+	src: local('☺'), url('/fonts/texgyrepagella-italic-webfont.woff') format('woff'), url('/fonts/texgyrepagella-italic-webfont.ttf') format('truetype'), url('/fonts/texgyrepagella-italic-webfont.svg#webfontX4pGz9fc') format('svg');
+	font-weight: 400;
+	font-style: italic;
+}
+
+
+%font {
+	font-family: "TeX Gyre Pagella", "Palatino", "Georgia", "Times New Roman", "Hoefler Text", "Baskerville", serif;
+}
+
+%font-b {
+	font-family: "TeX Gyre Pagella", "Palatino", "Georgia", "Times New Roman", "Hoefler Text", "Baskerville", serif;
+	font-weight: 700;
+}
+
+%font-i {
+	font-family: "TeX Gyre Pagella", "Palatino", "Georgia", "Times New Roman", "Hoefler Text", "Baskerville", serif;
+	font-style: italic;
+}
+
+%font-bi {
+	font-family: "TeX Gyre Pagella", "Palatino", "Georgia", "Times New Roman", "Hoefler Text", "Baskerville", serif;
+	font-weight: 700;
+	font-style: italic;
+}
+
+%size-1 {
+	font-size: 34px;
+	line-height: 51px;
+}
+
+%size-2 {
+	font-size: 30px;
+	line-height: 45px;
+}
+
+%size-3 {
+	font-size: 24px;
+	line-height: 36px;
+}
+
+%size-4 {
+	font-size: 20px;
+	line-height: 30px;
+}
+
+%size-5 {
+	font-size: 16px;
+	line-height: 24px;
+}
 
 /* 	Base styles
 	------------------------------------------------------- */
 body {
+	@extend %font;
+	@extend %size-2;
 	background-color: $gray;
-	font-size: 34px;
-	line-height: 51px;
 	color: $black;
 }
 
