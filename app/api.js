@@ -20,15 +20,15 @@ exports.googlePassport = function(passport) {
 
   // Don't totally understand how this works, http://passportjs.org/guide/configure/
   passport.serializeUser(function(user, done) {
+    console.log('Serialize: ' + user.id);
     done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done) {
-    User
-        .findOne({ 'google.id': id })
-        .exec(function(err, user) {
-          done(err, user);    // Now req.user == user
-        });
+    User.findById(id, function(err, user) {
+        console.log('Deserialize: '+ user.id);
+        done(err, user); // Now req.user == user
+    });
   });
 
   // Google OAuth2 variables
@@ -45,7 +45,6 @@ exports.googlePassport = function(passport) {
         user.google.refresh_token = google_params.refresh_token;
         user.save(function(err) {
           if (err) return handleError(err);
-          console.log(user);
         });
         return done(err, user);
       });

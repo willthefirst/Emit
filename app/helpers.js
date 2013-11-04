@@ -1,10 +1,10 @@
-exports.restrict = function (req, res, next) {
-  if (req.session.user) {
-  	console.log('logged in');
-    next();
+exports.authenticate = function(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  if (req.headers['x-requested-with'] === 'XMLHttpRequest') {
+    res.send("Authentication required", 401);
   } else {
-  	console.log('access denied');
-    req.session.error = 'Access denied!';
     res.redirect('/login');
   }
-};
+}

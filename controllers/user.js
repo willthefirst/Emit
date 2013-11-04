@@ -73,11 +73,10 @@ exports.sendEmail = function(req, res) {
       service: "Gmail",
       auth: {
           XOAuth2: {
-              user: api.google.user,
+              user: req.user.google.id,
               clientId: api.google.client_id,
               clientSecret: api.google.client_secret,
-              refreshToken: api.google.refresh_token,
-              accessToken: api.google.access_token,
+              refreshToken: req.user.google.refresh_token
           }
       }
   };
