@@ -43,7 +43,7 @@ angular.module('emit.controllers', []).
           return false;
         },
         open: function() {
-          $('.ui-menu').width('75%').marginTop(20);
+          $('.ui-menu').width(650);
          },
         delay: 0
       }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
@@ -65,8 +65,5 @@ angular.module('emit.controllers', []).
     error(function (data, status, headers, config) {
       $scope.contacts = 'No GContact data!';
     });
-
-  })
-  .controller('Login', function($scope, $http){
 
   });

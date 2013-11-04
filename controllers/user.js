@@ -61,7 +61,7 @@ exports.saveGoogleAccount = function(req, res){
 exports.show = function(req, res) {
   var google_contacts;
 
-  User.findOne({ 'google.id': api.google.user }, function(err, user) {
+  User.findOne({ 'google.id': req.user.google.id }, function(err, user) {
     google_contacts = user.google.contacts;
     res.json(google_contacts);
   });

@@ -15,26 +15,13 @@
         </div>
         <div class="msg-body wrapper-vert">
           <div class="wrapper-hor">
-            <textarea name="body" cols="60" rows="10" class="msg-body__textarea" tabindex="2"></textarea>
+            <textarea name="body" cols="60" row="1" class="msg-body__textarea" tabindex="2"></textarea>
           </div>
         </div>
       </form>
       <div class="authenticate hidden">
         <a class="connect" href="user/auth/google">Connect with Gmail</a>
       </div>
-    </div>
-    <div>
-      <div class="authenticate hidden">
-        <a class="connect" href="user/auth/facebook">Connect to Facebook</a>
-      </div>
-
-      <h2>Facebook</h2>
-        <form action="/user/fsend" method="post">
-          <label for="friends">Friends: </label>
-        </form>
-        <p class="msg-result">
-
-        </p>
     </div>
     <script src="/jquery.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>

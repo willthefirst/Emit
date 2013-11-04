@@ -85,9 +85,9 @@
 	------------------------------------------------------- */
 
 .ui-autocomplete {
-	margin-top: 20px; // So that is doesn't overlap the apparent input field
 	background-color: $gray-light;
-	padding: 10px 20px;
+	padding: 0px 20px 10px;
+	max-width: 70%;
 }
 
 .google-contact-name {
