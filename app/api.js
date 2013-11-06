@@ -3,6 +3,7 @@
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var RememberMeStrategy = require('passport-remember-me').Strategy;
 
 // Google API params
 var google_params = {
@@ -16,15 +17,12 @@ exports.google = google_params;
 // Google Passport strategy
 exports.googlePassport = function(passport) {
 
-  // Don't totally understand how this works, http://passportjs.org/guide/configure/
   passport.serializeUser(function(user, done) {
-    console.log('Serialize: ' + user.id);
     done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
-        console.log('Deserialize: '+ user.id);
         done(err, user); // Now req.user == user
     });
   });
@@ -37,14 +35,29 @@ exports.googlePassport = function(passport) {
     },
     function(accessToken, refreshToken, profile, done) {
       google_params.access_token = accessToken;
-      google_params.refresh_token = refreshToken;
-      google_params.user = profile._json.email;
-      User.findOrCreate({ 'google.id' : google_params.user } , function (err, user) {
-        user.google.refresh_token = google_params.refresh_token;
+      User.findOrCreate({ 'google.id' : profile._json.email } , function (err, user) {
+        user.google.refresh_token = refreshToken;
         user.save(function(err) {
           if (err) return handleError(err);
         });
         return done(err, user);
+      });
+    }
+  ));
+
+  passport.use(new RememberMeStrategy(
+    function(token, done) {
+      Token.consume(token, function (err, user) {
+        if (err) { return done(err); }
+        if (!user) { return done(null, false); }
+        return done(null, user);
+      });
+    },
+    function(user, done) {
+      var token = utils.generateToken(64);
+      Token.save(token, { userId: user.id }, function(err) {
+        if (err) { return done(err); }
+        return done(null, token);
       });
     }
   ));

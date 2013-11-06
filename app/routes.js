@@ -10,7 +10,7 @@ exports.initialize = function(app){
                                                 'https://mail.google.com/',
                                                 'https://www.google.com/m8/feeds'  ] ,
                                                 accessType: 'offline', approvalPrompt: 'force' } ));
-	app.get('/user/auth/google/callback',  passport.authenticate('google', { failureRedirect: '/FAILLED' }), user.saveGoogleAccount);
+	app.get('/user/auth/google/callback', passport.authenticate('google'), user.saveGoogleAccount);
 	app.get('/user/gcontacts', user.show);
 	app.post('/user/gsend', user.sendEmail);
 

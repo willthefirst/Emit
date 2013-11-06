@@ -3,5 +3,8 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Emit' });
+  res.render('index', {
+  	title: 'Emit',
+  	user: req.user
+  });
 };

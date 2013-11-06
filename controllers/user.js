@@ -9,8 +9,6 @@ var nodemailer = require('nodemailer');
  */
 exports.saveGoogleAccount = function(req, res){
 
-    req.session.property = 'Logged in';
-
     if(typeof req.cookies['connect.sid'] !== 'undefined'){
         console.log(req.cookies['connect.sid']);
     }
@@ -30,10 +28,15 @@ exports.saveGoogleAccount = function(req, res){
 
     var options = {
       host: 'www.google.com',
-      path: '/m8/feeds/contacts/'+ api.google.user +'/full/' + query_params.access_token + query_params.res_type + query_params.max_results
+      path: '/m8/feeds/contacts/'+ req.user.google.id +'/full/' + query_params.access_token + query_params.res_type + query_params.max_results
     };
 
     https.get(options, function(res){
+
+      if(res.statusCode !== 200) {
+        console.log("Response from Google API: " + res.statusCode);
+        res.redirect('/error');
+      }
 
       var json = '';
 
@@ -45,7 +48,7 @@ exports.saveGoogleAccount = function(req, res){
       // Strip that shit
       res.on('end', function(){
         //Save returned contacts from Google connect to the user's contact list
-        User.findOrCreate({ 'google.id' : api.google.user }, function(err, user, created) {
+        User.findOrCreate({ 'google.id' : req.user.google.id }, function(err, user, created) {
           user.google.contacts = api.stripGoogleContacts(json);
           user.save(function(err) {
             if (err) return handleError(err);
