@@ -31,11 +31,16 @@
 
 /* 	Message:submit  -------------------------------------------- */
 
-.msg-submit {
-	display: block;
+%inlay {
 	background-color: $gray-dark;
 	@include border-radius(2px);
 	border: none;
+	@include box-shadow(0px 0px 3px #999 inset);
+}
+
+.msg-submit {
+	@extend %inlay;
+	display: block;
 	@extend %font;
 	@extend %size-3;
 	position: absolute;
@@ -44,7 +49,6 @@
 	bottom: 0;
 	padding-left: 12px;
 	padding-right: 12px;
-	@include box-shadow(0px 0px 3px #999 inset);
 	cursor: pointer;
 
 	&:focus {
@@ -107,4 +111,41 @@
 
 .ui-state-focus {
 	border-bottom: 1px solid $gray-dark;
+}
+
+/* 	Social network connect
+	------------------------------------------------------- */
+
+.accounts {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	@include clearfix;
+	text-align: center;
+	overflow: visible; // For helper
+}
+
+.channel-toggle {
+	display: block;
+	color: rgba(204, 204, 204, 0.5);
+	padding: 2px 10px;
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 40px;
+	text-shadow: 1px 4px 6px $gray, 0 0 0px #000, 1px 4px 6px $gray;
+}
+
+/* 	Helper text
+	------------------------------------------------------- */
+
+.helper {
+	@extend %size-4;
+	@extend %inlay;
+	display: inline-block;
+}
+
+.get-started {
+	padding: 6px 12px;
+	left: -400px;
+	position: absolute;
 }

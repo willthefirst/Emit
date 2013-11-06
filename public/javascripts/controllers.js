@@ -39,12 +39,24 @@ angular.module('emit.controllers', []).
             res( resultsArray );
         },
         select: function(event, ui) {
-          $("#contacts").val(ui.item.value);
+          console.log(this.value);
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join( ", " );
           return false;
+
+          // $("#contacts").val(ui.item.value);
+          // return false;
         },
         open: function() {
           $('.ui-menu').width(650);
-         },
+        },
+        multiple: true,
         delay: 0
       }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
 

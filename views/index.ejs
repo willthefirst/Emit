@@ -9,7 +9,7 @@
         <div class="msg-to wrapper-vert">
           <div class="wrapper-hor relative">
             <label for="contacts" class="msg-to__label">to:</label>
-            <input name="email" id="contacts" class="msg-to__input" tabindex="1"/>
+            <input name="email" id="contacts" class="msg-to__input" tabindex="1" autofocus autocomplete="off"/>
             <input class="msg-submit" type="submit" value="⌘ + return to send" tabindex="3"/>
           </div>
         </div>
@@ -19,8 +19,11 @@
           </div>
         </div>
       </form>
-      <div class="authenticate hidden">
-        <a class="connect" href="user/auth/google">Connect with Gmail</a>
+<!--       <div class="accounts">
+        <p class="helper get-started relative">To get started, connect your accounts.</p> -->
+        <a href="/user/auth/google" class="channel-toggle">G</a>
+<!--         <a href="/user/auth/google" class="channel-toggle">f</a>
+        <a href="/user/auth/google" class="channel-toggle">t</a> -->
       </div>
     </div>
     <script src="/jquery.js"></script>
