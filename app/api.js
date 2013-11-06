@@ -3,7 +3,6 @@
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var RememberMeStrategy = require('passport-remember-me').Strategy;
 
 // Google API params
 var google_params = {
@@ -37,6 +36,8 @@ exports.googlePassport = function(passport) {
       google_params.access_token = accessToken;
       User.findOrCreate({ 'google.id' : profile._json.email } , function (err, user) {
         user.google.refresh_token = refreshToken;
+        user.google.first_name =  profile._json.given_name;
+        user.google.last_name =  profile._json.family_name;
         user.save(function(err) {
           if (err) return handleError(err);
         });
