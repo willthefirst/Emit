@@ -92,9 +92,8 @@ exports.sendEmail = function(req, res) {
 
   var transport = nodemailer.createTransport("SMTP", smtp_options);
 
-  console.log(req.body);
   transport.sendMail({
-    from: api.google.user,
+    from: req.user.first_name + req.user.last_name + '<'+ req.user.google.id + '>',
     to: req.body.email,
     subject: "Sent with Emit",
     text: req.body.body

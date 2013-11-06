@@ -4,6 +4,8 @@ var findOrCreate = require('mongoose-findorcreate');
 var userSchema = mongoose.Schema({
 	google : {
 		id: String,
+		first_name: String,
+		last_name: String,
 		contacts: Array,
 		refresh_token: String
 	}
