@@ -10,6 +10,7 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var passport = require('passport');
+var MongoStore = require('connect-mongodb');
 
 var app = express();
 
@@ -23,9 +24,16 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
-app.use(express.session({ secret: 'spunkydelicious' }));
+app.use(express.session(
+	{ secret: 'spunkydelicious',
+	  cookie : {
+	    maxAge: (3600000*24*7) // 1 week
+	  }
+	}
+));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(passport.authenticate('remember-me'));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('express-jquery')('/jquery.js'));
