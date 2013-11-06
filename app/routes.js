@@ -13,6 +13,6 @@ exports.initialize = function(app){
                                                 accessType: 'offline', approvalPrompt: 'force' } ));
 	app.get('/user/google/auth/callback', passport.authenticate('google'), user.saveGoogleAccount);
 	app.get('/user/google/contacts', user.show);
-	app.post('/user/gsend', user.sendEmail);
+	app.post('/user/google/send', user.sendEmail);
 
 };

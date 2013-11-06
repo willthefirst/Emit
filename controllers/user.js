@@ -92,6 +92,7 @@ exports.sendEmail = function(req, res) {
 
   var transport = nodemailer.createTransport("SMTP", smtp_options);
 
+  console.log(req.body);
   transport.sendMail({
     from: api.google.user,
     to: req.body.email,
