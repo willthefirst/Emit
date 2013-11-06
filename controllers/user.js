@@ -7,6 +7,12 @@ var nodemailer = require('nodemailer');
 /*
  * On succesful Google authorization
  */
+
+exports.logout = function(req, res) {
+  req.logout();
+  res.redirect('/');
+};
+
 exports.saveGoogleAccount = function(req, res){
 
     if(typeof req.cookies['connect.sid'] !== 'undefined'){

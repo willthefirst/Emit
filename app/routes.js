@@ -5,6 +5,7 @@ var auth = require('./helpers');
 
 exports.initialize = function(app){
 	app.get('/', index.index);
+	app.get('/logout', user.logout);
 	app.get('/user/auth/google', passport.authenticate('google', { scope: [  'https://www.googleapis.com/auth/userinfo.profile',
                                                 'https://www.googleapis.com/auth/userinfo.email' ,
                                                 'https://mail.google.com/',
