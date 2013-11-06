@@ -3,7 +3,8 @@
 // Declare app level module which depends on filters, and services
 
 angular.module('emit', [
-  'emit.controllers'
+  'emit.controllers',
+  'ngCookies'
 ]).
 config(function ($routeProvider, $locationProvider) {
   $routeProvider.

@@ -3,8 +3,18 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', {
-  	title: 'Emit',
-  	user: req.user
-  });
+	var id = '';
+
+	if(req.user) {
+		id = req.user.google.id;
+	}
+
+	res.cookie('user', JSON.stringify({
+		'id': id
+	}));
+
+	res.render('index', {
+		title: 'Emit',
+		user: id
+	});
 };

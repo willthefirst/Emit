@@ -31,7 +31,7 @@ exports.googlePassport = function(passport) {
   passport.use(new GoogleStrategy({
       clientID: google_params.client_id,
       clientSecret: google_params.client_secret,
-      callbackURL: "http://localhost:3000/user/auth/google/callback"
+      callbackURL: "http://localhost:3000/user/google/auth/callback"
     },
     function(accessToken, refreshToken, profile, done) {
       google_params.access_token = accessToken;
