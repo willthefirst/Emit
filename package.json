@@ -14,7 +14,6 @@
     "passport": "*",
     "passport-google-oauth": "*",
     "mongoose":"*",
-    "passport-remember-me": "*",
     "connect-mongodb": "*",
     "mongoose-findorcreate":"*"
   }

@@ -10,7 +10,6 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var passport = require('passport');
-var MongoStore = require('connect-mongodb');
 
 var app = express();
 
@@ -33,7 +32,6 @@ app.use(express.session(
 ));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(passport.authenticate('remember-me'));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('express-jquery')('/jquery.js'));
