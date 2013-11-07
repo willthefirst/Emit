@@ -7,6 +7,10 @@ angular.module('emit', [
   'ngCookies'
 ]).
 config(function ($routeProvider, $locationProvider) {
+	$routeProvider.when( '/', {
+		templateURL:'partials/email.html',
+		controller:'AppCtrl'
+	});
 	$routeProvider.when( '/hello', {
 		templateURL:'partials/email.html',
 		controller:'AppCtrl'

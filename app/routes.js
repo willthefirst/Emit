@@ -4,7 +4,7 @@ var passport = require('passport');
 var auth = require('./helpers');
 
 exports.initialize = function(app){
-	app.get('/', index.index);
+	// app.get('/', index.index); //Let Angular handle this
 	app.get('/logout', user.logout);
 	app.get('/user/google/auth', passport.authenticate('google', { scope: [  'https://www.googleapis.com/auth/userinfo.profile',
                                                 'https://www.googleapis.com/auth/userinfo.email' ,
