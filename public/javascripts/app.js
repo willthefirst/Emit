@@ -7,5 +7,9 @@ angular.module('emit', [
   'ngCookies'
 ]).
 config(function ($routeProvider, $locationProvider) {
-  $locationProvider.html5Mode(true);
+	$routeProvider.when( '/hello', {
+		templateURL:'partials/email.html',
+		controller:'AppCtrl'
+	});
+	$locationProvider.html5Mode(true);
 });
