@@ -2,18 +2,15 @@
 
 // Declare app level module which depends on filters, and services
 
-angular.module('emit', [
-  'emit.controllers',
-  'ngCookies'
-]).
-config(function ($routeProvider, $locationProvider) {
+angular.module('emit', []).
+config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider.when( '/', {
-		templateURL:'partials/email.html',
-		controller:'AppCtrl'
-	});
-	$routeProvider.when( '/hello', {
-		templateURL:'partials/email.html',
-		controller:'AppCtrl'
-	});
+		templateUrl:'partials/test',
+		controller: AppCtrl
+	}).
+    otherwise({
+      redirectTo: '/'
+    });
+
 	$locationProvider.html5Mode(true);
-});
+}]);

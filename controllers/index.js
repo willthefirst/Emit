@@ -12,9 +12,12 @@ exports.index = function(req, res){
 	res.cookie('user', JSON.stringify({
 		'id': id
 	}));
+	res.render('index');
 
-	res.render('index', {
-		title: 'Emit',
-		user: id
-	});
+};
+
+exports.partials = function(req, res) {
+	var name = req.params.name;
+	console.log('asdfghjkl;');
+	res.render('partials/' + name);
 };
