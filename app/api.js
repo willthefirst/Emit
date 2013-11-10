@@ -94,15 +94,14 @@ exports.stripGoogleContacts = function(json) {
 var facebook_params = {
   client_id: "348612998615744",
   client_secret: "88d7cce889bd0623710ec980724a7622",
-  callbackURL: "http://localhost:3000/auth/facebook/callback",
-  access_token: '',
-  long_lived_token: ''
+  callbackURL: "http://localhost:3000/user/facebook/auth/callback"
 };
 
 exports.facebook = facebook_params;
 
 // Google Passport strategy
 exports.facebookPassport = function(passport) {
+
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
@@ -119,38 +118,18 @@ exports.facebookPassport = function(passport) {
       clientSecret: facebook_params.client_secret,
       callbackURL: facebook_params.callbackURL
     },
-    function(accessToken, profile, done) {
-      console.log('asdasd');
+    function(accessToken, refreshToken, profile, done) {
       facebook_params.access_token = accessToken;
-      User.findOrCreate({ 'facebook.id' : profile._json.id } , function (err, user) {
-        user.facebook.first_name =  profile._json.first_name;
-        user.facebook.last_name =  profile._json.last_name;
+      console.log(profile);
+      User.findOrCreate({ 'facebook.id' : profile._json.email } , function (err, user) {
+        user.facebook.refresh_token = refreshToken;
+        user.facebook.first_name =  profile._json.given_name;
+        user.facebook.last_name =  profile._json.family_name;
         user.save(function(err) {
           if (err) return handleError(err);
         });
         return done(err, user);
       });
-      facebookLongToken();
     }
   ));
-};
-
-// Facebook doesn't do refresh tokens, just long-lived access tokens.
-
-exports.facebookLongToken = function() {
-  console.log('here');
-  var options = {
-    host: 'www.facebook.com',
-    path: '/oauth/access_token?grant_type=fb_exchange_token&client_id=' + facebook_params.client_id + '&client_secret=' + facebook_params.client_secret + '}&fb_exchange_token=' + facebook_params.access_token
-  };
-
-  https.get(options, function(res){
-    if(res.statusCode !== 200) {
-      console.log("Response from Google API: " + res.statusCode);
-      res.redirect('/error');
-    }
-    else {
-      console.log(res);
-    }
-  });
 };
