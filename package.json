@@ -13,6 +13,7 @@
     "express-jquery": "*",
     "passport": "*",
     "passport-google-oauth": "*",
+    "passport-facebook": "*",
     "mongoose":"*",
     "connect-mongodb": "*",
     "mongoose-findorcreate":"*"

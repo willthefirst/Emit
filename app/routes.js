@@ -4,10 +4,15 @@ var passport = require('passport');
 var auth = require('./helpers');
 
 exports.initialize = function(app){
+
+	// Give all routing to Angular except for API calls
 	app.get('/', routes.index);
 	app.get('/partials/:name', routes.partials);
 
+	// User
 	app.get('/logout', user.logout);
+
+	// Google
 	app.get('/user/google/auth', passport.authenticate('google', { scope: [  'https://www.googleapis.com/auth/userinfo.profile',
                                                 'https://www.googleapis.com/auth/userinfo.email' ,
                                                 'https://mail.google.com/',
@@ -16,6 +21,12 @@ exports.initialize = function(app){
 	app.get('/user/google/auth/callback', passport.authenticate('google'), user.saveGoogleAccount);
 	app.get('/user/google/contacts', user.show);
 	app.post('/user/google/send', user.sendEmail);
-	// redirect all others to the index (HTML5 history)
+
+	// Facebook
+	app.get('/user/facebook/auth', passport.authenticate('facebook', { scope: ['publish_actions','read_friendlists' ] }));
+	app.get('/user/facebook/auth/callback', passport.authenticate('facebook'), routes.index	);
+
+
+	// Redirect all others to the index (HTML5 history)
 	app.get('/*', routes.index);
 };
