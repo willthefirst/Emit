@@ -4,7 +4,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var http = require('http');
+var https = require('https');
 
 // Google API params
 var google_params = {
@@ -138,15 +138,16 @@ exports.facebookPassport = function(passport) {
 // Facebook doesn't do refresh tokens, just long-lived access tokens.
 
 function facebookLongToken () {
-  console.log('here');
   var options = {
-    host: 'www.facebook.com',
-    path: '/oauth/access_token?grant_type=fb_exchange_token&client_id=' + facebook_params.client_id + '&client_secret=' + facebook_params.client_secret + '}&fb_exchange_token=' + facebook_params.access_token
+    host: 'graph.facebook.com',
+    path: '/oauth/access_token?grant_type=fb_exchange_token&client_id=' + facebook_params.client_id + '&client_secret=' + facebook_params.client_secret + '&fb_exchange_token=' + facebook_params.access_token
   };
 
-  http.get(options, function(res){
+  console.log(options);
+
+  https.get(options, function(res){
     if(res.statusCode !== 200) {
-      console.log("Error: Response from Facebook API: " + res.statusCode);
+      console.log("Error: Response from Facebook API: " + (res.statusCode));
       res.redirect('/error');
     }
     else {
