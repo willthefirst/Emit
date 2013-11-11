@@ -1,5 +1,6 @@
- var api = require('../app/api');
+var api = require('../app/api');
 var https = require('https');
+var http = require('http');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var api = require('../app/api');
@@ -110,3 +111,57 @@ exports.sendEmail = function(req, res) {
   });
 };
 
+// Facebook doesn't do refresh tokens, just long-lived access tokens.
+exports.facebookConfig = function (req,res) {
+  getFacebookToken(req, function() {
+    //TODO This should render asap (probably with short-lived access token, and the long-lived should just replace the short-lived asynchornously.)
+    res.render('index');
+    // Pass long-lived access token back to client as a cookie.
+    res.cookie('user', JSON.stringify({
+      'fb_tok': req.user.facebook.long_lived_token
+    }));
+  });
+
+};
+
+function getFacebookToken(req, callback) {
+  var long_lived_token;
+  var options = {
+    host: 'graph.facebook.com',
+    path: '/oauth/access_token?grant_type=fb_exchange_token&client_id=' + api.facebook.client_id + '&client_secret=' + api.facebook.client_secret + '&fb_exchange_token=' + api.facebook.access_token
+  };
+
+  https.get(options, function(res){
+    if(res.statusCode !== 200) {
+      console.log("Error: Response from Facebook API: " + (res.statusCode));
+      res.redirect('/error');
+    }
+
+    // Add the data as it comes in to the variable 'response'.
+    res.on('data', function(chunk){
+      long_lived_token += chunk;
+    });
+
+    // Save long-lived token to user's profile.
+    res.on('end', function(){
+      long_lived_token = long_lived_token.split('access_token=');
+      long_lived_token = long_lived_token[1].split('&');
+      long_lived_token = long_lived_token[0];
+      req.user.facebook.long_lived_token = long_lived_token;
+      callback();
+    });
+  });
+}
+
+exports.getFacebookContacts = function() {
+
+  // Add "Facebook Timeline" to user's contacts.
+
+
+  // Add users Facebook friends to currently existing contacts.
+
+};
+
+exports.handleFacebookContact = function(req, res) {
+
+}

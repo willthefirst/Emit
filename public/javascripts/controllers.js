@@ -101,21 +101,43 @@ angular.module('emit.controllers', []).
         $scope.contacts = 'No GContact data!';
       });
     }
-  }).controller('Submit', function($scope, $http) {
+  }).controller('Submit', function($scope, $http, $cookieStore) {
+    $scope.result = '';
+    var fb_tok = $cookieStore.get('user').fb_tok;
+    console.log(fb_tok);
+
     $scope.sendGmail = function() {
-      $scope.result = '';
-      $http({
-        method: 'POST',
-        url: '/user/google/send',
-        data: {
-          email: $scope.email,
-          body: $scope.text
-        }
-      }).success(function(data, status, headers, config) {
-        $scope.result = (status, data.result);
-      }).
-      error(function(data, status, headers, config) {
-        $scope.result = (status, data.result)
-      });
+      if ($scope.email === "Facebook") {
+        $http({
+            method: 'POST',
+            url: 'https://graph.facebook.com/1064730089/feed',
+            params: {
+                access_token: fb_tok,
+                message: 'Testing testing'
+            }
+        }).success(function(data, status, headers, config) {
+            console.log('Success posting to facebook:', status, data);
+          $scope.result = (status, data.result);
+        }).
+        error(function(data, status, headers, config) {
+          console.log('Error posting to facebook:', status, data.error.message);
+          $scope.result = (status, data.result);
+        });
+      } else {
+        $http({
+          method: 'POST',
+          url: '/user/google/send',
+          data: {
+            email: $scope.email,
+            body: $scope.text
+          }
+        }).success(function(data, status, headers, config) {
+          $scope.result = (status, data.result);
+        }).
+        error(function(data, status, headers, config) {
+          $scope.result = (status, data.result);
+        });
+      }
+
     };
   });

@@ -95,7 +95,9 @@ exports.stripGoogleContacts = function(json) {
 var facebook_params = {
   client_id: "348612998615744",
   client_secret: "88d7cce889bd0623710ec980724a7622",
-  callbackURL: "http://localhost:3000/user/facebook/auth/callback"
+  callbackURL: "http://localhost:3000/user/facebook/auth/callback",
+  access_token: '',
+  long_lived_token: ''
 };
 
 exports.facebook = facebook_params;
@@ -113,45 +115,24 @@ exports.facebookPassport = function(passport) {
     });
   });
 
-  // Google OAuth2 variables
+  // Facebook OAuth2 variables
   passport.use(new FacebookStrategy({
       clientID: facebook_params.client_id,
       clientSecret: facebook_params.client_secret,
       callbackURL: facebook_params.callbackURL
     },
+    // For some reason, we must provide refreshToken as a param even though we never use it here.
     function(accessToken, refreshToken, profile, done) {
       facebook_params.access_token = accessToken;
       User.findOrCreate({ 'facebook.id' : profile._json.email } , function (err, user) {
-        user.facebook.refresh_token = refreshToken;
-        user.facebook.first_name =  profile._json.given_name;
-        user.facebook.last_name =  profile._json.family_name;
+        user.facebook.id =  profile._json.id;
+        user.facebook.first_name =  profile._json.first_name;
+        user.facebook.last_name =  profile._json.last_name;
         user.save(function(err) {
           if (err) return handleError(err);
         });
         return done(err, user);
       });
-      facebookLongToken();
     }
   ));
-};
-
-// Facebook doesn't do refresh tokens, just long-lived access tokens.
-
-function facebookLongToken () {
-  var options = {
-    host: 'graph.facebook.com',
-    path: '/oauth/access_token?grant_type=fb_exchange_token&client_id=' + facebook_params.client_id + '&client_secret=' + facebook_params.client_secret + '&fb_exchange_token=' + facebook_params.access_token
-  };
-
-  console.log(options);
-
-  https.get(options, function(res){
-    if(res.statusCode !== 200) {
-      console.log("Error: Response from Facebook API: " + (res.statusCode));
-      res.redirect('/error');
-    }
-    else {
-      console.log("Success :"+res);
-    }
-  });
 };

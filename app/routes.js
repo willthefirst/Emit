@@ -24,7 +24,7 @@ exports.initialize = function(app){
 
 	// Facebook
 	app.get('/user/facebook/auth', passport.authenticate('facebook', { scope: ['publish_actions','read_friendlists' ] }));
-	app.get('/user/facebook/auth/callback', passport.authenticate('facebook'), routes.index	);
+	app.get('/user/facebook/auth/callback', passport.authenticate('facebook'), user.facebookConfig	);
 
 
 	// Redirect all others to the index (HTML5 history)
