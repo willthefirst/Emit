@@ -103,14 +103,15 @@ angular.module('emit.controllers', []).
     }
   }).controller('Submit', function($scope, $http, $cookieStore) {
     $scope.result = '';
-    var fb_tok = $cookieStore.get('user').fb_tok;
-    console.log(fb_tok);
+    var fb_tok = $cookieStore.get(fb_tok);
+    var fb_id = $cookieStore.get(fb_id);
+
 
     $scope.sendGmail = function() {
       if ($scope.email === "Facebook") {
         $http({
             method: 'POST',
-            url: 'https://graph.facebook.com/1064730089/feed',
+            url: 'https://graph.facebook.com/'+ fb_id +'/feed',
             params: {
                 access_token: fb_tok,
                 message: 'Testing testing'

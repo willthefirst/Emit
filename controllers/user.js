@@ -115,13 +115,11 @@ exports.sendEmail = function(req, res) {
 exports.facebookConfig = function (req,res) {
   getFacebookToken(req, function() {
     //TODO This should render asap (probably with short-lived access token, and the long-lived should just replace the short-lived asynchornously.)
-    res.render('index');
+    res.redirect('/#');
+    console.log("Token:" + req.user.facebook.long_lived_token);
     // Pass long-lived access token back to client as a cookie.
-    res.cookie('user', JSON.stringify({
-      'fb_tok': req.user.facebook.long_lived_token
-    }));
+    // res.cookie('fb_tok', req.user.facebook.long_lived_token);
   });
-
 };
 
 function getFacebookToken(req, callback) {
@@ -147,7 +145,14 @@ function getFacebookToken(req, callback) {
       long_lived_token = long_lived_token.split('access_token=');
       long_lived_token = long_lived_token[1].split('&');
       long_lived_token = long_lived_token[0];
-      req.user.facebook.long_lived_token = long_lived_token;
+      User.findOrCreate({ 'facebook.id' : req.user.facebook.id } , function (err, user) {
+        // req.user.facebook.long_lived_token = long_lived_token;
+        user.facebook.long_lived_token = long_lived_token;
+        user.save(function(err){
+          if (err) return handleError(err);
+        });
+      });
+
       callback();
     });
   });

@@ -4,14 +4,19 @@
 
 exports.index = function(req, res){
 	var id = '';
+	console.log(req.user);
 
+	// If we have a user, load relevant info in cookies.
 	if(req.user) {
-		id = req.user.google.id;
+		// Gmail
+		res.cookie('g_id', req.user.google.id);
+
+		// Facebook
+		res.cookie('fb_tok', req.user.facebook.long_lived_token);
+		res.cookie('fb_id', req.user.facebook.id);
+
 	}
 
-	res.cookie('user', JSON.stringify({
-		'id': id
-	}));
 	res.render('index');
 
 };
