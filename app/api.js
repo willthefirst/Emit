@@ -1,10 +1,44 @@
 // Configure Google strategy
 // https://github.com/jaredhanson/passport-google-oauth
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var FacebookStrategy = require('passport-facebook');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var https = require('https');
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var FacebookStrategy = require('passport-facebook');
+var LocalStrategy = require('passport-local').Strategy;
+
+
+// // Global user account
+
+// exports.localPassport = function(passport) {
+//   passport.use(new LocalStrategy(
+//     function(username, password, done) {
+//       User.findOne({ username: username }, function(err, user) {
+//         if (err) { return done(err); }
+//         if (!user) {
+//           return done(null, false, { message: 'Incorrect username.' });
+//         }
+//         if (!user.validPassword(password)) {
+//           return done(null, false, { message: 'Incorrect password.' });
+//         }
+//         return done(null, user);
+//       });
+//     }
+//   ));
+// };
+
+// Serialize stuff one time for sessions
+exports.serialize = function(passport) {
+  passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user); // Now req.user == user
+    });
+  });
+};
 
 // Google API params
 var google_params = {
@@ -17,16 +51,6 @@ exports.google = google_params;
 
 // Google Passport strategy
 exports.googlePassport = function(passport) {
-
-  passport.serializeUser(function(user, done) {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user); // Now req.user == user
-    });
-  });
 
   // Google OAuth2 variables
   passport.use(new GoogleStrategy({
@@ -104,16 +128,6 @@ exports.facebook = facebook_params;
 
 // Google Passport strategy
 exports.facebookPassport = function(passport) {
-
-  passport.serializeUser(function(user, done) {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user); // Now req.user == user
-    });
-  });
 
   // Facebook OAuth2 variables
   passport.use(new FacebookStrategy({

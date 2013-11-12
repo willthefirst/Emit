@@ -52,9 +52,9 @@ mongoose.connection.on('open', function(){
 });
 
 // Set up passport
+api.serialize(passport);
 api.googlePassport(passport);
 api.facebookPassport(passport);
-
 
 // Set up routing
 routes.initialize(app);

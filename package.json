@@ -12,6 +12,7 @@
     "nodemailer": "*",
     "express-jquery": "*",
     "passport": "*",
+    "passport-local": "*",
     "passport-google-oauth": "*",
     "passport-facebook": "*",
     "mongoose":"*",
