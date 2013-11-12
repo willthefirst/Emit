@@ -138,7 +138,8 @@ exports.facebookPassport = function(passport) {
     // For some reason, we must provide refreshToken as a param even though we never use it here.
     function(accessToken, refreshToken, profile, done) {
       facebook_params.access_token = accessToken;
-      User.findOrCreate({ 'facebook.id' : profile._json.email } , function (err, user) {
+
+      User.findOrCreate({ 'facebook.id' : profile._json.id } , function (err, user) {
         user.facebook.id =  profile._json.id;
         user.facebook.first_name =  profile._json.first_name;
         user.facebook.last_name =  profile._json.last_name;
