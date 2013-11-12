@@ -16,10 +16,6 @@ exports.logout = function(req, res) {
 
 exports.saveGoogleAccount = function(req, res){
 
-    if(typeof req.cookies['connect.sid'] !== 'undefined'){
-        console.log(req.cookies['connect.sid']);
-    }
-
     res.redirect('/');
 
     /*   Save Google contact info
