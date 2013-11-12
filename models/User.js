@@ -3,8 +3,7 @@ var findOrCreate = require('mongoose-findorcreate');
 
 var userSchema = mongoose.Schema({
 
-	username: String,
-	password: String,
+	local_id: String,
 
 	google : {
 		id: String,
