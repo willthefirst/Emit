@@ -69,7 +69,6 @@ exports.googlePassport = function(passport) {
       callbackURL: google_params.callbackURL,
       passReqToCallback: true
     },
-    // function(accessToken, refreshToken, profile, done) {
     function(req, token, refreshToken, profile, done) {
 
       // See if current profile is in db.
@@ -109,7 +108,6 @@ exports.googlePassport = function(passport) {
               }
               // saved!, return user.
               console.log('Successfully saved the new google user! (though it may be a duplicate)');
-              console.log('user:' + user);
               return done(null, user);
             });
           }

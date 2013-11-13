@@ -16,8 +16,6 @@ exports.logout = function(req, res) {
 
 exports.saveGoogleAccount = function(req, res){
 
-    console.log(req);
-
     res.redirect('/');
 
     /*   Save Google contact info
@@ -36,7 +34,6 @@ exports.saveGoogleAccount = function(req, res){
       path: '/m8/feeds/contacts/'+ req.account.google.id +'/full/' + query_params.access_token + query_params.res_type + query_params.max_results
     };
 
-    console.log("2", api.google.access_token);
     https.get(options, function(res){
 
       var json = '';
