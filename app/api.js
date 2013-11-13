@@ -29,13 +29,16 @@ var FacebookStrategy = require('passport-facebook');
 
 // Serialize stuff one time for sessions
 exports.serialize = function(passport) {
+
   passport.serializeUser(function(user, done) {
+    console.log('Serializing user:', user);
     done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
-        done(err, user); // Now req.user == user
+      console.log('Deserializing user:', user);
+      done(err, user); // Now req.user == user
     });
   });
 };
@@ -63,7 +66,7 @@ exports.facebook = facebook_params;
 exports.googlePassport = function(passport) {
 
   // Google OAuth2 variables
-  passport.use('google-authz', new GoogleStrategy({
+  passport.use(new GoogleStrategy({
       clientID: google_params.client_id,
       clientSecret: google_params.client_secret,
       callbackURL: google_params.callbackURL,
@@ -76,13 +79,14 @@ exports.googlePassport = function(passport) {
         if (err) return handleError(err);
         google_params.access_token = token;
 
-        if (!req.user) { // LOGGED OUT: There is no user in the request. This will blindly make accounts that may be duplicative. THIS SECTION IS GOOD.
+        if (!req.user) { // No user on login, authenticate based on google account.. This will blindly make accounts that may be duplicative. THIS SECTION IS GOOD.
           console.log(':( NO user in the request');
           // IF THERE IS A USER IN DB where user.google.id === profile._json.email
           if (user) {
             // return that user (and thereby login with that user)
             // this could be a google-only user or a google+fb user.
             console.log('Google user already in DB, they are now logged in.');
+            console.log('USER HERE', user);
             return done(err, user);
           }
           // ELSE -> THERE IS NO USER IN DB where user.google.id === profile._json.email
@@ -92,6 +96,7 @@ exports.googlePassport = function(passport) {
               // facebook: { nothing }
               // google : {...}
             // this will be a google-only user.
+            console.log('User not in DB, creating a new user.');
 
             User.create({
               local_id: profile._json.email,
