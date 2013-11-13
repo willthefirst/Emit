@@ -16,6 +16,8 @@ exports.logout = function(req, res) {
 
 exports.saveGoogleAccount = function(req, res){
 
+    console.log(req);
+
     res.redirect('/');
 
     /*   Save Google contact info
@@ -31,10 +33,10 @@ exports.saveGoogleAccount = function(req, res){
 
     var options = {
       host: 'www.google.com',
-      path: '/m8/feeds/contacts/'+ req.user.google.id +'/full/' + query_params.access_token + query_params.res_type + query_params.max_results
+      path: '/m8/feeds/contacts/'+ req.account.google.id +'/full/' + query_params.access_token + query_params.res_type + query_params.max_results
     };
 
-    console.log(options);
+    console.log("2", api.google.access_token);
     https.get(options, function(res){
 
       var json = '';
@@ -54,7 +56,7 @@ exports.saveGoogleAccount = function(req, res){
 
 
         //Save returned contacts from Google connect to the user's contact list
-        User.findOrCreate({ 'google.id' : req.user.google.id }, function(err, user, created) {
+        User.findOrCreate({ 'google.id' : req.account.google.id }, function(err, user, created) {
           user.google.contacts = api.stripGoogleContacts(json);
           user.save(function(err) {
             if (err) return handleError(err);
@@ -70,7 +72,7 @@ exports.saveGoogleAccount = function(req, res){
 exports.show = function(req, res) {
   var google_contacts;
 
-  User.findOne({ 'google.id': req.user.google.id }, function(err, user) {
+  User.findOne({ 'google.id': req.account.google.id }, function(err, user) {
     google_contacts = user.google.contacts;
     res.json(google_contacts);
   });
@@ -82,10 +84,10 @@ exports.sendEmail = function(req, res) {
       service: "Gmail",
       auth: {
           XOAuth2: {
-              user: req.user.google.id,
+              user: req.account.google.id,
               clientId: api.google.client_id,
               clientSecret: api.google.client_secret,
-              refreshToken: req.user.google.refresh_token
+              refreshToken: req.account.google.refresh_token
           }
       }
   };
@@ -93,7 +95,7 @@ exports.sendEmail = function(req, res) {
   var transport = nodemailer.createTransport("SMTP", smtp_options);
 
   transport.sendMail({
-    from: (req.user.google.first_name + ' ' + req.user.google.last_name + '<'+ req.user.google.id + '>'),
+    from: (req.account.google.first_name + ' ' + req.account.google.last_name + '<'+ req.account.google.id + '>'),
     to: req.body.email,
     subject: "Sent with Emit",
     text: req.body.body
@@ -116,7 +118,7 @@ exports.facebookConfig = function (req,res) {
     //TODO This should render asap (probably with short-lived access token, and the long-lived should just replace the short-lived asynchornously.)
     res.redirect('/#');
     // Pass long-lived access token back to client as a cookie.
-    // res.cookie('fb_tok', req.user.facebook.long_lived_token);
+    // res.cookie('fb_tok', req.account.facebook.long_lived_token);
   });
 };
 
@@ -143,9 +145,9 @@ function getFacebookToken(req, callback) {
       long_lived_token = long_lived_token.split('access_token=');
       long_lived_token = long_lived_token[1].split('&');
       long_lived_token = long_lived_token[0];
-      User.findOrCreate({ 'facebook.id' : req.user.facebook.id } , function (err, user) {
+      User.findOrCreate({ 'facebook.id' : req.account.facebook.id } , function (err, user) {
         user.facebook.long_lived_token = long_lived_token;
-        req.user.facebook.long_lived_token = long_lived_token;
+        req.account.facebook.long_lived_token = long_lived_token;
         user.save(function(err){
           if (err) return handleError(err);
         });

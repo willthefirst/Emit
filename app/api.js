@@ -63,18 +63,19 @@ exports.facebook = facebook_params;
 exports.googlePassport = function(passport) {
 
   // Google OAuth2 variables
-  passport.use(new GoogleStrategy({
+  passport.use('google-authz', new GoogleStrategy({
       clientID: google_params.client_id,
       clientSecret: google_params.client_secret,
       callbackURL: google_params.callbackURL,
-      pasReqToCallback: true
+      passReqToCallback: true
     },
-    function(req, accessToken, refreshToken, profile, done) {
-      console.log('1 Refresh Token=', refreshToken);
-      google_params.access_token = accessToken;
+    // function(accessToken, refreshToken, profile, done) {
+    function(req, token, refreshToken, profile, done) {
+
       // See if current profile is in db.
       User.findOne({ 'google.id': profile._json.email }, function(err, user) {
         if (err) return handleError(err);
+        google_params.access_token = token;
 
         if (!req.user) { // LOGGED OUT: There is no user in the request. This will blindly make accounts that may be duplicative. THIS SECTION IS GOOD.
           console.log(':( NO user in the request');
@@ -92,7 +93,6 @@ exports.googlePassport = function(passport) {
               // facebook: { nothing }
               // google : {...}
             // this will be a google-only user.
-            console.log('2 Refresh Token=', refreshToken);
 
             User.create({
               local_id: profile._json.email,

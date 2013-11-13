@@ -13,12 +13,12 @@ exports.initialize = function(app){
 	app.get('/logout', user.logout);
 
 	// Google
-	app.get('/user/google/auth', passport.authenticate('google', { scope: [  'https://www.googleapis.com/auth/userinfo.profile',
+	app.get('/user/google/auth', passport.authorize('google-authz', { scope: [  'https://www.googleapis.com/auth/userinfo.profile',
                                                 'https://www.googleapis.com/auth/userinfo.email' ,
                                                 'https://mail.google.com/',
                                                 'https://www.google.com/m8/feeds'  ] ,
-                                                accessType: 'offline', approvalPrompt: 'force' } ));
-	app.get('/user/google/auth/callback', passport.authenticate('google'), user.saveGoogleAccount);
+                                                 accessType: 'offline',  approvalPrompt: 'force' } ));
+	app.get('/user/google/auth/callback', passport.authorize('google-authz'), user.saveGoogleAccount);
 	app.get('/user/google/contacts', user.show);
 	app.post('/user/google/send', user.sendEmail);
 
