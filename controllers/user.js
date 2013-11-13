@@ -34,12 +34,8 @@ exports.saveGoogleAccount = function(req, res){
       path: '/m8/feeds/contacts/'+ req.user.google.id +'/full/' + query_params.access_token + query_params.res_type + query_params.max_results
     };
 
+    console.log(options);
     https.get(options, function(res){
-
-      if(res.statusCode !== 200) {
-        console.log("Response from Google API: " + res.statusCode);
-        res.redirect('/error');
-      }
 
       var json = '';
 
@@ -50,6 +46,13 @@ exports.saveGoogleAccount = function(req, res){
 
       // Strip that shit
       res.on('end', function(){
+        //TODO figure out how to handle an error from Google's API.
+        if(res.statusCode !== 200) {
+          console.log("Google responded with a", res.statusCode);
+          // res.redirect('error', {error:json});
+        }
+
+
         //Save returned contacts from Google connect to the user's contact list
         User.findOrCreate({ 'google.id' : req.user.google.id }, function(err, user, created) {
           user.google.contacts = api.stripGoogleContacts(json);
