@@ -15,7 +15,7 @@ exports.logout = function(req, res) {
 };
 
 exports.saveGoogleAccount = function(req, res){
-    console.log("Req.user=", req.user);
+    console.log("req.user=", req.user);
     console.log('req.account=', req.account);
     res.redirect('/');
 

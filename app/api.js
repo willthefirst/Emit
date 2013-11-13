@@ -87,7 +87,8 @@ exports.googlePassport = function(passport) {
             // this could be a google-only user or a google+fb user.
             console.log('Google user already in DB, they are now logged in.');
             console.log('USER HERE', user);
-            return done(err, user);
+            req.user = user;
+            return done(err, req.user);
           }
           // ELSE -> THERE IS NO USER IN DB where user.google.id === profile._json.email
           else {
@@ -100,6 +101,7 @@ exports.googlePassport = function(passport) {
 
             User.create({
               local_id: profile._json.email,
+              initial_auth: 'google',
               google: {
                 id: profile._json.email,
                 first_name: profile._json.given_name,
@@ -113,7 +115,8 @@ exports.googlePassport = function(passport) {
               }
               // saved!, return user.
               console.log('Successfully saved the new google user! (though it may be a duplicate)');
-              return done(null, user);
+              req.user = user;
+              return done(null, req.user);
             });
           }
         } else { // LOGGED IN: There is a facebook-only user in the request. In this case, we know enough to associate multiple 3rd party acccounts.
