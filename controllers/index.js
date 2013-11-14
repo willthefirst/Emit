@@ -5,7 +5,8 @@
 exports.index = function(req, res){
 	var id = '';
 
-	console.log('account: '+req.account);
+	console.log('User: ' + req.user);
+	console.log('Account: ' + req.account);
 	// If we have a user, load relevant info in cookies.
 	if(req.user) {
 		console.log("User's FB:", req.user.facebook);

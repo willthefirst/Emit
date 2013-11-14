@@ -3,6 +3,7 @@ var https = require('https');
 var http = require('http');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Accounts = mongoose.model('Accounts');
 var api = require('../app/api');
 var nodemailer = require('nodemailer');
 /*
@@ -41,6 +42,8 @@ exports.saveGoogleAccount = function(req, res){
       host: 'www.google.com',
       path: '/m8/feeds/contacts/'+ req.account.google.id +'/full/' + query_params.access_token + query_params.res_type + query_params.max_results
     };
+
+    console.log(query_params);
 
     https.get(options, function(res){
 

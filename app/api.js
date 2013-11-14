@@ -2,6 +2,7 @@
 // https://github.com/jaredhanson/passport-google-oauth
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Accounts = mongoose.model('Accounts');
 var https = require('https');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook');
@@ -12,16 +13,14 @@ var LocalStrategy = require('passport-local').Strategy;
 exports.serialize = function(passport) {
 
   passport.serializeUser(function(user, done) {
-    console.log('Serializing user:', user);
     done(null, user.id);
-  });
+});
 
   passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
-      console.log('Deserializing user:', user);
       done(err, user); // Now req.user == user
-    });
   });
+});
 };
 
 // Global user account
@@ -34,24 +33,24 @@ exports.localPassport = function(passport) {
         if (!user) {
           console.log('incorrect username');
           return done(null, false, { message: 'Incorrect username.' });
-        }
-        if (user.password !== password) {
+      }
+      if (user.password !== password) {
           console.log('incorrect password');
           return done(null, false, { message: 'Incorrect password.' });
-        }
-        console.log(user);
-        return done(null, user);
-      });
-    }
+      }
+      console.log(user);
+      return done(null, user);
+  });
+  }
   ));
 };
 
 // Google API params
 var google_params = {
-	client_id : '363206404232.apps.googleusercontent.com',
-	client_secret : 'Dnd6HuZBwpZnh6XNF1Pgyx2h',
-  callbackURL: 'http://localhost:3000/user/google/auth/callback',
-	access_token : ''
+    client_id : '363206404232.apps.googleusercontent.com',
+    client_secret : 'Dnd6HuZBwpZnh6XNF1Pgyx2h',
+    callbackURL: 'http://localhost:3000/user/google/auth/callback',
+    access_token : ''
 };
 
 var facebook_params = {
@@ -74,8 +73,66 @@ exports.googlePassport = function(passport) {
       clientSecret: google_params.client_secret,
       callbackURL: google_params.callbackURL,
       passReqToCallback: true
-    },
-    function(req, token, refreshToken, profile, done) {
+  },
+  function(req, token, refreshToken, profile, done) {
+
+    // If there is a user in the session
+    if() {
+
+        // If the google account already exists in DB:
+        if() {
+          // Then user has authenticated before with Google but never tied it to account.
+          // So: let's merge that account information over to this one, replacing the refreshToken with the one in the reqyuest.
+
+          // Save new access token to google_params for later user.
+          google_params.access_token = token;
+
+          // Merge account to this one, expect for refreshToken
+
+        }
+        // Else, if current Google account doesn't exist in DB.
+        else {
+          // This is the first time this person is authenticating with Google, so easy: just tie it to their user account.
+
+          // Link the document to the current user
+
+          // Create the google account document
+
+        };
+
+        // Either way, supply current user back to session
+        return done(null, req.user);
+
+    };
+
+    // Else (no user in session)
+    else {
+        // GOAL: tie this google user to whatever else they've already told us
+
+        // If account is already in DB
+        if () {
+            // The 3rd party account is either associated or not with a user.
+
+            // If 3rd party account is not associated with a user.
+            if () {
+                // Return the account information, there will be no req.user.
+            }
+
+            // Else if it IS associated with a user
+            else {
+                //set the req.user to the associated user
+            }
+        }
+
+        // Else if account is NOT in DB.
+        else {
+            // Create the google account document.
+
+
+            // Done (make sure info is in DB and req.account )
+        }
+
+    }
 
       // See if current profile is in db.
       User.findOne({ 'google.id': profile._json.email }, function(err, user) {
@@ -89,10 +146,8 @@ exports.googlePassport = function(passport) {
             // return that user (and thereby login with that user)
             // this could be a google-only user or a google+fb user.
             console.log('Google user already in DB, they are now logged in.');
-            console.log('USER HERE', user);
-            req.user = user;
-            return done(err, req.user);
-          }
+            return done(err, user);
+        }
           // ELSE -> THERE IS NO USER IN DB where user.google.id === profile._json.email
           else {
             // create a new local identity. should produce ->
@@ -110,18 +165,17 @@ exports.googlePassport = function(passport) {
                 first_name: profile._json.given_name,
                 last_name: profile._json.family_name,
                 refresh_token: refreshToken
-              }
-            }, function (err, user) {
-              if (err) {
-                console.log('error!');
-                return handleError(err);
-              }
+            }
+        }, function (err, user) {
+          if (err) {
+            console.log('error!');
+            return handleError(err);
+        }
               // saved!, return user.
               console.log('Successfully saved the new google user! (though it may be a duplicate)');
-              req.user = user;
-              return done(null, req.user);
-            });
-          }
+              return done(null, user);
+          });
+        }
         } else { // LOGGED IN: There is a facebook-only user in the request. In this case, we know enough to associate multiple 3rd party acccounts.
           // TODO: the above condition assumes that the user is not already logged into google, and may fuck up if they are.
           console.log(':) YES user in the request');
@@ -132,32 +186,32 @@ exports.googlePassport = function(passport) {
             // remove that duplicate account. should produce ->
             User.findByIdAndRemove(user.id, function() {
               console.log('Duplicate user removed');
-            });
-          }
+          });
+        }
           // Now: this is a facebook-only account, sojust add the google info to this user
 
           // Add google info to current user's account. should produce ->
             // local_id = already exists
             // facebook: { already exists }
             // google : { ... }
-          User.update({ local_id: req.user.local_id }, { $set: {
-            google: {
-              id: profile._json.email,
-              first_name: profile._json.given_name,
-              last_name: profile._json.family_name,
-              refresh_token: refreshToken
-            }
+            User.update({ local_id: req.user.local_id }, { $set: {
+                google: {
+                  id: profile._json.email,
+                  first_name: profile._json.given_name,
+                  last_name: profile._json.family_name,
+                  refresh_token: refreshToken
+              }
           }}, function() {
-            console.log('We added Google info to users FB account.');
-          });
+            console.log('We added Google info to current users account.');
+        });
 
           // return the user.
           return done(null, req.user);
-        }
+      }
 
-      });
-    }
-  ));
+  });
+}
+));
 };
 
 // Google Passport strategy
@@ -168,7 +222,7 @@ exports.facebookPassport = function(passport) {
       clientID: facebook_params.client_id,
       clientSecret: facebook_params.client_secret,
       callbackURL: facebook_params.callbackURL
-    },
+  },
     // For some reason, we must provide refreshToken as a param even though we never use it here.
     function(accessToken, refreshToken, profile, done) {
       facebook_params.access_token = accessToken;
@@ -179,10 +233,10 @@ exports.facebookPassport = function(passport) {
         user.facebook.last_name =  profile._json.last_name;
         user.save(function(err) {
           if (err) return handleError(err);
-        });
-        return done(err, user);
       });
-    }
+        return done(err, user);
+    });
+  }
   ));
 };
 
@@ -195,7 +249,7 @@ exports.stripGoogleContacts = function(json) {
   function contact( user_name, user_email ) {
     this.label = user_name;
     this.value = user_email;
-  }
+}
 
   // Empty array to be returned
   var contacts_arr = [];
@@ -215,16 +269,16 @@ exports.stripGoogleContacts = function(json) {
         if(obj.hasOwnProperty(prop)){
           if (prop === 'title') {
             current_contact.label = obj[prop]['$t'];
-          }
-          else if (prop === 'gd$email') {
-            current_contact.value = obj[prop]['0']['address'];
-          }
         }
-     }
+        else if (prop === 'gd$email') {
+            current_contact.value = obj[prop]['0']['address'];
+        }
+    }
+}
     // Don't add the contacts with a null email address
     if (current_contact.value != null) {
       contacts_arr.push(current_contact);
-    }
   }
-  return contacts_arr;
+}
+return contacts_arr;
 };

@@ -4,6 +4,7 @@
 
 var express = require('express');
 var UserModel = require('./models/User');
+var AccountModel = require('./models/Accounts');
 var routes = require('./app/routes.js');
 var api = require('./app/api.js');
 var http = require('http');
