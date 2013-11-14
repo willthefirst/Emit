@@ -90,37 +90,57 @@ exports.show = function(req, res) {
 
 };
 
+function trimForSubject( string, max_length ) {
+    string = string.substr(0, max_length);
+    string = string.substr(0, Math.min(string.length, string.lastIndexOf(" ")));
+    return string;
+};
+
 exports.sendEmail = function(req, res) {
-    var smtp_options = {
-        service: "Gmail",
-        auth: {
-            XOAuth2: {
-                user: req.account.google.id,
-                clientId: api.google.client_id,
-                clientSecret: api.google.client_secret,
-                refreshToken: req.account.google.refresh_token
+    var gmailAccount;
+
+    Accounts.findOne({
+        'userId': req.session.tmpUser.username
+    }, function(err, account) {
+        if (err) {
+            console.log('Error:', err);
+            return handleError(err);
+        }
+        gmailAccount = account.google;
+
+        var smtp_options = {
+            service: "Gmail",
+            auth: {
+                XOAuth2: {
+                    user: gmailAccount.id,
+                    clientId: api.google.client_id,
+                    clientSecret: api.google.client_secret,
+                    refreshToken: gmailAccount.refresh_token
+                }
             }
-        }
-    };
+        };
 
-    var transport = nodemailer.createTransport("SMTP", smtp_options);
+        var transport = nodemailer.createTransport("SMTP", smtp_options);
 
-    transport.sendMail({
-        from: (req.account.google.first_name + ' ' + req.account.google.last_name + '<' + req.account.google.id + '>'),
-        to: req.body.email,
-        subject: "Sent with Emit",
-        text: req.body.body
-    }, function(error, response) {
-        if (error) {
-            res.json({
-                result: "Problem: " + error
-            });
-        } else {
-            res.json({
-                result: "Message sent"
-            });
-        }
+        transport.sendMail({
+            from: (gmailAccount.first_name + ' ' + gmailAccount.last_name + '<' + gmailAccount.id + '>'),
+            to: req.body.email,
+            subject: trimForSubject(req.body.body, 60) + '...',
+            text: req.body.body
+        }, function(error, response) {
+            if (error) {
+                res.json({
+                    result: "Problem: " + error
+                });
+            } else {
+                res.json({
+                    result: "Message sent"
+                });
+            }
+        });
     });
+
+
 };
 
 
