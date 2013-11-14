@@ -172,7 +172,7 @@ exports.googlePassport = function(passport) {
                                 'username': account.userId
                             }, function(err, user) {
                                 req.user = user;
-                                return done(null, req.user);
+                                return done(null, account);
                             });
                         }
                     }
