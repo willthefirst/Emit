@@ -10,6 +10,12 @@ exports.initialize = function(app){
 	app.get('/partials/:name', routes.partials);
 
 	// User
+	app.post('/login',
+	  passport.authenticate('local', { successRedirect: '/',
+	                                   failureRedirect: '/login'
+	                               })
+	);
+
 	app.get('/logout', user.logout);
 
 	// Google

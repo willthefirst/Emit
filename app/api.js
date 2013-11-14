@@ -5,27 +5,8 @@ var User = mongoose.model('User');
 var https = require('https');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook');
-// var LocalStrategy = require('passport-local').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 
-
-// // Global user account
-
-// exports.localPassport = function(passport) {
-//   passport.use(new LocalStrategy(
-//     function(username, done) {
-//       User.findOne({ username: username }, function(err, user) {
-//         if (err) { return done(err); }
-//         if (!user) {
-//           return done(null, false, { message: 'Incorrect username.' });
-//         }
-//         if (!user.validPassword(password)) {
-//           return done(null, false, { message: 'Incorrect password.' });
-//         }
-//         return done(null, user);
-//       });
-//     }
-//   ));
-// };
 
 // Serialize stuff one time for sessions
 exports.serialize = function(passport) {
@@ -41,6 +22,25 @@ exports.serialize = function(passport) {
       done(err, user); // Now req.user == user
     });
   });
+};
+
+// Global user account
+
+exports.localPassport = function(passport) {
+  passport.use(new LocalStrategy(
+    function(username, password, done) {
+      User.findOne({ username: username }, function (err, user) {
+        if (err) { return done(err); }
+        if (!user) {
+          return done(null, false, { message: 'Incorrect username.' });
+        }
+        if (!user.validPassword(password)) {
+          return done(null, false, { message: 'Incorrect password.' });
+        }
+        return done(null, user);
+      });
+    }
+  ));
 };
 
 // Google API params
