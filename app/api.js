@@ -200,7 +200,8 @@ exports.googlePassport = function(passport) {
                     }
                 });
             }
-        }));
+        })
+    );
 };
 
 // Google Passport strategy
