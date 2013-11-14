@@ -53,7 +53,6 @@ mongoose.connection.on('open', function(){
 
 // Set up passport
 api.serialize(passport);
-api.localPassport(passport);
 api.googlePassport(passport);
 api.facebookPassport(passport);
 

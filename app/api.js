@@ -23,35 +23,6 @@ exports.serialize = function(passport) {
     });
 };
 
-// Global user account
-
-exports.localPassport = function(passport) {
-    passport.use(new LocalStrategy(
-        function(username, password, done) {
-            User.findOne({
-                username: username
-            }, function(err, user) {
-                if (err) {
-                    return done(err);
-                }
-                if (!user) {
-                    console.log('incorrect username');
-                    return done(null, false, {
-                        message: 'Incorrect username.'
-                    });
-                }
-                if (user.password !== password) {
-                    console.log('incorrect password');
-                    return done(null, false, {
-                        message: 'Incorrect password.'
-                    });
-                }
-                return done(null, user);
-            });
-        }
-    ));
-};
-
 // Google API params
 var google_params = {
     client_id: '363206404232.apps.googleusercontent.com',
@@ -60,6 +31,7 @@ var google_params = {
     access_token: ''
 };
 
+// Facebook API params
 var facebook_params = {
     client_id: "348612998615744",
     client_secret: "88d7cce889bd0623710ec980724a7622",
@@ -201,7 +173,12 @@ function userHandler( type, req, token, refreshToken, profile, done ) {
                 User.findOne({
                     'username': new_account.userId
                 }, function(err, user) {
+                    if (err) {
+                        console.log('Error:', err);
+                        return handleError(err);
+                    }
                     console.log(type + ' account found in DB: returning associated user.');
+                    console.log('User here', user);
                     req.session.tmpUser = user;
                     return done(null, account);
                 });

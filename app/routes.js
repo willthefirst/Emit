@@ -9,16 +9,6 @@ exports.initialize = function(app){
     app.get('/', routes.index);
     app.get('/partials/:name', routes.partials);
 
-    // User
-    app.post('/register', user.register);
-    app.post('/login',
-      passport.authenticate('local', { successRedirect: '/',
-                                       failureRedirect: '/login'
-                                   })
-    );
-
-    app.get('/logout', user.logout);
-
     // Google
     app.get('/user/google/auth', passport.authorize('google', { scope: [  'https://www.googleapis.com/auth/userinfo.profile',
                                                 'https://www.googleapis.com/auth/userinfo.email' ,

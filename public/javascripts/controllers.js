@@ -3,22 +3,24 @@
 /* Controllers */
 
 angular.module('emit.controllers', []).
-  controller('AppCtrl', function ($scope, $http, $cookieStore) {
+  controller('AppCtrl', function ($scope, $http, $cookieStore, $cookies) {
 
-    var loggedIn = $cookieStore.get('user') || '';
+    var gmailUser = $cookies.g_id;
 
     // If not logged in, don't fetch Gmail contacts
-    if(!loggedIn.id) {
-      console.log('Not logged in');
+    if(!gmailUser) {
+      console.log('No Gmail user.');
     }
     // Otherwise, retrieve Gmail contacts
     else {
+      console.log('Gmail user: retrieving contacts...');
+
       $http({
         method: 'GET',
         url: '/user/google/contacts'
       }).
       success(function (data, status, headers, config) {
-
+        console.log('Contacts retrieved.');
         // Strip out contacts without emails from contacts
         var split = function(val) {
           return val.split(/,\s*/);
