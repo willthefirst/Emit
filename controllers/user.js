@@ -77,6 +77,15 @@ exports.saveGoogleAccount = function(req, res, next) {
     });
 };
 
+// Facebook doesn't do refresh tokens, just long-lived access tokens.
+exports.facebookConfig = function (req, res, next) {
+  next();
+
+  getFacebookToken(req, function() {
+  });
+};
+
+
 exports.show = function(req, res) {
   var google_contacts;
 
@@ -120,15 +129,6 @@ exports.sendEmail = function(req, res) {
   });
 };
 
-// Facebook doesn't do refresh tokens, just long-lived access tokens.
-exports.facebookConfig = function (req,res) {
-  getFacebookToken(req, function() {
-    //TODO This should render asap (probably with short-lived access token, and the long-lived should just replace the short-lived asynchornously.)
-    res.redirect('/#');
-    // Pass long-lived access token back to client as a cookie.
-    // res.cookie('fb_tok', req.account.facebook.long_lived_token);
-  });
-};
 
 function getFacebookToken(req, callback) {
   var long_lived_token;
@@ -148,6 +148,7 @@ function getFacebookToken(req, callback) {
       long_lived_token += chunk;
     });
 
+    console.log(req.account);
     // Save long-lived token to user's profile.
     res.on('end', function(){
       long_lived_token = long_lived_token.split('access_token=');

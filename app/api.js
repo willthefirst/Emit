@@ -220,7 +220,7 @@ function userHandler( type, req, token, refreshToken, profile, done ) {
                     // tie to a new tmpUser
                     User.create( new_user, function(err, user, created) {
                         if(err) console.log('user is not saved');
-                        console.log('New' + type + 'account tied to new user.');
+                        console.log('New ' + type + ' account tied to new user.');
 
                         // send tmpUser back to the session.
                         req.session.tmpUser = user;

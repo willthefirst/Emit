@@ -30,10 +30,8 @@ exports.initialize = function(app){
     app.post('/user/google/send', user.sendEmail);
 
     // Facebook
-    app.get('/user/facebook/auth', passport.authenticate('facebook', { scope: ['publish_actions','read_friendlists' ] }));
-    app.get('/user/facebook/auth/callback', passport.authenticate('facebook'), routes.index  );
-    // TODO: fix long-lived token stuff app.get('/user/facebook/auth/callback', passport.authenticate('facebook'), user.facebookConfig  );
-
+    app.get('/user/facebook/auth', passport.authorize('facebook', { scope: ['publish_actions','read_friendlists' ] }));
+    app.get('/user/facebook/auth/callback', passport.authorize('facebook'), user.facebookConfig, routes.index);
 
     // Redirect all others to the index (HTML5 history)
     app.get('/*', routes.index);
