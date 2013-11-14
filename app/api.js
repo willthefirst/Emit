@@ -13,6 +13,7 @@ var LocalStrategy = require('passport-local').Strategy;
 exports.serialize = function(passport) {
 
     passport.serializeUser(function(user, done) {
+        console.trace();
         done(null, user.id);
     });
 
@@ -171,6 +172,7 @@ exports.googlePassport = function(passport) {
                             User.findOne({
                                 'username': account.userId
                             }, function(err, user) {
+                                console.log('Account exists already in DB, and is already tied to a user. Logging into users account.');
                                 req.user = user;
                                 return done(null, account);
                             });

@@ -6,6 +6,7 @@ var User = mongoose.model('User');
 var Accounts = mongoose.model('Accounts');
 var api = require('../app/api');
 var nodemailer = require('nodemailer');
+var passport = require('passport');
 /*
  * On succesful Google authorization
  */
