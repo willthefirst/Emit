@@ -83,91 +83,7 @@ exports.googlePassport = function(passport) {
         },
         function(req, token, refreshToken, profile, done) {
 
-            // Save new access token to google_params for later use.
-            google_params.access_token = token;
-
-            // If no tmpuser in session: Authentication situation
-            if (!req.session.tmpUser) {
-                console.log('No tmpUser in session: Authenticating:');
-                Accounts.findOne({
-                    'google.id': profile._json.email
-                }, function(err, account) {
-                    // If Google account is already in DB -> Old user
-                    if (account) {
-                        // Send the associated tmpUser back to the session.
-                        User.findOne({
-                            'username': profile._json.email
-                        }, function(err, user) {
-                            console.log('Google account found in DB: returning associated user.');
-                            req.session.tmpUser = user;
-                            return done(null, account);
-                        });
-                    }
-                    // Else -> New user
-                    else {
-                        console.log('Google account NOT in DB: created new account');
-
-                        // Add the account to the DB
-                        Accounts.create({
-                            userId: profile._json.email,
-
-                            google: {
-                                id: profile._json.email,
-                                first_name: profile._json.given_name,
-                                last_name: profile._json.family_name,
-                                refresh_token: refreshToken
-                            }
-                        }, function(err, account) {
-                            if (err) {
-                                console.log('Error:', err);
-                                return handleError(err);
-                            }
-                            console.log('New account created.');
-                            // tie to a new tmpUser
-                            User.create({
-                                username: profile._json.email ,
-                                googleConnected: true,
-
-                            }, function(err, user, created) {
-                                if(err) console.log('user is not saved');
-                                console.log('New Google account tied to new user.');
-
-                                // send tmpUser back to the session.
-                                req.session.tmpUser = user;
-
-                                // Then return account.
-                                return done(null, account);
-                            });
-
-                        });
-
-
-                    }
-                });
-
-            }
-            // Else if there is a tmpUser in session: Authorization situation
-            else {
-                console.log('tmpUser exists in session');
-                // Then at least one account must be connected and associated with tmp user (google or facebook)
-                Accounts.findOneAndUpdate({ userId : req.session.tmpUser.username }, {
-                    google: {
-                        id: profile._json.email,
-                        first_name: profile._json.given_name,
-                        last_name: profile._json.family_name,
-                        refresh_token: refreshToken
-                    }
-                }, function(err, account) {
-                    if (err) {
-                        console.log('Error:', err);
-                        return handleError(err);
-                    }
-                    console.log('tmpUser account has been updated with Google information.');
-
-                    // Supply current user back to session
-                    return done(null, account);
-                });
-            }
+            userHandler( 'google', req, token, refreshToken, profile, done );
 
         })
     );
@@ -187,107 +103,25 @@ exports.facebookPassport = function(passport) {
 
         function(req, accessToken, refreshToken, profile, done) {
 
-            userHandler( type, req, token, profile );
+            userHandler( 'facebook', req, accessToken, null, profile, done );
 
-            // If no tmpuser in session: Authentication situation
-            if (!req.session.tmpUser) {
-                console.log('No tmpUser in session: Authenticating:');
-                Accounts.findOne({
-                    'facebook.id': profile._json.id
-                }, function(err, account) {
-                    // If Facebook account is already in DB -> Old user
-                    if (account) {
-                        // Send the associated tmpUser back to the session.
-                        User.findOne({
-                            'username': profile._json.id
-                        }, function(err, user) {
-                            console.log('Facebook account found in DB: returning associated user.');
-                            req.session.tmpUser = user;
-                            return done(null, account);
-                        });
-                    }
-                    // Else -> New user
-                    else {
-                        console.log('Facebook account NOT in DB: created new account');
-
-                        // Add the account to the DB
-                        Accounts.create({
-                            userId: profile._json.id,
-
-                            google: {
-                                id: profile._json.id,
-                                first_name: profile._json.first_name,
-                                last_name: profile._json.last_name,
-                            }
-                        }, function(err, account) {
-                            if (err) {
-                                console.log('Error:', err);
-                                return handleError(err);
-                            }
-                            console.log('New account created.');
-                            // tie to a new tmpUser
-                            User.create({
-                                username: profile._json.id ,
-                                facebookConnected: true,
-
-                            }, function(err, user, created) {
-                                if(err) console.log('user is not saved');
-                                console.log('New Facebook account tied to new user.');
-
-                                // send tmpUser back to the session.
-                                req.session.tmpUser = user;
-
-                                // Then return account.
-                                return done(null, account);
-                            });
-
-                        });
-
-
-                    }
-                });
-
-            }
-            // Else if there is a tmpUser in session: Authorization situation
-            else {
-                console.log('tmpUser exists in session');
-                // Then at least one account must be connected and associated with tmp user (google or facebook)
-                Accounts.findOneAndUpdate({ userId : req.session.tmpUser.username }, {
-                    facebook: {
-                        id: profile._json.id,
-                        first_name: profile._json.first_name,
-                        last_name: profile._json.last_name,
-                    }
-                }, function(err, account) {
-                    if (err) {
-                        console.log('Error:', err);
-                        return handleError(err);
-                    }
-
-                    console.log('tmpUser account has been updated with Facebook information.');
-
-                    // Supply current user back to session
-                    return done(null, account);
-                });
-            }
         }
     ));
 };
 
+function userHandler( type, req, token, refreshToken, profile, done ) {
 
-function userHandler( type, req, token, profile ) {
-    facebook_params.access_token = token;
-
-    var id = {},
-        new_account = {};
-        update_account = {};
-        new_user = {};
+    var id_query = {},
+        new_account = {},
+        update_account = {},
+        new_user = {},
+        params;
 
     switch (type) {
         case "facebook" :
 
             id_query = {
-                id: profile._json.id,
+                'facebook.id': profile._json.id,
             };
 
             new_account =  {
@@ -313,8 +147,48 @@ function userHandler( type, req, token, profile ) {
                 facebookConnected: true,
             };
 
-            break;
+            params = facebook_params;
+
+        break;
+
+        case "google" :
+
+            id_query = {
+                'google.id': profile._json.email,
+            };
+
+            new_account =  {
+                userId: profile._json.email,
+
+                google: {
+                    id: profile._json.email,
+                    first_name: profile._json.given_name,
+                    last_name: profile._json.family_name,
+                    refresh_token: refreshToken
+
+                }
+            };
+
+            update_account = {
+                google: {
+                    id: profile._json.email,
+                    first_name: profile._json.given_name,
+                    last_name: profile._json.family_name,
+                    refresh_token: refreshToken
+                }
+            };
+
+            new_user = {
+                username: profile._json.email ,
+                googleConnected: true,
+            };
+
+            params = google_params;
+
+        break;
     }
+
+    params.access_token = token;
 
     // If no tmpuser in session: Authentication situation
     if (!req.session.tmpUser) {
@@ -325,7 +199,7 @@ function userHandler( type, req, token, profile ) {
             if (account) {
                 // Send the associated tmpUser back to the session.
                 User.findOne({
-                    'username': profile_id
+                    'username': new_account.userId
                 }, function(err, user) {
                     console.log(type + ' account found in DB: returning associated user.');
                     req.session.tmpUser = user;
@@ -346,7 +220,7 @@ function userHandler( type, req, token, profile ) {
                     // tie to a new tmpUser
                     User.create( new_user, function(err, user, created) {
                         if(err) console.log('user is not saved');
-                        console.log('New Facebook account tied to new user.');
+                        console.log('New' + type + 'account tied to new user.');
 
                         // send tmpUser back to the session.
                         req.session.tmpUser = user;
