@@ -3,7 +3,7 @@ var findOrCreate = require('mongoose-findorcreate');
 
 var accountsSchema = mongoose.Schema({
 
-	userID: String,
+	userId: String,
 
 	google : {
 		id: String,

@@ -46,7 +46,6 @@ exports.localPassport = function(passport) {
                         message: 'Incorrect password.'
                     });
                 }
-                console.log(user);
                 return done(null, user);
             });
         }
@@ -84,61 +83,70 @@ exports.googlePassport = function(passport) {
         },
         function(req, token, refreshToken, profile, done) {
 
+            // Save new access token to google_params for later use.
+            google_params.access_token = token;
+
             // If there is a user in the session
             if (req.user) {
 
-                // Look for the google account in DB
-                Account.findOne({
+                // Look for an account with google profile in DB
+                Accounts.findOne({
                     'google.id': profile._json.email
                 }, function(err, account) {
 
                     // If the google account already exists in DB:
                     if (account) {
                         // Then user has authenticated before with Google but never tied it to the user account.
-                        // So: let's delete that old account, save this new one (because of new new refresh token/other changes that may have occured to user's account), and finally tie this new one to the current user.
+                        // So: let's update the old account (as to destroy other 3rd party information): update info (might as well), and tie to user.
 
-                        // Remove old account
-                        Account.findByIdAndRemove(account.id, function() {
-                            console.log('Duplicate account removed.');
+                        Accounts.findByIdAndUpdate(account.id, {
+                            userId: req.user.username,
+                            google: {
+                                id: profile._json.email,
+                                first_name: profile._json.given_name,
+                                last_name: profile._json.family_name,
+                                refresh_token: refreshToken
+                            }
+                        }, function(err, account) {
+                            if (err) {
+                                console.log('Error:', err);
+                                return handleError(err);
+                            }
+                            console.log('Duplicate found, so we updated the account and tied it to the user.');
+
+                            // Supply current user back to session
+                            return done(null, account);
                         });
                     }
                     // Else, if current Google account doesn't exist in DB.
                     else {
                         // This is the first time this person is authenticating with Google, so easy: just tie it to their user account.
-                        console.log('No duplicates found, so we will just add tie save the Google account and tie it to the user');
+                        Accounts.create({
+                            userId: req.user.username,
+                            google: {
+                                id: profile._json.email,
+                                first_name: profile._json.given_name,
+                                last_name: profile._json.family_name,
+                                refresh_token: refreshToken
+                            }
+                        }, function(err, account) {
+                            if (err) {
+                                console.log('Error:', err);
+                                return handleError(err);
+                            }
+                            console.log('No duplicates found, so we will save the new Google account and tie it to the user');
+
+                            // Supply current user back to session
+                            return done(null, account);
+                        });
                     }
-
-
-                    // Save new access token to google_params for later use.
-                    google_params.access_token = token;
-
-                    // Fresh new Google account, tied to current user.
-                    Accounts.create({
-                        userId: req.user.username,
-                        google: {
-                            id: profile._json.email,
-                            first_name: profile._json.given_name,
-                            last_name: profile._json.family_name,
-                            refresh_token: refreshToken
-                        }
-                    }, function(err, account) {
-                        if (err) {
-                            console.log('Error:', err);
-                            return handleError(err);
-                        }
-                        console.log('New account saved and tied to user.');
-
-                        // Supply current user back to session
-                        return done(null, req.user);
-                    });
-
                 });
             }
 
             // Else (no user in session)
             else {
 
-                Account.findOne({
+                Accounts.findOne({
                     'google.id': profile._json.email
                 }, function(err, account) {
                     if (err) {
@@ -149,8 +157,11 @@ exports.googlePassport = function(passport) {
                     if (account) {
 
                         // If 3rd party account is not associated with a user.
-                        if (!account.userID) {
-                            // Return the account information, there will be no req.user.
+                        if (!account.userId) {
+
+                            console.log('Account exists already in DB, but not tied to a user. Authenticating.');
+
+                            // Then return it.
                             return done(null, account);
                         }
 
@@ -158,7 +169,7 @@ exports.googlePassport = function(passport) {
                         else {
                             //set the req.user to the associated user
                             User.findOne({
-                                'username': account.userID
+                                'username': account.userId
                             }, function(err, user) {
                                 req.user = user;
                                 return done(null, req.user);

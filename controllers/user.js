@@ -22,10 +22,10 @@ exports.logout = function(req, res) {
   res.redirect('/');
 };
 
-exports.saveGoogleAccount = function(req, res){
-    console.log("req.user=", req.user);
-    console.log('req.account=', req.account);
-    res.redirect('/');
+exports.saveGoogleAccount = function(req, res, next) {
+
+    // Fetch contact info asynchronously
+    next();
 
     /*   Save Google contact info
       ------------------------------------------------------- */
@@ -43,8 +43,6 @@ exports.saveGoogleAccount = function(req, res){
       path: '/m8/feeds/contacts/'+ req.account.google.id +'/full/' + query_params.access_token + query_params.res_type + query_params.max_results
     };
 
-    console.log(query_params);
-
     https.get(options, function(res){
 
       var json = '';
@@ -58,15 +56,16 @@ exports.saveGoogleAccount = function(req, res){
       res.on('end', function(){
         //TODO figure out how to handle an error from Google's API.
         if(res.statusCode !== 200) {
+          console.log("Access Token:", query_params.access_token);
           console.log("Google responded with a", res.statusCode);
           // res.redirect('error', {error:json});
         }
 
 
         //Save returned contacts from Google connect to the user's contact list
-        User.findOrCreate({ 'google.id' : req.account.google.id }, function(err, user, created) {
-          user.google.contacts = api.stripGoogleContacts(json);
-          user.save(function(err) {
+        Accounts.findOrCreate({ 'google.id' : req.account.google.id }, function(err, account, created) {
+          account.google.contacts = api.stripGoogleContacts(json);
+          account.save(function(err) {
             if (err) return handleError(err);
           });
         });

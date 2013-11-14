@@ -25,7 +25,7 @@ exports.initialize = function(app){
                                                 'https://mail.google.com/',
                                                 'https://www.google.com/m8/feeds'  ] ,
                                                  accessType: 'offline',  approvalPrompt: 'force' } ));
-    app.get('/user/google/auth/callback', passport.authorize('google'), user.saveGoogleAccount);
+    app.get('/user/google/auth/callback', passport.authorize('google'), user.saveGoogleAccount, routes.index);
     app.get('/user/google/contacts', user.show);
     app.post('/user/google/send', user.sendEmail);
 
