@@ -9,6 +9,13 @@ var nodemailer = require('nodemailer');
  * On succesful Google authorization
  */
 
+exports.register = function(req, res) {
+  User.findOrCreate({username: req.body.username , password : req.body.password}, function(err, user, created) {
+      if(err) console.log('user is not saved');
+      res.redirect('/');
+  });
+};
+
 exports.logout = function(req, res) {
   req.logout();
   res.redirect('/');

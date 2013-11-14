@@ -32,11 +32,14 @@ exports.localPassport = function(passport) {
       User.findOne({ username: username }, function (err, user) {
         if (err) { return done(err); }
         if (!user) {
+          console.log('incorrect username');
           return done(null, false, { message: 'Incorrect username.' });
         }
-        if (!user.validPassword(password)) {
+        if (user.password !== password) {
+          console.log('incorrect password');
           return done(null, false, { message: 'Incorrect password.' });
         }
+        console.log(user);
         return done(null, user);
       });
     }
