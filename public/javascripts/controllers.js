@@ -3,146 +3,191 @@
 /* Controllers */
 
 angular.module('emit.controllers', ['emit.factories']).
-  controller('AppCtrl', function ($scope, $http, $cookieStore, $cookies, testFactory) {
+controller('AppCtrl', function($scope, $http, $cookieStore, $cookies, testFactory) {
 
     testFactory.talk();
+
+
+    /* Modules that we need
+
+
+            CURRENTLY WORKING ON --
+
+            I) Autocomplete Feeder
+
+            + Depending on what cookies are populated, makes requests to server to pull in relevant contacts.
+            + If helpful, marks up contacts with data to help the Submit manager decide what to do.
+            + Works asynchronously (and behaves well when user asks for something that hasn't yet arrived.)
+
+            Google user:
+            - if required google cookies exist
+                    - request contacts from server
+                    - add to the autocomplete form.
+
+            Facebook user:
+            - if required facebook cookies exist
+                - add 'Facebook Timeline' to autocomplete
+                - request facebook friends from server
+                    - on succesful response: add to autocomplete
+
+        TODO --
+
+        II) Submit manager
+
+            On submit:
+
+            + Handles different kinds of addresses being submitted to at the same time:
+                - Gmail email + Facebook messages
+                - Gmail email + Facebook timeline
+            + Works asynchronously (and behaves well when user asks for something that hasn't yet arrived.)
+
+        III) Autocomplete
+
+            + Tabbing works
+
+        IV) Message beautifier
+
+            + Adds Facebook-like previews, and link shortening if Facebook user is connected/submitting a facebook post
+
+
+    */
 
     var gmailUser = $cookies.g_id;
 
     // If not logged in, don't fetch Gmail contacts
-    if(!gmailUser) {
-      console.log('No Gmail user.');
+    if (!gmailUser) {
+        console.log('No Gmail user.');
     }
     // Otherwise, retrieve Gmail contacts
     else {
-      console.log('Gmail user: retrieving contacts...');
+        console.log('Gmail user: retrieving contacts...');
 
-      $http({
-        method: 'GET',
-        url: '/user/google/contacts'
-      }).
-      success(function (data, status, headers, config) {
-        console.log('Contacts retrieved.');
-        // Strip out contacts without emails from contacts
-        var split = function(val) {
-          return val.split(/,\s*/);
-        }
+        $http({
+            method: 'GET',
+            url: '/user/google/contacts'
+        }).
+        success(function(data, status, headers, config) {
+            console.log('Contacts retrieved.');
+            // Strip out contacts without emails from contacts
+            var split = function(val) {
+                return val.split(/,\s*/);
+            }
 
-        var extractLast = function(term) {
-            return split(term).pop();
-        }
+            var extractLast = function(term) {
+                return split(term).pop();
+            }
 
-        // Set up autocomplete for email form
-        $("#contacts").autocomplete({
-          source: function(req, res) {
-            // Search name and email for a match with input, and show in a custom format
-            // in autocomplete. Configured for multiple variable search.
+            // Set up autocomplete for email form
+            $("#contacts").autocomplete({
+                source: function(req, res) {
+                    // Search name and email for a match with input, and show in a custom format
+                    // in autocomplete. Configured for multiple variable search.
 
-              var term = req.term;
+                    var term = req.term;
 
-              if (term.indexOf(', ') > 0) {
-                  var index = term.lastIndexOf(', ');
-                  term = term.substring(index + 2);
-              }
+                    if (term.indexOf(', ') > 0) {
+                        var index = term.lastIndexOf(', ');
+                        term = term.substring(index + 2);
+                    }
 
-              var array = [];
+                    var array = [];
 
-              var max = 10; // maximum results to display
-              var j = 0;
+                    var max = 10; // maximum results to display
+                    var j = 0;
 
-              for(var i=0; i < data.length; i++){
-                  array.push(data[i].label + ' ' + data[i].value);
-              }
-              var resultsArray = [];
-              var re = $.ui.autocomplete.escapeRegex(term);
-              var matcher = new RegExp( "\\b" + re, "i" );
-              var a = $.grep( array, function(item,index){
-                  if (matcher.test(item) && j < max){
-                    resultsArray.push(data[(array.indexOf(item))]);
-                    j++;
-                    return true;
-                  }
-              });
-              res( $.ui.autocomplete.filter(resultsArray,
-                   extractLast(term)) );
-          },
-          select: function(event, ui) {
-            var terms =  split(this.value);
-            // remove the current input
-            terms.pop();
-            // add the selected item
-            terms.push( ui.item.value );
-            // add placeholder to get the comma-and-space at the end
-            terms.push( "" );
-            this.value = terms.join( ", " );
-            console.log(this.value);
-            return false;
+                    for (var i = 0; i < data.length; i++) {
+                        array.push(data[i].label + ' ' + data[i].value);
+                    }
+                    var resultsArray = [];
+                    var re = $.ui.autocomplete.escapeRegex(term);
+                    var matcher = new RegExp("\\b" + re, "i");
+                    var a = $.grep(array, function(item, index) {
+                        if (matcher.test(item) && j < max) {
+                            resultsArray.push(data[(array.indexOf(item))]);
+                            j++;
+                            return true;
+                        }
+                    });
+                    res($.ui.autocomplete.filter(resultsArray,
+                        extractLast(term)));
+                },
+                select: function(event, ui) {
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push(ui.item.value);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join(", ");
+                    console.log(this.value);
+                    return false;
 
-            // $("#contacts").val(ui.item.value);
-            // return false;
-          },
-          open: function() {
-            $('.ui-menu').width(650);
-          },
-          delay: 0
-        }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+                    // $("#contacts").val(ui.item.value);
+                    // return false;
+                },
+                open: function() {
+                    $('.ui-menu').width(650);
+                },
+                delay: 0
+            }).data("ui-autocomplete")._renderItem = function(ul, item) {
 
-          // Just display emails if there is no corresponsding first name.
-          if (item.label === "") {
-            return $( "<li>" )
-              .append( '<a><span class="google-contact-email-only">' + item.value + "</span></a>" )
-              .appendTo( ul );
-          } else {
-            return $( "<li>" )
-              .append( '<a><span class="google-contact-name">'+ item.label + '</span><span class="google-contact-email">' + item.value + "</span></a>" )
-              .appendTo( ul );
-          }
-        };
+                // Just display emails if there is no corresponsding first name.
+                if (item.label === "") {
+                    return $("<li>")
+                        .append('<a><span class="google-contact-email-only">' + item.value + "</span></a>")
+                        .appendTo(ul);
+                } else {
+                    return $("<li>")
+                        .append('<a><span class="google-contact-name">' + item.label + '</span><span class="google-contact-email">' + item.value + "</span></a>")
+                        .appendTo(ul);
+                }
+            };
 
-        $scope.contacts = data;
-      }).
-      error(function (data, status, headers, config) {
-        $scope.contacts = 'No GContact data!';
-      });
+            $scope.contacts = data;
+        }).
+        error(function(data, status, headers, config) {
+            $scope.contacts = 'No GContact data!';
+        });
     }
-  }).controller('Submit', function($scope, $http, $cookieStore) {
+}).controller('Submit', function($scope, $http, $cookieStore) {
     $scope.result = '';
     var fb_tok = $cookieStore.get(fb_tok);
     var fb_id = $cookieStore.get(fb_id);
 
 
     $scope.sendGmail = function() {
-      if ($scope.email === "Facebook") {
-        $http({
-            method: 'POST',
-            url: 'https://graph.facebook.com/'+ fb_id +'/feed',
-            params: {
-                access_token: fb_tok,
-                message: 'Testing testing'
-            }
-        }).success(function(data, status, headers, config) {
-            console.log('Success posting to facebook:', status, data);
-          $scope.result = (status, data.result);
-        }).
-        error(function(data, status, headers, config) {
-          console.log('Error posting to facebook:', status, data.error.message);
-          $scope.result = (status, data.result);
-        });
-      } else {
-        $http({
-          method: 'POST',
-          url: '/user/google/send',
-          data: {
-            email: $scope.email,
-            body: $scope.text
-          }
-        }).success(function(data, status, headers, config) {
-          $scope.result = (status, data.result);
-        }).
-        error(function(data, status, headers, config) {
-          $scope.result = (status, data.result);
-        });
-      }
+        if ($scope.email === "Facebook") {
+            $http({
+                method: 'POST',
+                url: 'https://graph.facebook.com/' + fb_id + '/feed',
+                params: {
+                    access_token: fb_tok,
+                    message: 'Testing testing'
+                }
+            }).success(function(data, status, headers, config) {
+                console.log('Success posting to facebook:', status, data);
+                $scope.result = (status, data.result);
+            }).
+            error(function(data, status, headers, config) {
+                console.log('Error posting to facebook:', status, data.error.message);
+                $scope.result = (status, data.result);
+            });
+        } else {
+            $http({
+                method: 'POST',
+                url: '/user/google/send',
+                data: {
+                    email: $scope.email,
+                    body: $scope.text
+                }
+            }).success(function(data, status, headers, config) {
+                $scope.result = (status, data.result);
+            }).
+            error(function(data, status, headers, config) {
+                $scope.result = (status, data.result);
+            });
+        }
 
     };
-  });
+});
