@@ -4,6 +4,7 @@
 
 angular.module('emit', [
 	'emit.controllers',
+	'emit.factories',
 	'ngCookies'
 ]).
 config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {

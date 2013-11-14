@@ -2,8 +2,10 @@
 
 /* Controllers */
 
-angular.module('emit.controllers', []).
-  controller('AppCtrl', function ($scope, $http, $cookieStore, $cookies) {
+angular.module('emit.controllers', ['emit.factories']).
+  controller('AppCtrl', function ($scope, $http, $cookieStore, $cookies, testFactory) {
+
+    testFactory.talk();
 
     var gmailUser = $cookies.g_id;
 
