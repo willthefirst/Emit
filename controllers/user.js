@@ -153,10 +153,10 @@ function getFacebookToken(req, callback) {
       long_lived_token = long_lived_token.split('access_token=');
       long_lived_token = long_lived_token[1].split('&');
       long_lived_token = long_lived_token[0];
-      User.findOrCreate({ 'facebook.id' : req.account.facebook.id } , function (err, user) {
-        user.facebook.long_lived_token = long_lived_token;
+      Accounts.findOrCreate({ 'facebook.id' : req.account.facebook.id } , function (err, account) {
+        account.facebook.long_lived_token = long_lived_token;
         req.account.facebook.long_lived_token = long_lived_token;
-        user.save(function(err){
+        account.save(function(err){
           if (err) return handleError(err);
         });
       });
