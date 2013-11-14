@@ -1,10 +1,6 @@
   <form id="gmail-form" ng-submit="sendGmail()" ng-controller="Submit">
     <div class="msg-to wrapper-vert">
-      <div class="wrapper-hor relative">
-        <label for="contacts" class="msg-to__label">to:</label>
-        <input name="email" id="contacts" class="msg-to__input" tabindex="1" autofocus autocomplete="off" ng-model="email" />
-        <input class="msg-submit" id="submit" type="submit" value="⌘ + return to send" tabindex="3"/>
-      </div>
+      <to-field></to-field>
     </div>
     <div class="msg-body wrapper-vert">
       <div class="wrapper-hor">
