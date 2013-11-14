@@ -87,43 +87,32 @@ exports.googlePassport = function(passport) {
             // Save new access token to google_params for later use.
             google_params.access_token = token;
 
-            // If there is a user in the session
-            if (req.user) {
 
-                // Look for an account with google profile in DB
+            // If no tmpuser in session: Authentication situation
+            if (!req.session.tmpUser) {
+                console.log('No tmpUser in session: Authenticating:');
                 Accounts.findOne({
                     'google.id': profile._json.email
                 }, function(err, account) {
-
-                    // If the google account already exists in DB:
+                    // If Google account is already in DB -> Old user
                     if (account) {
-                        // Then user has authenticated before with Google but never tied it to the user account.
-                        // So: let's update the old account (as to destroy other 3rd party information): update info (might as well), and tie to user.
-
-                        Accounts.findByIdAndUpdate(account.id, {
-                            userId: req.user.username,
-                            google: {
-                                id: profile._json.email,
-                                first_name: profile._json.given_name,
-                                last_name: profile._json.family_name,
-                                refresh_token: refreshToken
-                            }
-                        }, function(err, account) {
-                            if (err) {
-                                console.log('Error:', err);
-                                return handleError(err);
-                            }
-                            console.log('Duplicate found, so we updated the account and tied it to the user.');
-
-                            // Supply current user back to session
+                        // Send the associated tmpUser back to the session.
+                        User.findOne({
+                            'username': profile._json.email
+                        }, function(err, user) {
+                            console.log('Google account found in DB: returning associated user.');
+                            req.session.tmpUser = user;
                             return done(null, account);
                         });
                     }
-                    // Else, if current Google account doesn't exist in DB.
+                    // Else -> New user
                     else {
-                        // This is the first time this person is authenticating with Google, so easy: just tie it to their user account.
+                        console.log('Google account NOT in DB: created new account');
+
+                        // Add the account to the DB
                         Accounts.create({
-                            userId: req.user.username,
+                            userId: profile._json.email,
+
                             google: {
                                 id: profile._json.email,
                                 first_name: profile._json.given_name,
@@ -135,73 +124,219 @@ exports.googlePassport = function(passport) {
                                 console.log('Error:', err);
                                 return handleError(err);
                             }
-                            console.log('No duplicates found, so we will save the new Google account and tie it to the user');
+                            console.log('New account created.');
+                            // tie to a new tmpUser
+                            User.create({
+                                username: profile._json.email ,
+                                googleConnected: true,
 
-                            // Supply current user back to session
-                            return done(null, account);
+                            }, function(err, user, created) {
+                                if(err) console.log('user is not saved');
+                                console.log('New account tied to new user.');
+
+                                // send tmpUser back to the session.
+                                req.session.tmpUser = user;
+
+                                // Then return account.
+                                return done(null, account);
+                            });
+
                         });
+
+
                     }
                 });
+
             }
-
-            // Else (no user in session)
+            // Else if there is a tmpUser in session: Authorization situation
             else {
-
-                Accounts.findOne({
-                    'google.id': profile._json.email
+                console.log('tmpUser exists in session');
+                // Then at least one account must be connected and associated with tmp user (google or facebook)
+                Accounts.findOneAndUpdate({ userId : req.session.tmpUser.username }, {
+                    google: {
+                        id: profile._json.email,
+                        first_name: profile._json.given_name,
+                        last_name: profile._json.family_name,
+                        refresh_token: refreshToken
+                    }
                 }, function(err, account) {
                     if (err) {
                         console.log('Error:', err);
+                        return handleError(err);
                     }
-
-                    // If account is already in DB
                     if (account) {
-
-                        // If 3rd party account is not associated with a user.
-                        if (!account.userId) {
-
-                            console.log('Account exists already in DB, but not tied to a user. Authenticating.');
-
-                            // Then return it.
-                            return done(null, account);
-                        }
-
-                        // Else if it IS associated with a user
-                        else {
-                            //set the req.user to the associated user
-                            User.findOne({
-                                'username': account.userId
-                            }, function(err, user) {
-                                console.log('Account exists already in DB, and is already tied to a user. Logging into users account.');
-                                req.user = user;
-                                return done(null, account);
-                            });
-                        }
+                        console.log('tmpUser already has a google account, so we updated it.');
                     }
-
-                    // Else if account is NOT in DB.
                     else {
-                        // Fresh new Google account, NOT tied to any user.
-                        Accounts.create({
-                            google: {
-                                id: profile._json.email,
-                                first_name: profile._json.given_name,
-                                last_name: profile._json.family_name,
-                                refresh_token: refreshToken
-                            }
-                        }, function(err, account) {
-                            if (err) {
-                                console.log('Error:', err);
-                                return handleError(err);
-                            }
-                            console.log('New account saved but NOT tied to any user.');
-
-                            // Supply current user back to session
-                            return done(null, account);
-                        });
+                        console.log('tmpUser already did not have a google account, so we added it.');
                     }
+
+                    // Supply current user back to session
+                    return done(null, account);
                 });
+
+                // // If tmpUser has a google account
+                // if( req.session.tmpUser.googleConnected ) {
+                //     // Update old google account with information from this one.
+                // }
+                // // Else: tmp user has never associated Google information with themself.
+                // else {
+                //     // Then add google information to tmp user Accounts store.
+                // }
+
             }
+
+
+
+
+
+
+
+
+
+
+
+            //// NEW TRY /////
+
+            // // If there is a user in the session
+            // if (req.user) {
+
+            //     // Look for an account with google profile in DB
+            //     Accounts.findOne({
+            //         'google.id': profile._json.email
+            //     }, function(err, account) {
+
+            //         // If the google account already exists in DB:
+            //         if (account) {
+            //             // Then user has authenticated before with Google but never tied it to the user account.
+            //             // So: let's update the old account (as to destroy other 3rd party information): update info (might as well), and tie to user.
+
+            //             Accounts.findByIdAndUpdate(account.id, {
+            //                 userId: req.user.username,
+            //                 google: {
+            //                     id: profile._json.email,
+            //                     first_name: profile._json.given_name,
+            //                     last_name: profile._json.family_name,
+            //                     refresh_token: refreshToken
+            //                 }
+            //             }, function(err, account) {
+            //                 if (err) {
+            //                     console.log('Error:', err);
+            //                     return handleError(err);
+            //                 }
+            //                 console.log('Duplicate found, so we updated the account and tied it to the user.');
+
+            //                 // Supply current user back to session
+            //                 return done(null, account);
+            //             });
+            //         }
+            //         // Else, if current Google account doesn't exist in DB.
+            //         else {
+            //             // This is the first time this person is authenticating with Google, so easy: just tie it to their user account.
+            //             Accounts.create({
+            //                 userId: req.user.username,
+            //                 google: {
+            //                     id: profile._json.email,
+            //                     first_name: profile._json.given_name,
+            //                     last_name: profile._json.family_name,
+            //                     refresh_token: refreshToken
+            //                 }
+            //             }, function(err, account) {
+            //                 if (err) {
+            //                     console.log('Error:', err);
+            //                     return handleError(err);
+            //                 }
+            //                 console.log('No duplicates found, so we will save the new Google account and tie it to the user');
+
+            //                 // Supply current user back to session
+            //                 return done(null, account);
+            //             });
+            //         }
+            //     });
+            // }
+
+            // // Else (no user in session)
+            // else {
+
+            //     Accounts.findOne({
+            //         'google.id': profile._json.email
+            //     }, function(err, account) {
+            //         if (err) {
+            //             console.log('Error:', err);
+            //         }
+
+            //         // If account is already in DB
+            //         if (account) {
+
+            //             // If 3rd party account is not associated with a user.
+            //             if (!account.userId) {
+
+            //                 console.log('Account exists already in DB, but has never been tied to a user. Authenticating.');
+
+            //                 User.create({
+            //                     username: 'temp' ,
+            //                     password : 'temp'
+            //                 }, function(err, user, created) {
+            //                     if(err) console.log('user is not saved');
+            //                     console.log('Saved a temporary user to DB.');
+            //                     req.session.tmpUser = user;
+
+            //                     // Then return account.
+            //                     return done(null, account);
+            //                 });
+
+            //             }
+
+            //             // Else if it IS associated with a user
+            //             else {
+            //                 //set the req.user to the associated user
+            //                 User.findOne({
+            //                     'username': account.userId
+            //                 }, function(err, user) {
+            //                     console.log('Account exists already in DB, and is already tied to a user. Logging into users account.');
+            //                     req.user = user;
+            //                     return done(null, account);
+            //                 });
+            //             }
+            //         }
+
+            //         // Else if account is NOT in DB.
+            //         else {
+            //             // Fresh new Google account, tied to a fresh tmpUser (saved as a User in the db.)
+            //             User.create({
+            //                 username: profile._json.email ,
+            //             }, function(err, user, created) {
+            //                 if(err) console.log('user is not saved');
+            //                 console.log('Saved a temporary user to DB.');
+            //                 req.session.tmpUser = user;
+
+            //                 // Then return account.
+            //                 return done(null, account);
+            //             });
+
+            //             Accounts.create({
+
+            //                 userId: profile._json.email,
+
+            //                 google: {
+            //                     id: profile._json.email,
+            //                     first_name: profile._json.given_name,
+            //                     last_name: profile._json.family_name,
+            //                     refresh_token: refreshToken
+            //                 }
+            //             }, function(err, account) {
+            //                 if (err) {
+            //                     console.log('Error:', err);
+            //                     return handleError(err);
+            //                 }
+            //                 console.log('New account saved but NOT tied to any user.');
+
+            //                 // Supply current user back to session
+            //                 return done(null, account);
+            //             });
+            //         }
+            //     });
+            // }
         })
     );
 };

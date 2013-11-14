@@ -5,7 +5,12 @@
 exports.index = function(req, res){
 	var id = '';
 
-	console.log('User: ' + req.user);
+	if(req.session.tmpUser) {
+		console.log('Temporary user: ' + (req.session.tmpUser.username));
+	}
+	else {
+		console.log('Temporary user: ' + (req.session.tmpUser));
+	}
 	console.log('Account: ' + req.account);
 
 	// If we have a user, load relevant info in cookies.
