@@ -23,6 +23,8 @@ exports.initialize = function(app){
     app.get('/user/facebook/auth', passport.authorize('facebook', { scope: ['publish_actions','read_friendlists' ] }));
     app.get('/user/facebook/auth/callback', passport.authorize('facebook'), user.facebookConfig, routes.index);
     app.get('/user/facebook/contacts', user.returnFacebookContacts);
+    app.get('/user/facebook/postToTimeline', user.postToTimeline);
+
 
     // Redirect all others to the index (HTML5 history)
     app.get('/*', routes.index);

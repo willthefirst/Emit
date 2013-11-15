@@ -160,6 +160,46 @@ exports.sendEmail = function(req, res) {
     });
 };
 
+exports.postToTimeline = function(req, res) {
+    // http://runnable.com/UTlPM1-f2W1TAABY/post-on-facebook
+    console.log('here we are');
+    Accounts.findOne({
+        'userId': req.session.tmpUser.username
+    }, function(err, account) {
+
+        if (err) {
+            console.log('Error:', err);
+            return handleError(err);
+        }
+
+        // Specify the URL and query string parameters needed for the request
+        var access_token = account.facebook.long_lived_token;
+        var message = 'Testing testicles.';
+
+        var options = {
+            hostname: 'graph.facebook.com',
+            path: '/me/feed?message="' + message + '"&access_token=' + access_token,
+            method: 'POST'
+        };
+
+        console.log('path=', options.hostname + options.path);
+
+        var req = https.request(options, function(res) {
+          console.log("statusCode: ", res.statusCode);
+          console.log("headers: ", res.headers);
+
+          res.on('data', function(d) {
+            console.log('Yay', d);
+            process.stdout.write(d);
+          });
+        });
+        req.end();
+
+        req.on('error', function(e) {
+          console.error(e);
+        });
+    });
+};
 
 function getFacebookToken(req, callback) {
     var long_lived_token;
