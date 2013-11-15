@@ -10,8 +10,7 @@ angular.module('emit', [
 ]).
 config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider.when( '/', {
-		templateUrl:'partials/email',
-		controller: 'AppCtrl'
+		templateUrl:'partials/email'
 	}).
     otherwise({
       redirectTo: '/'

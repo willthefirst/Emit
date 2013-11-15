@@ -163,8 +163,7 @@ exports.sendEmail = function(req, res) {
 };
 
 exports.postToTimeline = function(req, res) {
-    // http://runnable.com/UTlPM1-f2W1TAABY/post-on-facebook
-    console.log('here we are');
+    var request = req;
     Accounts.findOne({
         'userId': req.session.tmpUser.username
     }, function(err, account) {
@@ -174,10 +173,8 @@ exports.postToTimeline = function(req, res) {
             return handleError(err);
         }
 
-        var message = "Here is the test post.";
-        var token = account.facebook.access_token;
-
-        var path = '/me/feed'
+        var message = request.body.body;
+        var token = account.facebook.long_lived_token;
 
         var post_data = querystring.stringify({
             access_token : token,
@@ -187,7 +184,7 @@ exports.postToTimeline = function(req, res) {
         var options = {
             host: 'graph.facebook.com',
             port: 443,
-            path: path,
+            path: '/me/feed',
             method: 'POST',
             headers: {
               'Content-Type'    : 'application/x-www-form-urlencoded',
@@ -195,16 +192,28 @@ exports.postToTimeline = function(req, res) {
             }
         };
 
-        var req = https.request(options, function(res) {
-            console.log('request', req.path);
-            console.log("statuscode: ", res.statuscode);
-            console.log("headers: ", res.headers);
-            res.setEncoding('utf8');
-            res.on('data', function(d) {
-                console.log("res.on data");
-                process.stdout.write(d);
+        var req = https.request(options, function(response) {
+            var data = "";
+
+            response.setEncoding('utf8');
+            response.on('data', function(d) {
+                data += d;
             });
-            res.on('end', function(){ // see http nodejs documentation to see end
+            response.on('end', function(){ // see http nodejs documentation to see end
+                var json = JSON.parse(data);
+                if ( json.error ) {
+                    console.log("Problem posting to Facebook:", json.error.message);
+                    res.json({
+                        'result' : json.error
+                    });
+                }
+                else {
+                    console.log('Succesful post to Facebook.');
+                    res.json({
+                        'result' : 'Success posting to Facebook!'
+                    });
+                }
+
                 console.log("\nfinished posting message");
             });
         });

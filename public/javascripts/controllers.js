@@ -169,21 +169,18 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
 }).controller('Submit', function($scope, $http, $cookieStore) {
     $scope.result = '';
-    var fb_tok = $cookieStore.get(fb_tok);
-    var fb_id = $cookieStore.get(fb_id);
-
 
     $scope.sendGmail = function() {
+        console.log($scope.email);
         if ($scope.email === "Facebook") {
+            console.log('Posting to facebook.');
             $http({
                 method: 'POST',
-                url: 'https://graph.facebook.com/' + fb_id + '/feed',
-                params: {
-                    access_token: fb_tok,
-                    message: 'Testing testing'
+                url: '/user/facebook/postToTimeline',
+                data: {
+                    body: $scope.text
                 }
             }).success(function(data, status, headers, config) {
-                console.log('Success posting to facebook:', status, data);
                 $scope.result = (status, data.result);
             }).
             error(function(data, status, headers, config) {
@@ -202,6 +199,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 $scope.result = (status, data.result);
             }).
             error(function(data, status, headers, config) {
+                console.log('Problem posting to Facebook (serversive problem though)');
                 $scope.result = (status, data.result);
             });
         }
