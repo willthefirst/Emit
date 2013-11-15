@@ -58,7 +58,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
     var gmailUser = $cookies.g_id;
     var facebookUser = $cookies.fb_id;
 
-    var all_contacts = {};
+    var all_contacts = [];
 
 
     // If Google user, get contacts.
@@ -67,10 +67,9 @@ controller('AppCtrl', function($scope, $http, $cookies) {
     }
     else {
         retrieveContacts.google( function(data, status, headers, config ) {
-            for (var i in data) { all_contacts[i] = data[i]; }
+            all_contacts = all_contacts.concat(data);
             console.log('appended gmail contacts: ');
             initializeAutocomplete(all_contacts);
-
         });
     }
 
@@ -80,7 +79,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
     }
     else {
         retrieveContacts.facebook( function(data, status, headers, config ) {
-            for (var i in data) { all_contacts[i] = data[i]; }
+            all_contacts = all_contacts.concat(data);
             console.log('appended fb contacts');
             initializeAutocomplete(all_contacts);
         });
@@ -171,15 +170,13 @@ controller('AppCtrl', function($scope, $http, $cookies) {
     };
 
 
-
-
     // Submit stuff
 
     $scope.result = '';
 
     $scope.send = function() {
         console.log($scope.email);
-        if ($scope.email === "Facebook") {
+        if ($scope.email === "My Facebook Timeline") {
             console.log('Posting to facebook.');
             $http({
                 method: 'POST',
