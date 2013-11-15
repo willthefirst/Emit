@@ -102,7 +102,8 @@ function userHandler( type, req, token, refreshToken, profile, done ) {
                 facebook: {
                     id: profile._json.id,
                     first_name: profile._json.first_name,
-                    last_name: profile._json.last_name
+                    last_name: profile._json.last_name,
+                    access_token: token
                 }
             };
 
@@ -110,7 +111,8 @@ function userHandler( type, req, token, refreshToken, profile, done ) {
                 facebook: {
                     id: profile._json.id,
                     first_name: profile._json.first_name,
-                    last_name: profile._json.last_name
+                    last_name: profile._json.last_name,
+                    access_token: token
                 }
             };
 

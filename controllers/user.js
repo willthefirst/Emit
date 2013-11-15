@@ -7,6 +7,8 @@ var Accounts = mongoose.model('Accounts');
 var api = require('../app/api');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
+var querystring = require('querystring');
+
 /*
  * On succesful Google authorization
  */
@@ -172,32 +174,92 @@ exports.postToTimeline = function(req, res) {
             return handleError(err);
         }
 
-        // Specify the URL and query string parameters needed for the request
-        var access_token = account.facebook.long_lived_token;
-        var message = 'Testing testicles.';
+        var message = "Here is the test post.";
+        var token = account.facebook.access_token;
+
+        var path = '/me/feed'
+
+        var post_data = querystring.stringify({
+            access_token : token,
+            message : message
+        });
 
         var options = {
-            hostname: 'graph.facebook.com',
-            path: '/me/feed?message="' + message + '"&access_token=' + access_token,
-            method: 'POST'
+            host: 'graph.facebook.com',
+            port: 443,
+            path: path,
+            method: 'POST',
+            headers: {
+              'Content-Type'    : 'application/x-www-form-urlencoded',
+              'Content-Length'  : post_data.length
+            }
         };
 
-        console.log('path=', options.hostname + options.path);
-
         var req = https.request(options, function(res) {
-          console.log("statusCode: ", res.statusCode);
-          console.log("headers: ", res.headers);
-
-          res.on('data', function(d) {
-            console.log('Yay', d);
-            process.stdout.write(d);
-          });
+            console.log('request', req.path);
+            console.log("statuscode: ", res.statuscode);
+            console.log("headers: ", res.headers);
+            res.setEncoding('utf8');
+            res.on('data', function(d) {
+                console.log("res.on data");
+                process.stdout.write(d);
+            });
+            res.on('end', function(){ // see http nodejs documentation to see end
+                console.log("\nfinished posting message");
+            });
         });
-        req.end();
 
         req.on('error', function(e) {
-          console.error(e);
+            console.log("\nProblem with facebook post request");
+            console.error(e);
         });
+
+        req.write(post_data);
+        req.end();
+
+
+
+
+        // // Specify the URL and query string parameters needed for the request
+        // var access_token = account.facebook.long_lived_token;
+        // var message = 'Testing testicles.';
+        // var path = '/' + '' + '/feed?access_token=' + token;
+        // var strToPost = "server side post to facebook";
+
+        // console.log("post.id = " + req.route.params.id);
+
+        // var post_data = querystring.stringify({
+        //     'message' : 'testing server side post'
+        // });
+
+        // var options = {
+        //     hostname: 'graph.facebook.com',
+        //     path: '/me/feed?message="' + message + '"&access_token=' + access_token,
+        //     method: 'POST',
+        //     port: 443,
+        //     headers: {
+        //         'Content-Type'    : 'application/x-www-form-urlencoded',
+        //         'Content-Length'  : post_data.length
+        //     }
+        // };
+
+        // console.log('path=', options.hostname + options.path);
+
+        // var req = https.request(options, function(res) {
+        //   console.log("statusCode: ", res.statusCode);
+        //   console.log("headers: ", res.headers);
+
+        //   res.on('data', function(d) {
+        //     console.log('Yay', d);
+        //     process.stdout.write(d);
+        //   });
+        // });
+        // req.end();
+
+        // req.write(post_data)
+        // req.on('error', function(e) {
+        //   console.error(e);
+        // });
     });
 };
 
