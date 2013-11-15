@@ -16,12 +16,13 @@ exports.initialize = function(app){
                                                 'https://www.google.com/m8/feeds'  ] ,
                                                  accessType: 'offline',  approvalPrompt: 'force' } ));
     app.get('/user/google/auth/callback', passport.authorize('google'), user.saveGoogleAccount,  routes.index);
-    app.get('/user/google/contacts', user.show);
+    app.get('/user/google/contacts', user.returnGoogleContacts);
     app.post('/user/google/send', user.sendEmail);
 
     // Facebook
     app.get('/user/facebook/auth', passport.authorize('facebook', { scope: ['publish_actions','read_friendlists' ] }));
     app.get('/user/facebook/auth/callback', passport.authorize('facebook'), user.facebookConfig, routes.index);
+    app.get('/user/facebook/contacts', user.returnFacebookContacts);
 
     // Redirect all others to the index (HTML5 history)
     app.get('/*', routes.index);

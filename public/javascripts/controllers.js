@@ -15,10 +15,14 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             + If helpful, marks up contacts with data to help the Submit manager decide what to do.
             + Works asynchronously (and behaves well when user asks for something that hasn't yet arrived.)
 
+            - Create a general model for any result of ajax requests
+                - when ou
+
             Google user:
             - if required google cookies exist
-                    - request contacts from server
-                    - add to the autocomplete form.
+                - request contacts from server
+                    - populate Contacts model with results.
+                - Angularify the form so that it updates automatically.
 
             Facebook user:
             - if required facebook cookies exist
@@ -40,6 +44,8 @@ controller('AppCtrl', function($scope, $http, $cookies) {
         III) Autocomplete
 
             + Tabbing works
+            - Com
+            - On select, add the Contact to a 'Selected' model,
 
         IV) Message beautifier
 
@@ -50,18 +56,116 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
 }).controller('AutocompleteManager', function($scope, $http, $cookieStore, $cookies, retrieveContacts) {
 
-    retrieveContacts.talk();
+    var all_contacts = {
+        google: {},
+        facebook: {},
+    };
 
     var gmailUser = $cookies.g_id;
+    var facebookUser = $cookies.fb_id;
 
-    // If not logged in, don't fetch Gmail contacts
+    // If Google user, get contacts.
     if (!gmailUser) {
         console.log('No Gmail user.');
     }
-    // Otherwise, retrieve Gmail contacts
     else {
-        retrieveContacts.google();
+        retrieveContacts.google( function(data, status, headers, config ) {
+            all_contacts.google = data;
+        });
     }
+
+    // If Facebook user, get friends + timeline contacts.
+    if (!facebookUser) {
+        console.log('No Facebook user.');
+    }
+    else {
+        retrieveContacts.facebook( function(data, status, headers, config ) {
+            console.log(data);
+        });
+    }
+
+
+    //TODO: initialize autocomplete with all data returned.
+
+    function initializeAutocomplete() {
+        // Strip out contacts without emails from contacts
+        var split = function(val) {
+            return val.split(/,\s*/);
+        }
+
+        var extractLast = function(term) {
+            return split(term).pop();
+        }
+
+        // Set up autocomplete for email form
+        $("#contacts").autocomplete({
+            source: function(req, res) {
+                // Search name and email for a match with input, and show in a custom format
+                // in autocomplete. Configured for multiple addresses.
+
+                var term = req.term;
+
+                if (term.indexOf(', ') > 0) {
+                    var index = term.lastIndexOf(', ');
+                    term = term.substring(index + 2);
+                }
+
+                var array = [];
+
+                var max = 10; // maximum results to display
+                var j = 0;
+
+                for (var i = 0; i < data.length; i++) {
+                    array.push(data[i].label + ' ' + data[i].value);
+                }
+                var resultsArray = [];
+                var re = $.ui.autocomplete.escapeRegex(term);
+                var matcher = new RegExp("\\b" + re, "i");
+                var a = $.grep(array, function(item, index) {
+                    if (matcher.test(item) && j < max) {
+                        resultsArray.push(data[(array.indexOf(item))]);
+                        j++;
+                        return true;
+                    }
+                });
+                res($.ui.autocomplete.filter(resultsArray,
+                    extractLast(term)));
+            },
+            select: function(event, ui) {
+                var terms = split(this.value);
+                // remove the current input
+                terms.pop();
+                // add the selected item
+                terms.push(ui.item.value);
+                // add placeholder to get the comma-and-space at the end
+                terms.push("");
+                this.value = terms.join(", ");
+                console.log(this.value);
+                return false;
+
+                // $("#contacts").val(ui.item.value);
+                // return false;
+            },
+            open: function() {
+                $('.ui-menu').width(650);
+            },
+            delay: 0
+        }).data("ui-autocomplete")._renderItem = function(ul, item) {
+
+            // Just display emails if there is no corresponsding first name.
+            if (item.label === "") {
+                return $("<li>")
+                    .append('<a><span class="google-contact-email-only">' + item.value + "</span></a>")
+                    .appendTo(ul);
+            } else {
+                return $("<li>")
+                    .append('<a><span class="google-contact-name">' + item.label + '</span><span class="google-contact-email">' + item.value + "</span></a>")
+                    .appendTo(ul);
+            }
+        };
+
+        $scope.contacts = data;
+    };
 
 }).controller('Submit', function($scope, $http, $cookieStore) {
     $scope.result = '';

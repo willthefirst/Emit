@@ -74,7 +74,7 @@ exports.facebookConfig = function(req, res, next) {
 };
 
 
-exports.show = function(req, res) {
+exports.returnGoogleContacts = function(req, res) {
     var google_contacts;
 
     Accounts.findOne({
@@ -88,6 +88,25 @@ exports.show = function(req, res) {
         res.json(google_contacts);
     });
 
+};
+
+exports.returnFacebookContacts = function(req, res) {
+    var fb_contacts;
+
+    Accounts.findOne({
+        'userId': req.session.tmpUser.username
+    }, function(err, account) {
+        if (err) {
+            console.log('Error:', err);
+            return handleError(err);
+        }
+
+        fb_contacts = {
+            fakebook: 'THE ONE AND ONLY CONTACT'
+        };
+        // fb_contacts = account.facebook.contacts;
+        res.json(fb_contacts);
+    });
 };
 
 function trimForSubject( string, max_length ) {

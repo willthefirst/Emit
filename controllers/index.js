@@ -18,7 +18,7 @@ exports.index = function(req, res){
             }
             console.log('Logged in:', account);
             // Google
-            res.cookie('g_id', (account.google.id).toString());
+            res.cookie('g_id', (account.google.id));
 
             // Facebook
             res.cookie('fb_id', account.facebook.id);
