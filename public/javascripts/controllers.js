@@ -37,7 +37,6 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             On submit:
 
             + Handles different kinds of addresses being submitted to at the same time:
-                - Gmail email + Facebook messages
                 - Gmail email + Facebook timeline
             + Works asynchronously (and behaves well when user asks for something that hasn't yet arrived.)
 
@@ -56,13 +55,11 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
 }).controller('AutocompleteManager', function($scope, $http, $cookieStore, $cookies, retrieveContacts) {
 
-    var all_contacts = {
-        google: {},
-        facebook: {},
-    };
-
     var gmailUser = $cookies.g_id;
     var facebookUser = $cookies.fb_id;
+
+    var all_contacts = {};
+
 
     // If Google user, get contacts.
     if (!gmailUser) {
@@ -70,7 +67,10 @@ controller('AppCtrl', function($scope, $http, $cookies) {
     }
     else {
         retrieveContacts.google( function(data, status, headers, config ) {
-            all_contacts.google = data;
+            for (var i in data) { all_contacts[i] = data[i]; }
+            console.log('appended gmail contacts: ');
+            initializeAutocomplete(all_contacts);
+
         });
     }
 
@@ -80,14 +80,17 @@ controller('AppCtrl', function($scope, $http, $cookies) {
     }
     else {
         retrieveContacts.facebook( function(data, status, headers, config ) {
-            console.log(data);
+            for (var i in data) { all_contacts[i] = data[i]; }
+            console.log('appended fb contacts');
+            initializeAutocomplete(all_contacts);
         });
     }
 
-
     //TODO: initialize autocomplete with all data returned.
 
-    function initializeAutocomplete() {
+    function initializeAutocomplete(data) {
+        console.log('initialized');
+
         // Strip out contacts without emails from contacts
         var split = function(val) {
             return val.split(/,\s*/);
@@ -115,6 +118,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 var max = 10; // maximum results to display
                 var j = 0;
 
+                console.log(data.length);
                 for (var i = 0; i < data.length; i++) {
                     array.push(data[i].label + ' ' + data[i].value);
                 }
@@ -164,13 +168,16 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             }
         };
 
-        $scope.contacts = data;
     };
 
-}).controller('Submit', function($scope, $http, $cookieStore) {
+
+
+
+    // Submit stuff
+
     $scope.result = '';
 
-    $scope.sendGmail = function() {
+    $scope.send = function() {
         console.log($scope.email);
         if ($scope.email === "Facebook") {
             console.log('Posting to facebook.');
@@ -205,4 +212,5 @@ controller('AppCtrl', function($scope, $http, $cookies) {
         }
 
     };
+
 });

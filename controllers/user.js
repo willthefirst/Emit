@@ -93,7 +93,7 @@ exports.returnGoogleContacts = function(req, res) {
 };
 
 exports.returnFacebookContacts = function(req, res) {
-    var fb_contacts;
+    var fb_contacts = [];
 
     Accounts.findOne({
         'userId': req.session.tmpUser.username
@@ -103,10 +103,11 @@ exports.returnFacebookContacts = function(req, res) {
             return handleError(err);
         }
 
-        fb_contacts = {
-            fakebook: 'THE ONE AND ONLY CONTACT'
-        };
-        // fb_contacts = account.facebook.contacts;
+        var fb_timeline_contact = {
+            value: "My Facebook Timeline"
+        }
+
+        fb_contacts.push(fb_timeline_contact);
         res.json(fb_contacts);
     });
 };
@@ -308,17 +309,4 @@ function getFacebookToken(req, callback) {
             callback();
         });
     });
-}
-
-exports.getFacebookContacts = function() {
-
-    // Add "Facebook Timeline" to user's contacts.
-
-
-    // Add users Facebook friends to currently existing contacts.
-
-};
-
-exports.handleFacebookContact = function(req, res) {
-
 }
