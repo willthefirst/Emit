@@ -68,7 +68,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
     else {
         retrieveContacts.google( function(data, status, headers, config ) {
             all_contacts = all_contacts.concat(data);
-            console.log('appended gmail contacts: ');
+            console.log('appended gmail contacts: length=', all_contacts.length);
             initializeAutocomplete(all_contacts);
         });
     }
@@ -80,7 +80,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
     else {
         retrieveContacts.facebook( function(data, status, headers, config ) {
             all_contacts = all_contacts.concat(data);
-            console.log('appended fb contacts');
+            console.log('appended fb contacts: length=', all_contacts.length);
             initializeAutocomplete(all_contacts);
         });
     }
@@ -117,7 +117,6 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 var max = 10; // maximum results to display
                 var j = 0;
 
-                console.log(data.length);
                 for (var i = 0; i < data.length; i++) {
                     array.push(data[i].label + ' ' + data[i].value);
                 }
@@ -134,20 +133,34 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 res($.ui.autocomplete.filter(resultsArray,
                     extractLast(term)));
             },
-            select: function(event, ui) {
-                var terms = split(this.value);
-                // remove the current input
-                terms.pop();
-                // add the selected item
-                terms.push(ui.item.value);
-                // add placeholder to get the comma-and-space at the end
-                terms.push("");
-                this.value = terms.join(", ");
-                console.log(this.value);
-                return false;
+            focus: function(event, ui) {
+                // If there are multiple values,
+                if ((this.value).indexOf(', ') >= 0) {
+                    console.log('Multiple value');
+                    var terms = this.value.split(', ');
+                    this.value = terms.join(', ') + ui.item.value;
+                }
+                else {
+                    console.log('Single value');
+                    this.value = ui.item.value;
+                }
 
-                // $("#contacts").val(ui.item.value);
-                // return false;
+            },
+            select: function(event, ui) {
+                var new_this = this;
+                $scope.$apply(function(){
+                    // create terms array from vurrent value of input
+                    var terms = split(new_this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push(ui.item.value);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    new_this.value = terms.join(", ");
+                    $scope.addresses = terms.value;
+                    return false;
+                });
             },
             open: function() {
                 $('.ui-menu').width(650);
@@ -175,39 +188,42 @@ controller('AppCtrl', function($scope, $http, $cookies) {
     $scope.result = '';
 
     $scope.send = function() {
-        console.log($scope.email);
-        if ($scope.email === "My Facebook Timeline") {
-            console.log('Posting to facebook.');
-            $http({
-                method: 'POST',
-                url: '/user/facebook/postToTimeline',
-                data: {
-                    body: $scope.text
-                }
-            }).success(function(data, status, headers, config) {
-                $scope.result = (status, data.result);
-            }).
-            error(function(data, status, headers, config) {
-                console.log('Error posting to facebook:', status, data.error.message);
-                $scope.result = (status, data.result);
-            });
-        } else {
-            $http({
-                method: 'POST',
-                url: '/user/google/send',
-                data: {
-                    email: $scope.email,
-                    body: $scope.text
-                }
-            }).success(function(data, status, headers, config) {
-                $scope.result = (status, data.result);
-            }).
-            error(function(data, status, headers, config) {
-                console.log('Problem posting to Facebook (serversive problem though)');
-                $scope.result = (status, data.result);
-            });
-        }
+        var each_address = $scope.addresses.split(', ');
 
+        for (var i = 0; i <= each_address.length; i++) {
+            if (each_address[i] === "My Facebook Timeline") {
+                console.log('Posting to facebook.');
+                $http({
+                    method: 'POST',
+                    url: '/user/facebook/postToTimeline',
+                    data: {
+                        body: $scope.text
+                    }
+                }).success(function(data, status, headers, config) {
+                    $scope.result = (status, data.result);
+                }).
+                error(function(data, status, headers, config) {
+                    console.log('Error posting to facebook:', status, data.error.message);
+                    $scope.result = (status, data.result);
+                });
+            } else {
+                // TODO build validation for this to make sure we're not sending stupid addresses.
+                $http({
+                    method: 'POST',
+                    url: '/user/google/send',
+                    data: {
+                        email: $scope.addresses,
+                        body: $scope.text
+                    }
+                }).success(function(data, status, headers, config) {
+                    $scope.result = (status, data.result);
+                }).
+                error(function(data, status, headers, config) {
+                    console.log('Problem posting to Facebook (serversive problem though)');
+                    $scope.result = (status, data.result);
+                });
+            }
+        }
     };
 
 });
