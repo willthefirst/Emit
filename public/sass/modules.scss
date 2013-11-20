@@ -44,6 +44,15 @@
 	display: none;
 }
 
+.approved-contacts__remove {
+	display: inline-block;
+	cursor: pointer;
+
+	&:hover {
+		color: rgb(167, 71, 71);
+	}
+}
+
 
 /* 	Message:submit  -------------------------------------------- */
 

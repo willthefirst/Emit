@@ -164,9 +164,15 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                     .appendTo(ul);
             }
         };
-
     };
 
+    // Remove an approved-address
+    $scope.delete = function ( idx ) {
+      var address_to_delete = $scope.addresses[idx];
+
+        $scope.addresses.splice(idx, 1);
+
+    };
 
     // Submit stuff
 

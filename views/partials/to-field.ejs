@@ -2,7 +2,10 @@
   <label for="contacts" class="msg-to__label">to:</label>
   <div class="msg-to__addresses">
   	<div class="approved-contacts">
-  		<p ng-repeat="address in addresses">{{ address }}</p>
+  		<div ng-repeat="address in addresses">
+  			<span class="approved-contacts__address">{{ address }}</span>
+  			<a ng-click="delete($index)" class="approved-contacts__remove">⨯</a ng-click="delete($index)">
+  		</div>
   	</div>
   	<input name="email" id="contacts" class="msg-to__input" tabindex="1" autofocus autocomplete="off" />
   </div>
