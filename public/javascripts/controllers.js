@@ -54,158 +54,174 @@ controller('AppCtrl', function($scope, $http, $cookies) {
     */
 
 }).controller('AutocompleteManager', function($scope, $http, $cookieStore, $cookies, retrieveContacts) {
+    jQuery(document).ready(function($) {
 
-    var gmailUser = $cookies.g_id;
-    var facebookUser = $cookies.fb_id;
-    $scope.addresses = [];
-    console.log($scope.addresses);
+        var gmailUser = $cookies.g_id;
+        var facebookUser = $cookies.fb_id;
+        $scope.addresses = [];
+        console.log($scope.addresses);
 
-    var all_contacts = [];
+        var all_contacts = [];
 
-    // If Google user, get contacts.
-    if (!gmailUser) {
-        console.log('No Gmail user.');
-    }
-    else {
-        retrieveContacts.google( function(data, status, headers, config ) {
-            all_contacts = all_contacts.concat(data);
-            console.log('appended gmail contacts: length=', all_contacts.length);
-            initializeAutocomplete(all_contacts);
-        });
-    }
-
-    // If Facebook user, get friends + timeline contacts.
-    if (!facebookUser) {
-        console.log('No Facebook user.');
-    }
-    else {
-        retrieveContacts.facebook( function(data, status, headers, config ) {
-            all_contacts = all_contacts.concat(data);
-            console.log('appended fb contacts: length=', all_contacts.length);
-            initializeAutocomplete(all_contacts);
-        });
-    }
-
-    //TODO: initialize autocomplete with all data returned.
-
-    function initializeAutocomplete(data) {
-        console.log('initialized');
-
-        // Strip out contacts without emails from contacts
-        var split = function(val) {
-            return val.split(/,\s*/);
+        // If Google user, get contacts.
+        if (!gmailUser) {
+            console.log('No Gmail user.');
+        }
+        else {
+            retrieveContacts.google( function(data, status, headers, config ) {
+                all_contacts = all_contacts.concat(data);
+                console.log('appended gmail contacts: length=', all_contacts.length);
+                initializeAutocomplete(all_contacts);
+            });
         }
 
-        var extractLast = function(term) {
-            return split(term).pop();
+        // If Facebook user, get friends + timeline contacts.
+        if (!facebookUser) {
+            console.log('No Facebook user.');
+        }
+        else {
+            retrieveContacts.facebook( function(data, status, headers, config ) {
+                all_contacts = all_contacts.concat(data);
+                console.log('appended fb contacts: length=', all_contacts.length);
+                initializeAutocomplete(all_contacts);
+            });
         }
 
-        // Set up autocomplete for email form
-        $("#contacts").autocomplete({
+        //TODO: initialize autocomplete with all data returned.
+        function initializeAutocomplete(data) {
+            console.log('initialized');
 
-
-            source: function(req, res) {
-                // Search name and email for a match with input, and show in a custom format
-                // in autocomplete.
-
-                var term = req.term;
-
-                var array = [];
-
-                var max = 10; // maximum results to display
-                var j = 0;
-
-                for (var i = 0; i < data.length; i++) {
-                    array.push(data[i].label + ' ' + data[i].value);
-                }
-                var resultsArray = [];
-                var re = $.ui.autocomplete.escapeRegex(term);
-                var matcher = new RegExp("\\b" + re, "i");
-                var a = $.grep(array, function(item, index) {
-                    if (matcher.test(item) && j < max) {
-                        resultsArray.push(data[(array.indexOf(item))]);
-                        j++;
-                        return true;
-                    }
-                });
-                res($.ui.autocomplete.filter(resultsArray,
-                    extractLast(term)));
-            },
-            focus: function(event, ui) {
-                return false;
-            },
-            select: function(event, ui) {
+            // If non-autocomplete address is entered
+            $('#contacts').off('keypress');
+            $('#contacts').on('keypress', function(e){
                 var $this = $(this);
-                $scope.$apply(function(){
-                    $scope.addresses.push(ui.item.value);
+                // If comma or enter is pressed
+                if (e.charCode === 13 || e.charCode === 44) {
+                    console.log($this.val());
+
+                    $scope.$apply(function(){
+                        $scope.addresses.push($this.val());
+                    });
                     $this.val('');
+                    return false;
+                };
+            });
 
-                });
-                return false;
-            },
-            open: function() {
-                $('.ui-menu').width(650);
-            },
-            delay: 0
-        }).data("ui-autocomplete")._renderItem = function(ul, item) {
+            // Strip out contacts without emails from contacts
+            var split = function(val) {
+                return val.split(/,\s*/);
+            }
 
-            // Just display emails if there is no corresponsding first name.
-            if (item.label === "") {
-                return $("<li>")
-                    .append('<a><span class="google-contact-email-only">' + item.value + "</span></a>")
-                    .appendTo(ul);
-            } else {
-                return $("<li>")
-                    .append('<a><span class="google-contact-name">' + item.label + '</span><span class="google-contact-email">' + item.value + "</span></a>")
-                    .appendTo(ul);
+            var extractLast = function(term) {
+                return split(term).pop();
+            }
+
+            // Set up autocomplete for email form
+            $("#contacts").autocomplete({
+
+                source: function(req, res) {
+                    // Search name and email for a match with input, and show in a custom format
+                    // in autocomplete.
+
+                    var term = req.term;
+
+                    var array = [];
+
+                    var max = 10; // maximum results to display
+                    var j = 0;
+
+                    for (var i = 0; i < data.length; i++) {
+                        array.push(data[i].label + ' ' + data[i].value);
+                    }
+                    var resultsArray = [];
+                    var re = $.ui.autocomplete.escapeRegex(term);
+                    var matcher = new RegExp("\\b" + re, "i");
+                    var a = $.grep(array, function(item, index) {
+                        if (matcher.test(item) && j < max) {
+                            resultsArray.push(data[(array.indexOf(item))]);
+                            j++;
+                            return true;
+                        }
+                    });
+                    res($.ui.autocomplete.filter(resultsArray,
+                        extractLast(term)));
+                },
+                focus: function(event, ui) {
+                    return false;
+                },
+                select: function(event, ui) {
+                    var $this = $(this);
+                    $scope.$apply(function(){
+                        $scope.addresses.push(ui.item.value);
+                        $this.val('');
+
+                    });
+                    return false;
+                },
+                open: function() {
+                    $('.ui-menu').width(650);
+                },
+                delay: 0
+            }).data("ui-autocomplete")._renderItem = function(ul, item) {
+
+                // Just display emails if there is no corresponsding first name.
+                if (item.label === "") {
+                    return $("<li>")
+                        .append('<a><span class="google-contact-email-only">' + item.value + "</span></a>")
+                        .appendTo(ul);
+                } else {
+                    return $("<li>")
+                        .append('<a><span class="google-contact-name">' + item.label + '</span><span class="google-contact-email">' + item.value + "</span></a>")
+                        .appendTo(ul);
+                }
+            };
+        };
+
+        // Remove an approved-address
+        $scope.delete = function ( idx ) {
+            var address_to_delete = $scope.addresses[idx];
+            $scope.addresses.splice(idx, 1);
+        };
+
+        // Submit stuff
+
+        $scope.send = function() {
+
+            for (var i = 0; i < $scope.addresses.length; i++) {
+                if ($scope.addresses[i] === "My Facebook Timeline") {
+                    console.log('Posting to facebook.');
+                    $http({
+                        method: 'POST',
+                        url: '/user/facebook/postToTimeline',
+                        data: {
+                            body: $scope.text
+                        }
+                    }).success(function(data, status, headers, config) {
+                        $scope.result = (status, data.result);
+                    }).
+                    error(function(data, status, headers, config) {
+                        console.log('Error posting to facebook:', status, data.error.message);
+                        $scope.result = (status, data.result);
+                    });
+                } else {
+                    // TODO build validation for this to make sure we're not sending stupid addresses.
+                    $http({
+                        method: 'POST',
+                        url: '/user/google/send',
+                        data: {
+                            email: $scope.addresses,
+                            body: $scope.text
+                        }
+                    }).success(function(data, status, headers, config) {
+                        $scope.result = (status, data.result);
+                    }).
+                    error(function(data, status, headers, config) {
+                        console.log('Problem posting to Facebook (serversive problem though)');
+                        $scope.result = (status, data.result);
+                    });
+                }
             }
         };
-    };
-
-    // Remove an approved-address
-    $scope.delete = function ( idx ) {
-        var address_to_delete = $scope.addresses[idx];
-        $scope.addresses.splice(idx, 1);
-    };
-
-    // Submit stuff
-
-    $scope.send = function() {
-
-        for (var i = 0; i < $scope.addresses.length; i++) {
-            if ($scope.addresses[i] === "My Facebook Timeline") {
-                console.log('Posting to facebook.');
-                $http({
-                    method: 'POST',
-                    url: '/user/facebook/postToTimeline',
-                    data: {
-                        body: $scope.text
-                    }
-                }).success(function(data, status, headers, config) {
-                    $scope.result = (status, data.result);
-                }).
-                error(function(data, status, headers, config) {
-                    console.log('Error posting to facebook:', status, data.error.message);
-                    $scope.result = (status, data.result);
-                });
-            } else {
-                // TODO build validation for this to make sure we're not sending stupid addresses.
-                $http({
-                    method: 'POST',
-                    url: '/user/google/send',
-                    data: {
-                        email: $scope.addresses,
-                        body: $scope.text
-                    }
-                }).success(function(data, status, headers, config) {
-                    $scope.result = (status, data.result);
-                }).
-                error(function(data, status, headers, config) {
-                    console.log('Problem posting to Facebook (serversive problem though)');
-                    $scope.result = (status, data.result);
-                });
-            }
-        }
-    };
+    });
 
 });

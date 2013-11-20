@@ -21,11 +21,11 @@ $(function() {
     });
 
     // Shortcut to send
-    $(document).keydown(function(e) {
-	    if (e.which === 13 && (e.ctrlKey || e.metaKey)) { // Ctrl + b
-	        $("#gmail-form").submit();
-	    }
-    });
+    // $(document).keydown(function(e) {
+	   //  if (e.which === 13 && (e.ctrlKey || e.metaKey)) { // Ctrl + b
+	   //      $("#gmail-form").submit();
+	   //  }
+    // });
 
     // <https://github.com/jaredhanson/passport-facebook/issues/12>
     if (window.location.hash && window.location.hash === "#_=_") {
