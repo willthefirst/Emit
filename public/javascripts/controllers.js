@@ -100,10 +100,6 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             return split(term).pop();
         }
 
-        $('#contacts').on('change', function(){
-            console.log("Value=", $(this).val());
-        });
-
         // Set up autocomplete for email form
         $("#contacts").autocomplete({
 
@@ -168,10 +164,8 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
     // Remove an approved-address
     $scope.delete = function ( idx ) {
-      var address_to_delete = $scope.addresses[idx];
-
+        var address_to_delete = $scope.addresses[idx];
         $scope.addresses.splice(idx, 1);
-
     };
 
     // Submit stuff
