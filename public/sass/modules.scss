@@ -8,26 +8,41 @@
 	border-bottom: 1px solid $gray-dark;
 }
 
+.msg-to__flex {
+	flex: 1 1 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 0 2%;
+}
+
 .msg-to__label {
-	float: left;
+}
+
+.msg-to__addresses {
+	flex: 1;
+	margin: 0 0 0 20px;
 }
 
 .msg-to__input {
-	float: left;
 	font-family: inherit;
 	font-size: inherit;
 	line-height: inherit;
 	background-color: inherit;
 	border: none;
 	display: block;
-	margin: 0 0 0 20px;
 	padding: 0;
-	width: 80%;
+
 
 	&:focus {
 		outline: none;
 	}
 }
+
+.ui-helper-hidden-accessible {
+	display: none;
+}
+
 
 /* 	Message:submit  -------------------------------------------- */
 
@@ -43,10 +58,6 @@
 	display: block;
 	@extend %font;
 	@extend %size-3;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
 	padding-left: 12px;
 	padding-right: 12px;
 	cursor: pointer;

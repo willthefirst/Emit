@@ -1,5 +1,10 @@
-<div class="wrapper-hor relative">
+<div class="msg-to__flex">
   <label for="contacts" class="msg-to__label">to:</label>
-  <input name="email" id="contacts" class="msg-to__input" tabindex="1" autofocus autocomplete="off" ng-model="addresses" />
-  <input class="msg-submit" id="submit" type="submit" value="⌘ + return to send" tabindex="3"/>
+  <div class="msg-to__addresses">
+  	<div class="approved-contacts">
+  		<p ng-repeat="address in addresses">{{ address }}</p>
+  	</div>
+  	<input style="background-color:#fff" name="email" id="contacts" class="msg-to__input" tabindex="1" autofocus autocomplete="off" />
+  </div>
+  <input class="msg-submit" id="submit" type="submit" value="send" tabindex="3"/>
 </div>

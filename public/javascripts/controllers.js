@@ -57,9 +57,10 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
     var gmailUser = $cookies.g_id;
     var facebookUser = $cookies.fb_id;
+    $scope.addresses = [];
+    console.log($scope.addresses);
 
     var all_contacts = [];
-
 
     // If Google user, get contacts.
     if (!gmailUser) {
@@ -99,18 +100,19 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             return split(term).pop();
         }
 
+        $('#contacts').on('change', function(){
+            console.log("Value=", $(this).val());
+        });
+
         // Set up autocomplete for email form
         $("#contacts").autocomplete({
+
+
             source: function(req, res) {
                 // Search name and email for a match with input, and show in a custom format
-                // in autocomplete. Configured for multiple addresses.
+                // in autocomplete.
 
                 var term = req.term;
-
-                if (term.indexOf(', ') > 0) {
-                    var index = term.lastIndexOf(', ');
-                    term = term.substring(index + 2);
-                }
 
                 var array = [];
 
@@ -134,33 +136,42 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                     extractLast(term)));
             },
             focus: function(event, ui) {
+                return false;
                 // If there are multiple values,
-                if ((this.value).indexOf(', ') >= 0) {
-                    console.log('Multiple value');
-                    var terms = this.value.split(', ');
-                    this.value = terms.join(', ') + ui.item.value;
-                }
-                else {
-                    console.log('Single value');
-                    this.value = ui.item.value;
-                }
+                // if ((this.value).indexOf(', ') >= 0) {
+                //     console.log('Multiple value');
+                //     var terms = this.value.split(', ');
+                //     this.value = terms.join(', ') + ui.item.value;
+                // }
+                // else {
+                //     console.log('Single value');
+                //     this.value = ui.item.value;
+                // }
 
             },
             select: function(event, ui) {
-                var new_this = this;
+                var $this = $(this);
                 $scope.$apply(function(){
-                    // create terms array from vurrent value of input
-                    var terms = split(new_this.value);
-                    // remove the current input
-                    terms.pop();
-                    // add the selected item
-                    terms.push(ui.item.value);
-                    // add placeholder to get the comma-and-space at the end
-                    terms.push("");
-                    new_this.value = terms.join(", ");
-                    $scope.addresses = terms.value;
-                    return false;
+                    $scope.addresses.push(ui.item.value);
+                    $this.val('');
+
                 });
+                return false;
+
+                // $scope.$apply(function(){
+                //     // create terms array from vurrent value of input
+                //     var terms = split(new_this.value);
+                //     // remove the current input
+                //     terms.pop();
+                //     // add the selected item
+                //     terms.push(ui.item.value);
+                //     // add placeholder to get the comma-and-space at the end
+                //     terms.push("");
+                //     new_this.value = terms.join(", ");
+                //     $scope.addresses = ui.item.value;
+                //     console.log($scope.addreses);
+                //     return false;
+                // });
             },
             open: function() {
                 $('.ui-menu').width(650);
