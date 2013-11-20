@@ -137,17 +137,6 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             },
             focus: function(event, ui) {
                 return false;
-                // If there are multiple values,
-                // if ((this.value).indexOf(', ') >= 0) {
-                //     console.log('Multiple value');
-                //     var terms = this.value.split(', ');
-                //     this.value = terms.join(', ') + ui.item.value;
-                // }
-                // else {
-                //     console.log('Single value');
-                //     this.value = ui.item.value;
-                // }
-
             },
             select: function(event, ui) {
                 var $this = $(this);
@@ -157,21 +146,6 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
                 });
                 return false;
-
-                // $scope.$apply(function(){
-                //     // create terms array from vurrent value of input
-                //     var terms = split(new_this.value);
-                //     // remove the current input
-                //     terms.pop();
-                //     // add the selected item
-                //     terms.push(ui.item.value);
-                //     // add placeholder to get the comma-and-space at the end
-                //     terms.push("");
-                //     new_this.value = terms.join(", ");
-                //     $scope.addresses = ui.item.value;
-                //     console.log($scope.addreses);
-                //     return false;
-                // });
             },
             open: function() {
                 $('.ui-menu').width(650);
@@ -196,13 +170,10 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
     // Submit stuff
 
-    $scope.result = '';
-
     $scope.send = function() {
-        var each_address = $scope.addresses.split(', ');
 
-        for (var i = 0; i <= each_address.length; i++) {
-            if (each_address[i] === "My Facebook Timeline") {
+        for (var i = 0; i < $scope.addresses.length; i++) {
+            if ($scope.addresses[i] === "My Facebook Timeline") {
                 console.log('Posting to facebook.');
                 $http({
                     method: 'POST',
