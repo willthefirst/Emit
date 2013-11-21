@@ -97,8 +97,6 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 var $this = $(this);
                 // If comma or enter is pressed
                 if (e.charCode === 13 || e.charCode === 44) {
-                    console.log($this.val());
-
                     $scope.$apply(function(){
                         $scope.addresses.push($this.val());
                     });
@@ -186,9 +184,10 @@ controller('AppCtrl', function($scope, $http, $cookies) {
         // Submit stuff
 
         $scope.send = function() {
-
+            var address;
             for (var i = 0; i < $scope.addresses.length; i++) {
-                if ($scope.addresses[i] === "My Facebook Timeline") {
+                address = $scope.addresses[i];
+                if (address === "My Facebook Timeline") {
                     console.log('Posting to facebook.');
                     $http({
                         method: 'POST',
@@ -209,14 +208,19 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                         method: 'POST',
                         url: '/user/google/send',
                         data: {
-                            email: $scope.addresses,
+                            email: address,
                             body: $scope.text
                         }
                     }).success(function(data, status, headers, config) {
-                        $scope.result = (status, data.result);
+                        if (data.error) {
+                            $scope.result('Problem sending email', data.error)
+                        }
+                        else {
+                            $scope.result = (data.result);
+                        }
                     }).
                     error(function(data, status, headers, config) {
-                        console.log('Problem posting to Facebook (serversive problem though)');
+                        console.log('Problem posting Emit server.');
                         $scope.result = (status, data.result);
                     });
                 }

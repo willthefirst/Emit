@@ -119,6 +119,7 @@ function trimForSubject( string, max_length ) {
 };
 
 exports.sendEmail = function(req, res) {
+
     var gmailAccount;
 
     Accounts.findOne({
@@ -152,7 +153,7 @@ exports.sendEmail = function(req, res) {
         }, function(error, response) {
             if (error) {
                 res.json({
-                    result: "Problem: " + error
+                    error: error
                 });
             } else {
                 res.json({
@@ -226,50 +227,6 @@ exports.postToTimeline = function(req, res) {
 
         req.write(post_data);
         req.end();
-
-
-
-
-        // // Specify the URL and query string parameters needed for the request
-        // var access_token = account.facebook.long_lived_token;
-        // var message = 'Testing testicles.';
-        // var path = '/' + '' + '/feed?access_token=' + token;
-        // var strToPost = "server side post to facebook";
-
-        // console.log("post.id = " + req.route.params.id);
-
-        // var post_data = querystring.stringify({
-        //     'message' : 'testing server side post'
-        // });
-
-        // var options = {
-        //     hostname: 'graph.facebook.com',
-        //     path: '/me/feed?message="' + message + '"&access_token=' + access_token,
-        //     method: 'POST',
-        //     port: 443,
-        //     headers: {
-        //         'Content-Type'    : 'application/x-www-form-urlencoded',
-        //         'Content-Length'  : post_data.length
-        //     }
-        // };
-
-        // console.log('path=', options.hostname + options.path);
-
-        // var req = https.request(options, function(res) {
-        //   console.log("statusCode: ", res.statusCode);
-        //   console.log("headers: ", res.headers);
-
-        //   res.on('data', function(d) {
-        //     console.log('Yay', d);
-        //     process.stdout.write(d);
-        //   });
-        // });
-        // req.end();
-
-        // req.write(post_data)
-        // req.on('error', function(e) {
-        //   console.error(e);
-        // });
     });
 };
 
