@@ -98,7 +98,10 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 // If comma or enter is pressed
                 if (e.charCode === 13 || e.charCode === 44) {
                     $scope.$apply(function(){
-                        $scope.addresses.push($this.val());
+                        $scope.addresses.push({
+                            address: $this.val(),
+                            type: 'email'
+                        });
                     });
                     $this.val('');
                     return false;
