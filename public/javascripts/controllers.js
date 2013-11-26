@@ -168,17 +168,15 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 select: function(event, ui) {
                     var $this = $(this);
 
-                    if (isValidAddress(ui.item.value)) {
-                        $scope.$apply(function(){
+                    $scope.$apply(function(){
 
-                            $scope.addresses.push({
-                                address: ui.item.value,
-                                type: ui.item.type
-                            });
-                            $this.val('');
-
+                        $scope.addresses.push({
+                            address: ui.item.value,
+                            type: ui.item.type
                         });
-                    }
+                        $this.val('');
+
+                    });
 
                     return false;
                 },
