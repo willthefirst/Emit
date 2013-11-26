@@ -150,7 +150,11 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 select: function(event, ui) {
                     var $this = $(this);
                     $scope.$apply(function(){
-                        $scope.addresses.push(ui.item.value);
+
+                        $scope.addresses.push({
+                            address: ui.item.value,
+                            type: ui.item.type
+                        });
                         $this.val('');
 
                     });
@@ -185,9 +189,10 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
         $scope.send = function() {
             var address;
+            var all_emails;
             for (var i = 0; i < $scope.addresses.length; i++) {
-                address = $scope.addresses[i];
-                if (address === "My Facebook Timeline") {
+                address = $scope.addresses[i].address;
+                if (address.type === 'facebook') {
                     console.log('Posting to facebook.');
                     $http({
                         method: 'POST',
@@ -203,27 +208,32 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                         $scope.result = (status, data.result);
                     });
                 } else {
+                    all.emails.push(address);
                     // TODO build validation for this to make sure we're not sending stupid addresses.
-                    $http({
-                        method: 'POST',
-                        url: '/user/google/send',
-                        data: {
-                            email: address,
-                            body: $scope.text
-                        }
-                    }).success(function(data, status, headers, config) {
-                        if (data.error) {
-                            $scope.result('Problem sending email', data.error)
-                        }
-                        else {
-                            $scope.result = (data.result);
-                        }
-                    }).
-                    error(function(data, status, headers, config) {
-                        console.log('Problem posting Emit server.');
-                        $scope.result = (status, data.result);
-                    });
                 }
+            }
+
+            // After we've collected all valid emails, send to them in a batch instead of one by one.
+            if(all_emails) {
+                $http({
+                    method: 'POST',
+                    url: '/user/google/send',
+                    data: {
+                        email: all_emails,
+                        body: $scope.text
+                    }
+                }).success(function(data, status, headers, config) {
+                    if (data.error) {
+                        $scope.result('Problem sending email', data.error)
+                    }
+                    else {
+                        $scope.result = (data.result);
+                    }
+                }).
+                error(function(data, status, headers, config) {
+                    console.log('Problem posting Emit server.');
+                    $scope.result = (status, data.result);
+                });
             }
         };
     });

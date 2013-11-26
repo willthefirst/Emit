@@ -231,6 +231,11 @@ function userHandler( type, req, token, refreshToken, profile, done ) {
     }
 };
 
+function Contact(user_name, user_email, type) {
+    this.label = user_name;
+    this.value = user_email;
+    this.type = type;
+}
 
 // Returns Google contacts name and emails in array
 exports.stripGoogleContacts = function(json) {
@@ -239,10 +244,7 @@ exports.stripGoogleContacts = function(json) {
 
     // Creates the contact object
 
-    function contact(user_name, user_email) {
-        this.label = user_name;
-        this.value = user_email;
-    }
+
 
     // Empty array to be returned
     var contacts_arr = [];
@@ -252,7 +254,7 @@ exports.stripGoogleContacts = function(json) {
     // For every contact in the returned list
     for (var key in contacts_list) {
         obj = contacts_list[key];
-        current_contact = new contact();
+        current_contact = new Contact();
 
         // Loop through single contacts properties
         for (var prop in obj) {
@@ -269,6 +271,7 @@ exports.stripGoogleContacts = function(json) {
         }
         // Don't add the contacts with a null email address
         if (current_contact.value != null) {
+            current_contact.type = 'google';
             contacts_arr.push(current_contact);
         }
     }
