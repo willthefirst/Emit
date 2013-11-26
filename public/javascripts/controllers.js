@@ -224,7 +224,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                     }
                 }).success(function(data, status, headers, config) {
                     if (data.error) {
-                        $scope.result('Problem sending email', data.error)
+                        $scope.result('Problem sending email', data.error);
                     }
                     else {
                         $scope.result = (data.result);
