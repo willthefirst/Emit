@@ -62,27 +62,27 @@ $black-1: #8B8B8B;
 	font-style: italic;
 }
 
-%size-1 {
+@mixin size-1 {
 	font-size: 34px;
 	line-height: 51px;
 }
 
-%size-2 {
+@mixin size-2 {
 	font-size: 30px;
 	line-height: 45px;
 }
 
-%size-3 {
+@mixin size-3 {
 	font-size: 24px;
 	line-height: 36px;
 }
 
-%size-4 {
+@mixin size-4 {
 	font-size: 20px;
 	line-height: 30px;
 }
 
-%size-5 {
+@mixin size-5 {
 	font-size: 16px;
 	line-height: 24px;
 }
@@ -91,9 +91,13 @@ $black-1: #8B8B8B;
 	------------------------------------------------------- */
 body {
 	@extend %font;
-	@extend %size-2;
+	@include size-3;
 	background-color: $gray;
 	color: $black;
+
+	@media screen and (min-width: 480px) {
+		@include size-2;
+	}
 }
 
 .wrapper-vert {

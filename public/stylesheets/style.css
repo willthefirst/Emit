@@ -105,39 +105,24 @@ body, .msg-submit, .msg-body__textarea, .hiddendiv {
   font-family: "TeX Gyre Pagella", "Palatino", "Georgia", "Times New Roman", "Hoefler Text", "Baskerville", serif;
 }
 
-/* line 70, ../sass/base.scss */
-body, .msg-body__textarea, .hiddendiv {
-  font-size: 30px;
-  line-height: 45px;
-}
-
-/* line 75, ../sass/base.scss */
-.msg-submit, .google-contact-name, .google-contact-email-only {
-  font-size: 24px;
-  line-height: 36px;
-}
-
-/* line 80, ../sass/base.scss */
-.helper {
-  font-size: 20px;
-  line-height: 30px;
-}
-
-/* line 85, ../sass/base.scss */
-.google-contact-email {
-  font-size: 16px;
-  line-height: 24px;
-}
-
 /* 	Base styles
 	------------------------------------------------------- */
 /* line 92, ../sass/base.scss */
 body {
+  font-size: 24px;
+  line-height: 36px;
   background-color: #cccccc;
   color: #1d1d1d;
 }
+@media screen and (min-width: 480px) {
+  /* line 92, ../sass/base.scss */
+  body {
+    font-size: 30px;
+    line-height: 45px;
+  }
+}
 
-/* line 99, ../sass/base.scss */
+/* line 103, ../sass/base.scss */
 .wrapper-vert {
   overflow: hidden;
   *zoom: 1;
@@ -145,7 +130,7 @@ body {
   padding-top: 20px;
 }
 
-/* line 105, ../sass/base.scss */
+/* line 109, ../sass/base.scss */
 .wrapper-hor {
   overflow: hidden;
   *zoom: 1;
@@ -155,7 +140,7 @@ body {
 
 /* 	Utility
 	------------------------------------------------------- */
-/* line 114, ../sass/base.scss */
+/* line 118, ../sass/base.scss */
 .relative {
   position: relative;
 }
@@ -248,6 +233,8 @@ body {
 /* line 85, ../sass/modules.scss */
 .msg-submit {
   display: block;
+  font-size: 24px;
+  line-height: 36px;
   padding-left: 12px;
   padding-right: 12px;
   cursor: pointer;
@@ -282,14 +269,23 @@ body {
   background-color: inherit;
   border: none;
   resize: none;
+  font-size: 20px;
+  line-height: 30px;
   width: 90%;
 }
-/* line 128, ../sass/modules.scss */
+@media screen and (min-width: 620px) {
+  /* line 119, ../sass/modules.scss */
+  .msg-body__textarea, .hiddendiv {
+    font-size: 24px;
+    line-height: 36px;
+  }
+}
+/* line 132, ../sass/modules.scss */
 .msg-body__textarea:focus, .hiddendiv:focus {
   outline: none;
 }
 
-/* line 133, ../sass/modules.scss */
+/* line 137, ../sass/modules.scss */
 .hiddendiv {
   display: none;
   white-space: pre-wrap;
@@ -297,35 +293,49 @@ body {
   overflow: hidden;
 }
 
-/* line 142, ../sass/modules.scss */
+/* line 146, ../sass/modules.scss */
 .no-scroll {
   overflow: hidden;
 }
 
 /* 	Autocomplete
 	------------------------------------------------------- */
-/* line 149, ../sass/modules.scss */
+/* line 153, ../sass/modules.scss */
 .ui-autocomplete {
   background-color: #efefef;
   padding: 0px 20px 10px;
   max-width: 70%;
 }
 
+/* line 159, ../sass/modules.scss */
+.google-contact-name {
+  font-size: 24px;
+  line-height: 36px;
+}
+
 /* line 163, ../sass/modules.scss */
+.google-contact-email-only {
+  font-size: 24px;
+  line-height: 36px;
+}
+
+/* line 167, ../sass/modules.scss */
 .google-contact-email {
+  font-size: 16px;
+  line-height: 24px;
   font-style: italic;
   color: #8b8b8b;
   padding-left: 10px;
 }
 
-/* line 170, ../sass/modules.scss */
+/* line 174, ../sass/modules.scss */
 .ui-state-focus {
   border-bottom: 1px solid #bbbbbb;
 }
 
 /* 	Social network connect
 	------------------------------------------------------- */
-/* line 177, ../sass/modules.scss */
+/* line 181, ../sass/modules.scss */
 .accounts {
   position: fixed;
   bottom: 0;
@@ -336,7 +346,7 @@ body {
   overflow: visible;
 }
 
-/* line 186, ../sass/modules.scss */
+/* line 190, ../sass/modules.scss */
 .channel-toggle {
   display: block;
   color: rgba(204, 204, 204, 0.5);
@@ -349,12 +359,14 @@ body {
 
 /* 	Helper text
 	------------------------------------------------------- */
-/* line 199, ../sass/modules.scss */
+/* line 203, ../sass/modules.scss */
 .helper {
+  font-size: 20px;
+  line-height: 30px;
   display: inline-block;
 }
 
-/* line 205, ../sass/modules.scss */
+/* line 209, ../sass/modules.scss */
 .get-started {
   padding: 6px 12px;
   left: -400px;

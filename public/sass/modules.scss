@@ -86,7 +86,7 @@
 	@extend %inlay;
 	display: block;
 	@extend %font;
-	@extend %size-3;
+	@include size-3;
 	padding-left: 12px;
 	padding-right: 12px;
 	cursor: pointer;
@@ -121,9 +121,13 @@
 	background-color: inherit;
 	border: none;
 	resize: none;
-	@extend %size-2;
+	@include size-4;
 	@extend %font;
 	width: 90%;
+
+	@media screen and (min-width: 620px) {
+		@include size-3;
+	}
 
 	&:focus {
 		outline: none;
@@ -153,15 +157,15 @@
 }
 
 .google-contact-name {
-	@extend %size-3;
+	@include size-3;
 }
 
 .google-contact-email-only {
-	@extend %size-3;
+	@include size-3;
 }
 
 .google-contact-email {
-	@extend %size-5;
+	@include size-5;
 	font-style: italic;
 	color: $black-1;
 	padding-left: 10px;
@@ -197,7 +201,7 @@
 	------------------------------------------------------- */
 
 .helper {
-	@extend %size-4;
+	@include size-4;
 	@extend %inlay;
 	display: inline-block;
 }
