@@ -107,22 +107,22 @@ body, .msg-submit, .msg-body__textarea, .hiddendiv {
 
 /* 	Base styles
 	------------------------------------------------------- */
-/* line 92, ../sass/base.scss */
+/* line 91, ../sass/base.scss */
 body {
   font-size: 24px;
   line-height: 36px;
   background-color: #cccccc;
   color: #1d1d1d;
 }
-@media screen and (min-width: 480px) {
-  /* line 92, ../sass/base.scss */
+@media screen and (min-width: 620px) {
+  /* line 91, ../sass/base.scss */
   body {
     font-size: 30px;
     line-height: 45px;
   }
 }
 
-/* line 103, ../sass/base.scss */
+/* line 102, ../sass/base.scss */
 .wrapper-vert {
   overflow: hidden;
   *zoom: 1;
@@ -130,7 +130,7 @@ body {
   padding-top: 20px;
 }
 
-/* line 109, ../sass/base.scss */
+/* line 108, ../sass/base.scss */
 .wrapper-hor {
   overflow: hidden;
   *zoom: 1;
@@ -140,7 +140,7 @@ body {
 
 /* 	Utility
 	------------------------------------------------------- */
-/* line 118, ../sass/base.scss */
+/* line 117, ../sass/base.scss */
 .relative {
   position: relative;
 }

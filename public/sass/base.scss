@@ -86,7 +86,6 @@ $black-1: #8B8B8B;
 	font-size: 16px;
 	line-height: 24px;
 }
-
 /* 	Base styles
 	------------------------------------------------------- */
 body {
@@ -95,7 +94,7 @@ body {
 	background-color: $gray;
 	color: $black;
 
-	@media screen and (min-width: 480px) {
+	@media screen and (min-width: 620px) {
 		@include size-2;
 	}
 }

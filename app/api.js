@@ -81,7 +81,7 @@ exports.facebookPassport = function(passport) {
     ));
 };
 
-function userHandler( type, req, token, refreshToken, profile, done ) {
+function userHandler( type, req, accessToken, refreshToken, profile, done ) {
 
     var id_query = {},
         new_account = {},
@@ -103,7 +103,7 @@ function userHandler( type, req, token, refreshToken, profile, done ) {
                     id: profile._json.id,
                     first_name: profile._json.first_name,
                     last_name: profile._json.last_name,
-                    access_token: token
+                    access_token: accessToken
                 }
             };
 
@@ -112,7 +112,7 @@ function userHandler( type, req, token, refreshToken, profile, done ) {
                     id: profile._json.id,
                     first_name: profile._json.first_name,
                     last_name: profile._json.last_name,
-                    access_token: token
+                    access_token: accessToken
                 }
             };
 
@@ -162,7 +162,7 @@ function userHandler( type, req, token, refreshToken, profile, done ) {
         break;
     }
 
-    params.access_token = token;
+    params.access_token = accessToken;
 
     // If no tmpuser in session: Authentication situation
     if (!req.session.tmpUser) {
@@ -180,7 +180,6 @@ function userHandler( type, req, token, refreshToken, profile, done ) {
                         return handleError(err);
                     }
                     console.log(type + ' account found in DB: returning associated user.');
-                    console.log('User here', user);
                     req.session.tmpUser = user;
                     return done(null, account);
                 });

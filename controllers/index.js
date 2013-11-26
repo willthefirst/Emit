@@ -45,7 +45,7 @@ exports.index = function(req, res){
                 console.log('Error:', err);
                 return handleError(err);
             }
-            console.log('Logged in:', account);
+            console.log('Logged in');
             // Google
             res.cookie('g_id', (account.google.id));
 

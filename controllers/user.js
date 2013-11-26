@@ -72,7 +72,7 @@ exports.saveGoogleAccount = function(req, res, next) {
 exports.facebookConfig = function(req, res, next) {
     next();
 
-    getFacebookToken(req, function() {});
+    getFacebookToken(req);
 };
 
 
@@ -231,7 +231,7 @@ exports.postToTimeline = function(req, res) {
     });
 };
 
-function getFacebookToken(req, callback) {
+function getFacebookToken(req) {
     var long_lived_token;
     var options = {
         host: 'graph.facebook.com',
@@ -261,10 +261,9 @@ function getFacebookToken(req, callback) {
                 req.account.facebook.long_lived_token = long_lived_token;
                 account.save(function(err) {
                     if (err) return handleError(err);
+                    console.log('Facebook long-lived token updated');
                 });
             });
-
-            callback();
         });
     });
 }
