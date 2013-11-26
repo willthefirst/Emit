@@ -1,0 +1,60 @@
+<html ng-app="emit" class="ng-scope"><head>
+    <base href="/">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+  <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak{display:none;}ng\:form{display:block;}</style></head>
+  <body>
+
+    <div ng-view="">  <form id="gmail-form" ng-controller="AutocompleteManager" ng-submit="send()" class="ng-scope ng-pristine ng-valid">
+    <div class="msg-to wrapper-vert">
+      <to-field><div class="msg-to__flex">
+  <label for="contacts" class="msg-to__label">to:</label>
+  <div class="msg-to__addresses">
+  	<div class="approved-contacts">
+  		<!-- ngRepeat: address in addresses -->
+  	</div>
+  	<span role="status" aria-live="polite" class="ui-helper-hidden-accessible">ryan.arnold@yale.edu</span><input name="email" id="contacts" class="msg-to__input ui-autocomplete-input" tabindex="1" autofocus="" autocomplete="off">
+  </div>
+  <div>
+	  <input class="msg-submit" id="submit" type="submit" value="send" tabindex="3">
+  </div>
+</div></to-field>
+    </div>
+    <div class="msg-body wrapper-vert">
+      <div class="wrapper-hor">
+        <textarea name="body" cols="60" row="1" class="msg-body__textarea ng-pristine ng-valid" tabindex="2" ng-model="text"></textarea>
+      </div>
+    </div>
+    <div class="msg-result">
+      <p class="ng-binding">To : []</p>
+      <p class="ng-binding">Result:
+
+      </p>
+    </div>
+  </form>
+
+  <div class="accounts ng-scope">
+<!--         <p class="helper get-started relative">To get started, connect your accounts.</p> -->
+    <a href="/user/google/auth" class="channel-toggle" target="_blank">G</a>
+    <a href="/user/facebook/auth" class="channel-toggle" target="_blank">f</a>
+  </div>
+</div>
+
+    <!-- Plugins -->
+    <script src="/javascripts/vendor/angular/angular.min.js"></script>
+    <script src="/javascripts/vendor/angular/angular-cookies.min.js"></script>
+
+
+
+    <script src="/jquery.js"></script>
+    <script src="/javascripts/vendor/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js"></script>
+
+    <!-- Angular -->
+    <script src="/javascripts/app.js"></script>
+    <script src="/javascripts/controllers.js"></script>
+    <script src="/javascripts/factories.js"></script>
+    <script src="/javascripts/components.js"></script>
+
+    <!-- Other scripts -->
+    <script src="/javascripts/script.js"></script>
+
+<div class="hiddendiv common"></div><ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all" id="ui-id-1" tabindex="0" style="display: none; position: relative; top: -251px; left: 72px; width: 650px;"><li class="ui-menu-item" role="presentation"><a id="ui-id-53" class="ui-corner-all" tabindex="-1"><span class="google-contact-name">Alan Scott</span><span class="google-contact-email">adams@vitastar-research.com</span></a></li><li class="ui-menu-item" role="presentation"><a id="ui-id-54" class="ui-corner-all" tabindex="-1"><span class="google-contact-name">Marissa Goldman</span><span class="google-contact-email">ncutiewitabooty@aol.com</span></a></li><li class="ui-menu-item" role="presentation"><a id="ui-id-55" class="ui-corner-all" tabindex="-1"><span class="google-contact-email-only">anon960557@padlister.com</span></a></li><li class="ui-menu-item" role="presentation"><a id="ui-id-56" class="ui-corner-all" tabindex="-1"><span class="google-contact-name">audubon</span><span class="google-contact-email">audubon319@gmail.com</span></a></li><li class="ui-menu-item" role="presentation"><a id="ui-id-57" class="ui-corner-all" tabindex="-1"><span class="google-contact-email-only">ashley.young2010@gmail.com</span></a></li><li class="ui-menu-item" role="presentation"><a id="ui-id-58" class="ui-corner-all" tabindex="-1"><span class="google-contact-name">Andy Bolton</span><span class="google-contact-email">andy.s.bolton@gmail.com</span></a></li><li class="ui-menu-item" role="presentation"><a id="ui-id-59" class="ui-corner-all" tabindex="-1"><span class="google-contact-name">allan.basbaum</span><span class="google-contact-email">allan.basbaum@ucsf.edu</span></a></li><li class="ui-menu-item" role="presentation"><a id="ui-id-60" class="ui-corner-all" tabindex="-1"><span class="google-contact-name">Adam Mordecai</span><span class="google-contact-email">adam@theideaplant.com</span></a></li><li class="ui-menu-item" role="presentation"><a id="ui-id-61" class="ui-corner-all" tabindex="-1"><span class="google-contact-name">Ryan Arnold</span><span class="google-contact-email">ryan.arnold@yale.edu</span></a></li><li class="ui-menu-item" role="presentation"><a id="ui-id-62" class="ui-corner-all" tabindex="-1"><span class="google-contact-name">LONG AND SHORT TERM APARTMENT</span><span class="google-contact-email">reservation@longandshorttermapt.co.uk</span></a></li></ul></body></html>
