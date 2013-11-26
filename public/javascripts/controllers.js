@@ -115,7 +115,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                     $scope.$apply(function(){
                         $scope.addresses.push({
                             address: $this.val(),
-                            type: 'email'
+                            type: isValidAddress
                         });
                     });
                     $this.val('');
