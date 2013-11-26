@@ -3,9 +3,22 @@
 
 /* 	Message:to  -------------------------------------------- */
 
+#msg-address {
+	-webkit-transition: all .1s linear;
+	-moz-transition: all .1s linear;
+	-ms-transition: all .1s linear;
+	-o-transition: all .1s linear;
+	transition: all .1s linear;
+
+	&.no-focus {
+		position: relative;
+		color: $gray-dark - 22;
+		background-color: $gray-dark - 1;
+	}
+}
+
 .msg-to {
 	@extend .block;
-	border-bottom: 1px solid $gray-dark;
 }
 
 .msg-to__flex {
@@ -78,6 +91,18 @@
 }
 
 /* 	Message:body -------------------------------------------- */
+
+.msg-body {
+	background-color: $gray;
+	border-top: 1px solid $gray-dark;
+	-webkit-transition: all .1s ease-out;
+	-moz-transition: all .1s ease-out;
+	-ms-transition: all .1s ease-out;
+	-o-transition: all .1s ease-out;
+	transition: all .1s ease-out;
+	top: initial;
+	z-index: 1;
+}
 
 .msg-body__textarea {
 	display: block;

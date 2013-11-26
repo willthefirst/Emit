@@ -164,11 +164,21 @@ body {
 	------------------------------------------------------- */
 /* 	Message:to  -------------------------------------------- */
 /* line 6, ../sass/modules.scss */
-.msg-to {
-  border-bottom: 1px solid #bbbbbb;
+#msg-address {
+  -webkit-transition: all .1s linear;
+  -moz-transition: all .1s linear;
+  -ms-transition: all .1s linear;
+  -o-transition: all .1s linear;
+  transition: all .1s linear;
+}
+/* line 13, ../sass/modules.scss */
+#msg-address.no-focus {
+  position: relative;
+  color: #a5a5a5;
+  background-color: #bababa;
 }
 
-/* line 11, ../sass/modules.scss */
+/* line 24, ../sass/modules.scss */
 .msg-to__flex {
   flex: 1 1 100%;
   display: flex;
@@ -177,13 +187,13 @@ body {
   padding: 0 2%;
 }
 
-/* line 22, ../sass/modules.scss */
+/* line 35, ../sass/modules.scss */
 .msg-to__addresses {
   flex: 1;
   margin: 0 0 0 20px;
 }
 
-/* line 27, ../sass/modules.scss */
+/* line 40, ../sass/modules.scss */
 .msg-to__input {
   font-family: inherit;
   font-size: inherit;
@@ -194,28 +204,28 @@ body {
   padding: 0;
   width: 100%;
 }
-/* line 38, ../sass/modules.scss */
+/* line 51, ../sass/modules.scss */
 .msg-to__input:focus {
   outline: none;
 }
 
-/* line 43, ../sass/modules.scss */
+/* line 56, ../sass/modules.scss */
 .ui-helper-hidden-accessible {
   display: none;
 }
 
-/* line 47, ../sass/modules.scss */
+/* line 60, ../sass/modules.scss */
 .approved-contacts__remove {
   display: inline-block;
   cursor: pointer;
 }
-/* line 51, ../sass/modules.scss */
+/* line 64, ../sass/modules.scss */
 .approved-contacts__remove:hover {
   color: #a74747;
 }
 
 /* 	Message:submit  -------------------------------------------- */
-/* line 59, ../sass/modules.scss */
+/* line 72, ../sass/modules.scss */
 .msg-submit, .helper {
   background-color: #bbbbbb;
   -webkit-border-radius: 2px;
@@ -229,20 +239,33 @@ body {
   box-shadow: 0px 0px 3px #999999 inset;
 }
 
-/* line 66, ../sass/modules.scss */
+/* line 79, ../sass/modules.scss */
 .msg-submit {
   display: block;
   padding-left: 12px;
   padding-right: 12px;
   cursor: pointer;
 }
-/* line 75, ../sass/modules.scss */
+/* line 88, ../sass/modules.scss */
 .msg-submit:focus {
   outline: none;
 }
 
 /* 	Message:body -------------------------------------------- */
-/* line 82, ../sass/modules.scss */
+/* line 95, ../sass/modules.scss */
+.msg-body {
+  background-color: #cccccc;
+  border-top: 1px solid #bbbbbb;
+  -webkit-transition: all .1s ease-out;
+  -moz-transition: all .1s ease-out;
+  -ms-transition: all .1s ease-out;
+  -o-transition: all .1s ease-out;
+  transition: all .1s ease-out;
+  top: initial;
+  z-index: 1;
+}
+
+/* line 107, ../sass/modules.scss */
 .msg-body__textarea, .hiddendiv {
   display: block;
   background-color: inherit;
@@ -250,12 +273,12 @@ body {
   resize: none;
   width: 90%;
 }
-/* line 91, ../sass/modules.scss */
+/* line 116, ../sass/modules.scss */
 .msg-body__textarea:focus, .hiddendiv:focus {
   outline: none;
 }
 
-/* line 96, ../sass/modules.scss */
+/* line 121, ../sass/modules.scss */
 .hiddendiv {
   display: none;
   white-space: pre-wrap;
@@ -263,35 +286,35 @@ body {
   overflow: hidden;
 }
 
-/* line 105, ../sass/modules.scss */
+/* line 130, ../sass/modules.scss */
 .no-scroll {
   overflow: hidden;
 }
 
 /* 	Autocomplete
 	------------------------------------------------------- */
-/* line 112, ../sass/modules.scss */
+/* line 137, ../sass/modules.scss */
 .ui-autocomplete {
   background-color: #efefef;
   padding: 0px 20px 10px;
   max-width: 70%;
 }
 
-/* line 126, ../sass/modules.scss */
+/* line 151, ../sass/modules.scss */
 .google-contact-email {
   font-style: italic;
   color: #8b8b8b;
   padding-left: 10px;
 }
 
-/* line 133, ../sass/modules.scss */
+/* line 158, ../sass/modules.scss */
 .ui-state-focus {
   border-bottom: 1px solid #bbbbbb;
 }
 
 /* 	Social network connect
 	------------------------------------------------------- */
-/* line 140, ../sass/modules.scss */
+/* line 165, ../sass/modules.scss */
 .accounts {
   position: fixed;
   bottom: 0;
@@ -302,7 +325,7 @@ body {
   overflow: visible;
 }
 
-/* line 149, ../sass/modules.scss */
+/* line 174, ../sass/modules.scss */
 .channel-toggle {
   display: block;
   color: rgba(204, 204, 204, 0.5);
@@ -315,12 +338,12 @@ body {
 
 /* 	Helper text
 	------------------------------------------------------- */
-/* line 162, ../sass/modules.scss */
+/* line 187, ../sass/modules.scss */
 .helper {
   display: inline-block;
 }
 
-/* line 168, ../sass/modules.scss */
+/* line 193, ../sass/modules.scss */
 .get-started {
   padding: 6px 12px;
   left: -400px;

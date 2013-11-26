@@ -2,14 +2,14 @@
   <label for="contacts" class="msg-to__label">to:</label>
   <div class="msg-to__addresses">
   	<div class="approved-contacts">
-  		<div ng-repeat="address in addresses">
+  	<input name="email" id="contacts" class="msg-to__input" tabindex="1" autofocus autocomplete="off" />
+      <div ng-repeat="address in addresses">
         <!-- TODO
         Add a class name to this span that reflects the type of contact (address.type) -->
-  			<span class="approved-contacts__address">{{ address.address }}</span>
-  			<a ng-click="delete($index)" class="approved-contacts__remove">⨯</a ng-click="delete($index)">
-  		</div>
-  	</div>
-  	<input name="email" id="contacts" class="msg-to__input" tabindex="1" autofocus autocomplete="off" />
+        <span class="approved-contacts__address">{{ address.address }}</span>
+        <a ng-click="delete($index)" class="approved-contacts__remove">⨯</a ng-click="delete($index)">
+      </div>
+    </div>
   </div>
   <div>
 	  <input class="msg-submit" id="submit" type="submit" value="send" tabindex="3"/>

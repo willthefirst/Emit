@@ -238,4 +238,89 @@ controller('AppCtrl', function($scope, $http, $cookies) {
         };
     });
 
+
+    // TODO put this somewhere else, just loading it here because it is dependent on rendering of template views first.
+    $(function() {
+
+        setTimeout(function() {
+                // Autoresize textarea
+                var txt = $('.msg-body__textarea'),
+                    hiddenDiv = $(document.createElement('div')),
+                    content = null;
+
+                txt.addClass('txtstuff no-scroll');
+                hiddenDiv.addClass('hiddendiv common');
+
+                $('body').append(hiddenDiv);
+
+                txt.on('keyup', function () {
+
+                    content = $(this).val();
+
+                    content = content.replace(/\n/g, '<br>');
+                    hiddenDiv.html(content + '<br class="lbr">');
+
+                    $(this).css('height', (hiddenDiv.height()+60));
+                });
+
+                // Show/hide relevant section
+                var $msg_body = $('#msg-compose');
+                var $msg_address = $('#msg-address');
+
+                var msg_body_top;
+
+                $(".msg-body__textarea").on('focus', function() {
+                    msg_body_top = 89 - ($msg_body[0].offsetTop);
+                    $msg_body.css({
+                        '-webkit-transform': 'translate3d(0, ' + msg_body_top + 'px, 0)',
+                        '-moz-transform': 'translate3d(0, ' + msg_body_top + 'px, 0)',
+                        '-ms-transform': 'translate3d(0, ' + msg_body_top + 'px, 0)',
+                        '-o-transform': 'translate3d(0, ' + msg_body_top + 'px, 0)',
+                        'transform': 'translate3d(0, ' + msg_body_top + 'px, 0)'
+                    });
+                    $msg_address.addClass('no-focus');
+
+                });
+                console.log($('.msg-to__input'));
+                $('.msg-to__input').on('focus', function() {
+                    $msg_body.css({
+                        '-webkit-transform': 'translate3d(0, 0px, 0)',
+                        '-moz-transform': 'translate3d(0, 0px, 0)',
+                        '-ms-transform': 'translate3d(0, 0px, 0)',
+                        '-o-transform': 'translate3d(0, 0px, 0)',
+                        'transform': 'translate3d(0, 0px, 0)'
+                    });
+                    $msg_address.removeClass('no-focus');
+
+                });
+
+
+                // Shortcut to send
+                // $(document).keydown(function(e) {
+                   //  if (e.which === 13 && (e.ctrlKey || e.metaKey)) { // Ctrl + b
+                   //      $("#gmail-form").submit();
+                   //  }
+                // });
+
+                // <https://github.com/jaredhanson/passport-facebook/issues/12>
+                if (window.location.hash && window.location.hash === "#_=_") {
+                  if (window.history && history.pushState) {
+                    window.history.pushState("", document.title, window.location.pathname);
+                  } else {
+                    // Prevent scrolling by storing the page's current scroll offset
+                    var scroll = {
+                      top: document.body.scrollTop,
+                      left: document.body.scrollLeft
+                    };
+                    window.location.hash = "";
+                    // Restore the scroll offset, should be flicker free
+                    document.body.scrollTop = scroll.top;
+                    document.body.scrollLeft = scroll.left;
+                  }
+                }
+        }, 300);
+    });
+
+
+
 });
