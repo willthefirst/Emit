@@ -1,9 +1,9 @@
 /*
 Syntax error: Undefined variable: "$gray-dark".
-        on line 15 of /Users/willthefirst/Sites/emit/public/sass/modules.scss
+        on line 21 of /Users/willthefirst/Sites/emit/public/sass/modules.scss
 
 Backtrace:
-/Users/willthefirst/Sites/emit/public/sass/modules.scss:15
+/Users/willthefirst/Sites/emit/public/sass/modules.scss:21
 /Users/willthefirst/.rvm/gems/ruby-1.9.3-p194@cf/gems/sass-3.2.8/lib/sass/script/variable.rb:49:in `_perform'
 /Users/willthefirst/.rvm/gems/ruby-1.9.3-p194@cf/gems/sass-3.2.8/lib/sass/script/node.rb:40:in `perform'
 /Users/willthefirst/.rvm/gems/ruby-1.9.3-p194@cf/gems/sass-3.2.8/lib/sass/script/operation.rb:74:in `_perform'
@@ -92,4 +92,4 @@ Backtrace:
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Syntax error: Undefined variable: \"$gray-dark\".\A         on line 15 of /Users/willthefirst/Sites/emit/public/sass/modules.scss"; }
+  content: "Syntax error: Undefined variable: \"$gray-dark\".\A         on line 21 of /Users/willthefirst/Sites/emit/public/sass/modules.scss"; }

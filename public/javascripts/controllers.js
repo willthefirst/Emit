@@ -209,7 +209,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
         $scope.send = function() {
             var address;
-            var all_emails;
+            var all_emails = [];
             for (var i = 0; i < $scope.addresses.length; i++) {
                 address = $scope.addresses[i].address;
                 if (address.type === 'facebook') {
@@ -228,13 +228,13 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                         $scope.result = (status, data.result);
                     });
                 } else {
-                    all.emails.push(address);
+                    all_emails.push(address);
                     // TODO build validation for this to make sure we're not sending stupid addresses.
                 }
             }
 
             // After we've collected all valid emails, send to them in a batch instead of one by one.
-            if(all_emails) {
+            if(all_emails.length > 0) {
                 $http({
                     method: 'POST',
                     url: '/user/google/send',
@@ -290,18 +290,19 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 var msg_body_top;
 
                 $(".msg-body__textarea").on('focus', function() {
-                    msg_body_top = 89 - ($msg_body[0].offsetTop);
+                    msg_body_top = 29 - ($msg_body[0].offsetTop);
+
                     $msg_body.css({
                         '-webkit-transform': 'translate3d(0, ' + msg_body_top + 'px, 0)',
                         '-moz-transform': 'translate3d(0, ' + msg_body_top + 'px, 0)',
                         '-ms-transform': 'translate3d(0, ' + msg_body_top + 'px, 0)',
                         '-o-transform': 'translate3d(0, ' + msg_body_top + 'px, 0)',
                         'transform': 'translate3d(0, ' + msg_body_top + 'px, 0)'
-                    });
+                    }).addClass('focus');
+
                     $msg_address.addClass('no-focus');
 
                 });
-                console.log($('.msg-to__input'));
                 $('.msg-to__input').on('focus', function() {
                     $msg_body.css({
                         '-webkit-transform': 'translate3d(0, 0px, 0)',
@@ -309,7 +310,8 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                         '-ms-transform': 'translate3d(0, 0px, 0)',
                         '-o-transform': 'translate3d(0, 0px, 0)',
                         'transform': 'translate3d(0, 0px, 0)'
-                    });
+                    }).removeClass('focus');;
+
                     $msg_address.removeClass('no-focus');
 
                 });

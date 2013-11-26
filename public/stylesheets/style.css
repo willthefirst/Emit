@@ -165,20 +165,25 @@ body {
 /* 	Message:to  -------------------------------------------- */
 /* line 6, ../sass/modules.scss */
 #msg-address {
+  position: relative;
   -webkit-transition: all .1s linear;
   -moz-transition: all .1s linear;
   -ms-transition: all .1s linear;
   -o-transition: all .1s linear;
   transition: all .1s linear;
 }
-/* line 13, ../sass/modules.scss */
+/* line 14, ../sass/modules.scss */
 #msg-address.no-focus {
-  position: relative;
+  -webkit-transform: translate3d(0, -20px, 0);
+  -moz-transform: translate3d(0, -20px, 0);
+  -ms-transform: translate3d(0, -20px, 0);
+  -o-transform: translate3d(0, -20px, 0);
+  transform: translate3d(0, -20px, 0);
   color: #a5a5a5;
   background-color: #bababa;
 }
 
-/* line 24, ../sass/modules.scss */
+/* line 30, ../sass/modules.scss */
 .msg-to__flex {
   flex: 1 1 100%;
   display: flex;
@@ -187,13 +192,13 @@ body {
   padding: 0 2%;
 }
 
-/* line 35, ../sass/modules.scss */
+/* line 41, ../sass/modules.scss */
 .msg-to__addresses {
   flex: 1;
   margin: 0 0 0 20px;
 }
 
-/* line 40, ../sass/modules.scss */
+/* line 46, ../sass/modules.scss */
 .msg-to__input {
   font-family: inherit;
   font-size: inherit;
@@ -203,29 +208,30 @@ body {
   display: block;
   padding: 0;
   width: 100%;
+  color: input;
 }
-/* line 51, ../sass/modules.scss */
+/* line 57, ../sass/modules.scss */
 .msg-to__input:focus {
   outline: none;
 }
 
-/* line 56, ../sass/modules.scss */
+/* line 62, ../sass/modules.scss */
 .ui-helper-hidden-accessible {
   display: none;
 }
 
-/* line 60, ../sass/modules.scss */
+/* line 66, ../sass/modules.scss */
 .approved-contacts__remove {
   display: inline-block;
   cursor: pointer;
 }
-/* line 64, ../sass/modules.scss */
+/* line 70, ../sass/modules.scss */
 .approved-contacts__remove:hover {
   color: #a74747;
 }
 
 /* 	Message:submit  -------------------------------------------- */
-/* line 72, ../sass/modules.scss */
+/* line 78, ../sass/modules.scss */
 .msg-submit, .helper {
   background-color: #bbbbbb;
   -webkit-border-radius: 2px;
@@ -239,20 +245,25 @@ body {
   box-shadow: 0px 0px 3px #999999 inset;
 }
 
-/* line 79, ../sass/modules.scss */
+/* line 85, ../sass/modules.scss */
 .msg-submit {
   display: block;
   padding-left: 12px;
   padding-right: 12px;
   cursor: pointer;
 }
-/* line 88, ../sass/modules.scss */
+/* line 94, ../sass/modules.scss */
 .msg-submit:focus {
   outline: none;
 }
 
 /* 	Message:body -------------------------------------------- */
-/* line 95, ../sass/modules.scss */
+/* line 102, ../sass/modules.scss */
+#msg-compose.focus {
+  box-shadow: 0 -2 2px #585858;
+}
+
+/* line 107, ../sass/modules.scss */
 .msg-body {
   background-color: #cccccc;
   border-top: 1px solid #bbbbbb;
@@ -265,7 +276,7 @@ body {
   z-index: 1;
 }
 
-/* line 107, ../sass/modules.scss */
+/* line 119, ../sass/modules.scss */
 .msg-body__textarea, .hiddendiv {
   display: block;
   background-color: inherit;
@@ -273,12 +284,12 @@ body {
   resize: none;
   width: 90%;
 }
-/* line 116, ../sass/modules.scss */
+/* line 128, ../sass/modules.scss */
 .msg-body__textarea:focus, .hiddendiv:focus {
   outline: none;
 }
 
-/* line 121, ../sass/modules.scss */
+/* line 133, ../sass/modules.scss */
 .hiddendiv {
   display: none;
   white-space: pre-wrap;
@@ -286,35 +297,35 @@ body {
   overflow: hidden;
 }
 
-/* line 130, ../sass/modules.scss */
+/* line 142, ../sass/modules.scss */
 .no-scroll {
   overflow: hidden;
 }
 
 /* 	Autocomplete
 	------------------------------------------------------- */
-/* line 137, ../sass/modules.scss */
+/* line 149, ../sass/modules.scss */
 .ui-autocomplete {
   background-color: #efefef;
   padding: 0px 20px 10px;
   max-width: 70%;
 }
 
-/* line 151, ../sass/modules.scss */
+/* line 163, ../sass/modules.scss */
 .google-contact-email {
   font-style: italic;
   color: #8b8b8b;
   padding-left: 10px;
 }
 
-/* line 158, ../sass/modules.scss */
+/* line 170, ../sass/modules.scss */
 .ui-state-focus {
   border-bottom: 1px solid #bbbbbb;
 }
 
 /* 	Social network connect
 	------------------------------------------------------- */
-/* line 165, ../sass/modules.scss */
+/* line 177, ../sass/modules.scss */
 .accounts {
   position: fixed;
   bottom: 0;
@@ -325,7 +336,7 @@ body {
   overflow: visible;
 }
 
-/* line 174, ../sass/modules.scss */
+/* line 186, ../sass/modules.scss */
 .channel-toggle {
   display: block;
   color: rgba(204, 204, 204, 0.5);
@@ -338,12 +349,12 @@ body {
 
 /* 	Helper text
 	------------------------------------------------------- */
-/* line 187, ../sass/modules.scss */
+/* line 199, ../sass/modules.scss */
 .helper {
   display: inline-block;
 }
 
-/* line 193, ../sass/modules.scss */
+/* line 205, ../sass/modules.scss */
 .get-started {
   padding: 6px 12px;
   left: -400px;
