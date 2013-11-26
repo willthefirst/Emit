@@ -175,7 +175,6 @@ exports.postToTimeline = function(req, res) {
             console.log('Error:', err);
             return handleError(err);
         }
-
         var message = request.body.body;
         var token = account.facebook.long_lived_token;
 
@@ -255,7 +254,7 @@ function getFacebookToken(req) {
             long_lived_token = long_lived_token[1].split('&');
             long_lived_token = long_lived_token[0];
             Accounts.findOrCreate({
-                'facebook.id': req.account.facebook.id
+                'userId': req.session.tmpUser.username
             }, function(err, account) {
                 account.facebook.long_lived_token = long_lived_token;
                 req.account.facebook.long_lived_token = long_lived_token;

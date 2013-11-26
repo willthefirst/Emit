@@ -34,7 +34,6 @@ exports.index = function(req, res){
 
     //     });
 
-
     // Production real logins
 
     // If there's a tmpUser
@@ -69,9 +68,7 @@ exports.index = function(req, res){
         res.clearCookie('fb_tok');
 
         res.render('index');
-
     }
-
 
 };
 
