@@ -87,6 +87,21 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             });
         }
 
+        function isValidAddress( string ) {
+
+            if (string === 'My Facebook Timeline') {
+                return 'facebook';
+            }
+            // TODO: regex check for email.
+            else if ( string === 'email' ) {
+                return 'email';
+            }
+            else {
+                alert('Invalid address');
+                return false;
+            }
+        }
+
         //TODO: initialize autocomplete with all data returned.
         function initializeAutocomplete(data) {
             console.log('initialized');
@@ -96,7 +111,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             $('#contacts').on('keypress', function(e){
                 var $this = $(this);
                 // If comma or enter is pressed
-                if (e.charCode === 13 || e.charCode === 44) {
+                if ((e.charCode === 13 || e.charCode === 44) && (isValidAddress($this.val()))) {
                     $scope.$apply(function(){
                         $scope.addresses.push({
                             address: $this.val(),
@@ -152,15 +167,19 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 },
                 select: function(event, ui) {
                     var $this = $(this);
-                    $scope.$apply(function(){
 
-                        $scope.addresses.push({
-                            address: ui.item.value,
-                            type: ui.item.type
+                    if (isValidAddress(ui.item.value)) {
+                        $scope.$apply(function(){
+
+                            $scope.addresses.push({
+                                address: ui.item.value,
+                                type: ui.item.type
+                            });
+                            $this.val('');
+
                         });
-                        $this.val('');
+                    }
 
-                    });
                     return false;
                 },
                 open: function() {
