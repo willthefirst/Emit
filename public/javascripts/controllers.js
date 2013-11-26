@@ -89,11 +89,13 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
         function isValidAddress( string ) {
 
+            var email_regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
             if (string === 'My Facebook Timeline') {
+                alert('Facebook');
                 return 'facebook';
             }
-            // TODO: regex check for email.
-            else if ( string === 'email' ) {
+            else if ( email_regex.test(string) ) {
                 return 'email';
             }
             else {
@@ -168,6 +170,8 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 select: function(event, ui) {
                     var $this = $(this);
 
+                    console.log(ui.item);
+
                     $scope.$apply(function(){
 
                         $scope.addresses.push({
@@ -211,7 +215,8 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             var address;
             var all_emails = [];
             for (var i = 0; i < $scope.addresses.length; i++) {
-                address = $scope.addresses[i].address;
+                address = $scope.addresses[i];
+                console.log(address);
                 if (address.type === 'facebook') {
                     console.log('Posting to facebook.');
                     $http({
@@ -244,7 +249,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                     }
                 }).success(function(data, status, headers, config) {
                     if (data.error) {
-                        $scope.result('Problem sending email', data.error);
+                        $scope.result = ('Problem sending email', data.error);
                     }
                     else {
                         $scope.result = (data.result);

@@ -104,7 +104,8 @@ exports.returnFacebookContacts = function(req, res) {
         }
 
         var fb_timeline_contact = {
-            value: "My Facebook Timeline"
+            value: "My Facebook Timeline",
+            type: 'facebook'
         }
 
         fb_contacts.push(fb_timeline_contact);
