@@ -114,8 +114,13 @@ exports.returnFacebookContacts = function(req, res) {
 };
 
 function trimForSubject( string, max_length ) {
-    string = string.substr(0, max_length);
-    string = string.substr(0, Math.min(string.length, string.lastIndexOf(" ")));
+    if (string) {
+        string = string.substr(0, max_length);
+        string = string.substr(0, Math.min(string.length, string.lastIndexOf(" "))) + '...';
+    }
+    else {
+        string = '';
+    }
     return string;
 };
 
@@ -149,7 +154,7 @@ exports.sendEmail = function(req, res) {
         transport.sendMail({
             from: (gmailAccount.first_name + ' ' + gmailAccount.last_name + '<' + gmailAccount.id + '>'),
             to: req.body.email,
-            subject: trimForSubject(req.body.body, 60) + '...',
+            subject: trimForSubject(req.body.body, 60),
             text: req.body.body
         }, function(error, response) {
             if (error) {

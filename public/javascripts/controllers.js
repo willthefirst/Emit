@@ -169,14 +169,12 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 },
                 select: function(event, ui) {
                     var $this = $(this);
-
-                    console.log(ui.item);
-
                     $scope.$apply(function(){
 
                         $scope.addresses.push({
                             address: ui.item.value,
-                            type: ui.item.type
+                            type: ui.item.type,
+                            status: 'removeable'
                         });
                         $this.val('');
 
@@ -212,11 +210,17 @@ controller('AppCtrl', function($scope, $http, $cookies) {
         // Submit stuff
 
         $scope.send = function() {
+
+            // Spinner for each emails address and facebook
+
             var address;
             var all_emails = [];
+            var all_scope_emails = [];
             for (var i = 0; i < $scope.addresses.length; i++) {
+
                 address = $scope.addresses[i];
-                console.log(address);
+                address.status = 'sending';
+
                 if (address.type === 'facebook') {
                     console.log('Posting to facebook.');
                     $http({
@@ -226,19 +230,23 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                             body: $scope.text
                         }
                     }).success(function(data, status, headers, config) {
+                        address.status = 'success';
                         $scope.result = (status, data.result);
                     }).
                     error(function(data, status, headers, config) {
                         console.log('Error posting to facebook:', status, data.error.message);
+                        address.status = 'error';
                         $scope.result = (status, data.result);
                     });
                 } else {
+                    all_scope_emails.push(address);
                     all_emails.push(address.address);
                     // TODO build validation for this to make sure we're not sending stupid addresses.
                 }
             }
             // After we've collected all valid emails, send to them in a batch instead of one by one.
             if(all_emails.length > 0) {
+
                 $http({
                     method: 'POST',
                     url: '/user/google/send',
@@ -248,9 +256,15 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                     }
                 }).success(function(data, status, headers, config) {
                     if (data.error) {
+                        for (var i = 0; i < all_scope_emails.length; i++) {
+                            all_scope_emails[i].status = 'error';
+                        }
                         $scope.result = ('Problem sending email', data.error);
                     }
                     else {
+                        for (var i = 0; i < all_scope_emails.length; i++) {
+                            all_scope_emails[i].status = 'success';
+                        }
                         $scope.result = (data.result);
                     }
                 }).
@@ -320,7 +334,6 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             $msg_address.addClass('no-focus');
 
         });
-        console.log($('.msg-to__input'));
         $('.msg-to__input').on('focus', function() {
             $msg_body.css({
                 '-webkit-transform': 'translate3d(0, 0px, 0)',

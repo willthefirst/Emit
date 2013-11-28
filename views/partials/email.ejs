@@ -6,10 +6,11 @@
           <input name="email" id="contacts" class="msg-to__input" tabindex="1" autofocus autocomplete="off" />
           <div class="approved-contacts">
             <div ng-repeat="address in addresses">
-              <!-- TODO
-              Add a class name to this span that reflects the type of contact (address.type) -->
-              <span class="approved-contacts__address">{{ address.address }}</span>
-              <a ng-click="delete($index)" class="approved-contacts__remove">⨯</a ng-click="delete($index)">
+                <!-- TODO
+                Add a class name to this span that reflects the type of contact (address.type) -->
+                <span class="approved-contacts__address">{{ address.address }}</span>
+                <address-status></address-status>
+                <a ng-click="delete($index)" class="approved-contacts__remove">⨯✓!</a>
             </div>
           </div>
         </div>
@@ -23,7 +24,6 @@
         <textarea name="body" cols="60" row="1" class="msg-body__textarea" tabindex="2" ng-model="text"></textarea>
       </div>
       <div class="msg-result">
-        <p>To : {{ addresses }}</p>
         <p>Result:
           {{ result }}
         </p>

@@ -6,7 +6,8 @@ angular.module('emit', [
 	'emit.controllers',
 	'emit.factories',
 	'emit.components',
-	'ngCookies'
+	'ngCookies',
+	'ngSanitize'
 ]).
 config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider.when( '/', {
