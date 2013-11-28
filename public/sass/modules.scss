@@ -66,24 +66,23 @@
 .approved-contacts__remove {
 	display: inline-block;
 	cursor: pointer;
+
+	&:hover {
+		color: rgb(167, 71, 71);
+	}
+}
+
+.waiting {
 	-webkit-transform-origin: 50% 64%;
 	-moz-transform-origin: 50% 64%;
 	-ms-transform-origin: 50% 64%;
 	-o-transform-origin: 50% 64%;
 	transform-origin: 50% 64%;
-
-
-	&:hover {
-		color: rgb(167, 71, 71);
-	}
-
-	&.waiting {
-		-webkit-animation: spin .6s linear infinite;
-		-moz-animation: spin .6s linear infinite;
-		-ms-animation: spin .6s linear infinite;
-		-o-animation: spin .6s linear infinite;
-		animation: spin .6s linear infinite;
-	}
+	-webkit-animation: spin .6s linear infinite;
+	-moz-animation: spin .6s linear infinite;
+	-ms-animation: spin .6s linear infinite;
+	-o-animation: spin .6s linear infinite;
+	animation: spin .6s linear infinite;
 }
 
 @-webkit-keyframes spin {

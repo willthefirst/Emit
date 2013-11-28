@@ -10,16 +10,17 @@ angular.module('emit.components', []).
 				scope.$watch( function(){return scope.address.status }, function(newVal, oldVal) {
 					switch (scope.address.status) {
 						case 'removeable':
-							element.html('removeable');
+							element.html('<a ng-click="delete($index)" class="approved-contacts__remove">⨯</a>');
 							break;
 						case 'sending':
-							element.html('sending');
+							console.log('sending');
+							element.html('<a class="waiting approved-contacts__remove">⨯</a>');
 							break;
 						case 'success':
-							element.html('success');
+							element.html('✓');
 							break;
 						case 'error':
-							element.html('error');
+							element.html('!');
 							break;
 					}
 				});
