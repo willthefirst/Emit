@@ -53,7 +53,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
     */
 
-}).controller('AutocompleteManager', function($scope, $http, $cookieStore, $cookies, retrieveContacts) {
+}).controller('AutocompleteManager', function($scope, $http, $cookieStore, $cookies, $timeout, retrieveContacts) {
     jQuery(document).ready(function($) {
 
         var gmailUser = $cookies.g_id;
@@ -231,7 +231,11 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                         }
                     }).success(function(data, status, headers, config) {
                         address.status = 'success';
+                        $timeout(function() {
+                            $scope.delete($scope.addresses.indexOf(address));
+                        }, 1000);
                         $scope.result = (status, data.result);
+
                     }).
                     error(function(data, status, headers, config) {
                         console.log('Error posting to facebook:', status, data.error.message);
@@ -265,6 +269,12 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                         for (var i = 0; i < all_scope_emails.length; i++) {
                             all_scope_emails[i].status = 'success';
                         }
+                        $timeout(function() {
+                            for (var i = 0; i < all_scope_emails.length; i++) {
+                                var index = $scope.addresses.indexOf(all_scope_emails[i]);
+                                $scope.delete(index);
+                            }
+                        }, 1000);
                         $scope.result = (data.result);
                     }
                 }).
