@@ -256,6 +256,7 @@ body {
 
 /* line 107, ../sass/modules.scss */
 .to-error__message {
+  display: none;
   position: absolute;
   background-color: #efefef;
   z-index: 2;

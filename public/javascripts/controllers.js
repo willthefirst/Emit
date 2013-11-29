@@ -234,14 +234,11 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                         $timeout(function() {
                             $scope.delete($scope.addresses.indexOf(address));
                         }, 1000);
-                        $scope.result = (status, data.result);
-
                     }).
                     error(function(data, status, headers, config) {
                         console.log('Error posting to facebook:', status, data.result.message);
-                        address.error = data.result.message;
                         address.status = 'error';
-                        $scope.result = (status, data.result.message);
+                        address.error = data.result.message;
                     });
                 } else {
                     all_scope_emails.push(address);
