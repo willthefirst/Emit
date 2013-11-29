@@ -4,6 +4,7 @@
 /* 	Message:to  -------------------------------------------- */
 
 #msg-address {
+	overflow: visible;
 	position: relative;
 	-webkit-transition: all .1s linear;
 	-moz-transition: all .1s linear;
@@ -68,7 +69,7 @@
 	cursor: pointer;
 
 	&:hover {
-		color: rgb(167, 71, 71);
+		color: $red;
 	}
 }
 
@@ -90,6 +91,44 @@
 	to { -webkit-transform: rotateZ(360deg); }
 }
 
+.to-error {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	color: $red;
+
+	&:hover {
+		.to-error__message {
+			display: block;
+		}
+	}
+}
+
+.to-error__message {
+	// display: none;
+	position: absolute;
+	background-color: $gray-light;
+	z-index: 2;
+	@include size-5;
+	padding: 8px;
+	width: 200px;
+	margin-left: -100px;
+	top: 110%;
+	box-shadow: 1px 1px 4px #aaa;
+
+	&:before {
+		position: absolute;
+		bottom: 100%;
+		left: 98px;
+		content: '';
+		display: block;
+		width: 0px;
+		height: 0px;
+		border-style: solid;
+		border-width: 0 6px 12px 6px;
+		border-color: transparent transparent $gray-light transparent;
+	}
+}
 
 /* 	Message:submit  -------------------------------------------- */
 

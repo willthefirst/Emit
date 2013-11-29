@@ -19,7 +19,7 @@ angular.module('emit.components', []).
 							element.html('✓');
 							break;
 						case 'error':
-							element.html('!');
+							element.html('<a class="to-error">!<div class="to-error__message">' + scope.address.error + '</div></a>');
 							break;
 					}
 				});

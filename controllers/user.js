@@ -210,7 +210,7 @@ exports.postToTimeline = function(req, res) {
                 var json = JSON.parse(data);
                 if ( json.error ) {
                     console.log("Problem posting to Facebook:", json.error.message);
-                    res.json({
+                    res.json( json.error.code , {
                         'result' : json.error
                     });
                 }

@@ -211,7 +211,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
         $scope.send = function() {
 
-            // Spinner for each emails address and facebook
+            $('.msg-to__input').focus();
 
             var address;
             var all_emails = [];
@@ -238,9 +238,10 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
                     }).
                     error(function(data, status, headers, config) {
-                        console.log('Error posting to facebook:', status, data.error.message);
+                        console.log('Error posting to facebook:', status, data.result.message);
+                        address.error = data.result.message;
                         address.status = 'error';
-                        $scope.result = (status, data.result);
+                        $scope.result = (status, data.result.message);
                     });
                 } else {
                     all_scope_emails.push(address);
@@ -330,7 +331,19 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
         var msg_body_top;
 
-        $(".msg-body__textarea").on('focus', function() {
+        function focusTo() {
+            $msg_body.css({
+                '-webkit-transform': 'translate3d(0, 0px, 0)',
+                '-moz-transform': 'translate3d(0, 0px, 0)',
+                '-ms-transform': 'translate3d(0, 0px, 0)',
+                '-o-transform': 'translate3d(0, 0px, 0)',
+                'transform': 'translate3d(0, 0px, 0)'
+            }).removeClass('focus');
+
+            $msg_address.removeClass('no-focus');
+        };
+
+        function focusBody() {
             msg_body_top = 29 - ($msg_body[0].offsetTop);
 
             $msg_body.css({
@@ -342,20 +355,10 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             }).addClass('focus');
 
             $msg_address.addClass('no-focus');
+        };
 
-        });
-        $('.msg-to__input').on('focus', function() {
-            $msg_body.css({
-                '-webkit-transform': 'translate3d(0, 0px, 0)',
-                '-moz-transform': 'translate3d(0, 0px, 0)',
-                '-ms-transform': 'translate3d(0, 0px, 0)',
-                '-o-transform': 'translate3d(0, 0px, 0)',
-                'transform': 'translate3d(0, 0px, 0)'
-            }).removeClass('focus');
-
-            $msg_address.removeClass('no-focus');
-
-        });
+        $(".msg-body__textarea").on('focus', focusBody);
+        $('.msg-to__input').on('focus', focusTo);
 
 
         // Shortcut to send

@@ -100,14 +100,14 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   font-style: italic;
 }
 
-/* line 45, ../sass/base.scss */
+/* line 48, ../sass/base.scss */
 body, .msg-submit, .msg-body__textarea, .hiddendiv {
   font-family: "TeX Gyre Pagella", "Palatino", "Georgia", "Times New Roman", "Hoefler Text", "Baskerville", serif;
 }
 
 /* 	Base styles
 	------------------------------------------------------- */
-/* line 91, ../sass/base.scss */
+/* line 94, ../sass/base.scss */
 body {
   font-size: 24px;
   line-height: 36px;
@@ -115,14 +115,14 @@ body {
   color: #1d1d1d;
 }
 @media screen and (min-width: 620px) {
-  /* line 91, ../sass/base.scss */
+  /* line 94, ../sass/base.scss */
   body {
     font-size: 30px;
     line-height: 45px;
   }
 }
 
-/* line 102, ../sass/base.scss */
+/* line 105, ../sass/base.scss */
 .wrapper-vert {
   overflow: hidden;
   *zoom: 1;
@@ -130,7 +130,7 @@ body {
   padding-top: 20px;
 }
 
-/* line 108, ../sass/base.scss */
+/* line 111, ../sass/base.scss */
 .wrapper-hor {
   overflow: hidden;
   *zoom: 1;
@@ -140,7 +140,7 @@ body {
 
 /* 	Utility
 	------------------------------------------------------- */
-/* line 117, ../sass/base.scss */
+/* line 120, ../sass/base.scss */
 .relative {
   position: relative;
 }
@@ -150,6 +150,7 @@ body {
 /* 	Message:to  -------------------------------------------- */
 /* line 6, ../sass/modules.scss */
 #msg-address {
+  overflow: visible;
   position: relative;
   -webkit-transition: all .1s linear;
   -moz-transition: all .1s linear;
@@ -157,7 +158,7 @@ body {
   -o-transition: all .1s linear;
   transition: all .1s linear;
 }
-/* line 14, ../sass/modules.scss */
+/* line 15, ../sass/modules.scss */
 #msg-address.no-focus {
   -webkit-transform: translate3d(0, -20px, 0);
   -moz-transform: translate3d(0, -20px, 0);
@@ -168,7 +169,7 @@ body {
   background-color: #bababa;
 }
 
-/* line 30, ../sass/modules.scss */
+/* line 31, ../sass/modules.scss */
 .msg-to__flex {
   flex: 1 1 100%;
   display: flex;
@@ -177,13 +178,13 @@ body {
   padding: 0 2%;
 }
 
-/* line 41, ../sass/modules.scss */
+/* line 42, ../sass/modules.scss */
 .msg-to__addresses {
   flex: 1;
   margin: 0 0 0 20px;
 }
 
-/* line 46, ../sass/modules.scss */
+/* line 47, ../sass/modules.scss */
 .msg-to__input {
   font-family: inherit;
   font-size: inherit;
@@ -195,27 +196,27 @@ body {
   width: 100%;
   color: inherit;
 }
-/* line 57, ../sass/modules.scss */
+/* line 58, ../sass/modules.scss */
 .msg-to__input:focus {
   outline: none;
 }
 
-/* line 62, ../sass/modules.scss */
+/* line 63, ../sass/modules.scss */
 .ui-helper-hidden-accessible {
   display: none;
 }
 
-/* line 66, ../sass/modules.scss */
+/* line 67, ../sass/modules.scss */
 .approved-contacts__remove {
   display: inline-block;
   cursor: pointer;
 }
-/* line 70, ../sass/modules.scss */
+/* line 71, ../sass/modules.scss */
 .approved-contacts__remove:hover {
   color: #a74747;
 }
 
-/* line 75, ../sass/modules.scss */
+/* line 76, ../sass/modules.scss */
 .waiting {
   -webkit-transform-origin: 50% 64%;
   -moz-transform-origin: 50% 64%;
@@ -230,19 +231,58 @@ body {
 }
 
 @-webkit-keyframes spin {
-  /* line 89, ../sass/modules.scss */
+  /* line 90, ../sass/modules.scss */
   from {
     -webkit-transform: rotateZ(0deg);
   }
 
-  /* line 90, ../sass/modules.scss */
+  /* line 91, ../sass/modules.scss */
   to {
     -webkit-transform: rotateZ(360deg);
   }
 }
 
+/* line 94, ../sass/modules.scss */
+.to-error {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  color: #a74747;
+}
+/* line 101, ../sass/modules.scss */
+.to-error:hover .to-error__message {
+  display: block;
+}
+
+/* line 107, ../sass/modules.scss */
+.to-error__message {
+  position: absolute;
+  background-color: #efefef;
+  z-index: 2;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 8px;
+  width: 200px;
+  margin-left: -100px;
+  top: 110%;
+  box-shadow: 1px 1px 4px #aaa;
+}
+/* line 119, ../sass/modules.scss */
+.to-error__message:before {
+  position: absolute;
+  bottom: 100%;
+  left: 98px;
+  content: '';
+  display: block;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0 6px 12px 6px;
+  border-color: transparent transparent #efefef transparent;
+}
+
 /* 	Message:submit  -------------------------------------------- */
-/* line 96, ../sass/modules.scss */
+/* line 135, ../sass/modules.scss */
 .msg-submit, .helper {
   background-color: #bbbbbb;
   -webkit-border-radius: 2px;
@@ -256,7 +296,7 @@ body {
   box-shadow: 0px 0px 3px #999999 inset;
 }
 
-/* line 103, ../sass/modules.scss */
+/* line 142, ../sass/modules.scss */
 .msg-submit {
   display: block;
   font-size: 24px;
@@ -265,18 +305,18 @@ body {
   padding-right: 12px;
   cursor: pointer;
 }
-/* line 112, ../sass/modules.scss */
+/* line 151, ../sass/modules.scss */
 .msg-submit:focus {
   outline: none;
 }
 
 /* 	Message:body -------------------------------------------- */
-/* line 120, ../sass/modules.scss */
+/* line 159, ../sass/modules.scss */
 #msg-compose.focus {
   box-shadow: 0 -2 2px #585858;
 }
 
-/* line 125, ../sass/modules.scss */
+/* line 164, ../sass/modules.scss */
 .msg-body {
   background-color: #cccccc;
   border-top: 1px solid #bbbbbb;
@@ -289,7 +329,7 @@ body {
   z-index: 1;
 }
 
-/* line 137, ../sass/modules.scss */
+/* line 176, ../sass/modules.scss */
 .msg-body__textarea, .hiddendiv {
   display: block;
   background-color: inherit;
@@ -300,18 +340,18 @@ body {
   width: 90%;
 }
 @media screen and (min-width: 620px) {
-  /* line 137, ../sass/modules.scss */
+  /* line 176, ../sass/modules.scss */
   .msg-body__textarea, .hiddendiv {
     font-size: 24px;
     line-height: 36px;
   }
 }
-/* line 150, ../sass/modules.scss */
+/* line 189, ../sass/modules.scss */
 .msg-body__textarea:focus, .hiddendiv:focus {
   outline: none;
 }
 
-/* line 155, ../sass/modules.scss */
+/* line 194, ../sass/modules.scss */
 .hiddendiv {
   display: none;
   white-space: pre-wrap;
@@ -319,33 +359,33 @@ body {
   overflow: hidden;
 }
 
-/* line 164, ../sass/modules.scss */
+/* line 203, ../sass/modules.scss */
 .no-scroll {
   overflow: hidden;
 }
 
 /* 	Autocomplete
 	------------------------------------------------------- */
-/* line 171, ../sass/modules.scss */
+/* line 210, ../sass/modules.scss */
 .ui-autocomplete {
   background-color: #efefef;
   padding: 0px 20px 10px;
   max-width: 70%;
 }
 
-/* line 177, ../sass/modules.scss */
+/* line 216, ../sass/modules.scss */
 .google-contact-name {
   font-size: 24px;
   line-height: 36px;
 }
 
-/* line 181, ../sass/modules.scss */
+/* line 220, ../sass/modules.scss */
 .google-contact-email-only {
   font-size: 24px;
   line-height: 36px;
 }
 
-/* line 185, ../sass/modules.scss */
+/* line 224, ../sass/modules.scss */
 .google-contact-email {
   font-size: 16px;
   line-height: 24px;
@@ -354,14 +394,14 @@ body {
   padding-left: 10px;
 }
 
-/* line 192, ../sass/modules.scss */
+/* line 231, ../sass/modules.scss */
 .ui-state-focus {
   border-bottom: 1px solid #bbbbbb;
 }
 
 /* 	Social network connect
 	------------------------------------------------------- */
-/* line 199, ../sass/modules.scss */
+/* line 238, ../sass/modules.scss */
 .accounts {
   position: fixed;
   bottom: 0;
@@ -372,7 +412,7 @@ body {
   overflow: visible;
 }
 
-/* line 208, ../sass/modules.scss */
+/* line 247, ../sass/modules.scss */
 .channel-toggle {
   display: block;
   color: rgba(204, 204, 204, 0.5);
@@ -385,14 +425,14 @@ body {
 
 /* 	Helper text
 	------------------------------------------------------- */
-/* line 221, ../sass/modules.scss */
+/* line 260, ../sass/modules.scss */
 .helper {
   font-size: 20px;
   line-height: 30px;
   display: inline-block;
 }
 
-/* line 227, ../sass/modules.scss */
+/* line 266, ../sass/modules.scss */
 .get-started {
   padding: 6px 12px;
   left: -400px;
