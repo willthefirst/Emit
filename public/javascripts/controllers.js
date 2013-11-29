@@ -222,6 +222,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 address.status = 'sending';
 
                 if (address.type === 'facebook') {
+                    var fb_address = address;
                     console.log('Posting to facebook.');
                     $http({
                         method: 'POST',
@@ -230,15 +231,15 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                             body: $scope.text
                         }
                     }).success(function(data, status, headers, config) {
-                        address.status = 'success';
+                        fb_address.status = 'success';
                         $timeout(function() {
-                            $scope.delete($scope.addresses.indexOf(address));
+                            $scope.delete($scope.addresses.indexOf(fb_address));
                         }, 1000);
                     }).
                     error(function(data, status, headers, config) {
                         console.log('Error posting to facebook:', status, data.result.message);
-                        address.status = 'error';
-                        address.error = data.result.message;
+                        fb_address.status = 'error';
+                        fb_address.error = data.result.message;
                     });
                 } else {
                     all_scope_emails.push(address);
