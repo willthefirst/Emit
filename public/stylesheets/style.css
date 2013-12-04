@@ -364,6 +364,7 @@ body {
   -ms-transition: height .1s ease;
   -o-transition: height .1s ease;
   transition: height .1s ease;
+  min-height: 500px;
 }
 @media screen and (min-width: 620px) {
   /* line 199, ../sass/modules.scss */
@@ -372,12 +373,12 @@ body {
     line-height: 36px;
   }
 }
-/* line 219, ../sass/modules.scss */
+/* line 220, ../sass/modules.scss */
 .msg-body__textarea:focus, .hiddendiv:focus {
   outline: none;
 }
 
-/* line 224, ../sass/modules.scss */
+/* line 225, ../sass/modules.scss */
 .hiddendiv {
   display: none;
   white-space: pre-wrap;
@@ -385,33 +386,33 @@ body {
   overflow: hidden;
 }
 
-/* line 233, ../sass/modules.scss */
+/* line 234, ../sass/modules.scss */
 .no-scroll {
   overflow: hidden;
 }
 
 /* 	Autocomplete
 	------------------------------------------------------- */
-/* line 240, ../sass/modules.scss */
+/* line 241, ../sass/modules.scss */
 .ui-autocomplete {
   background-color: #efefef;
   padding: 0px 20px 10px;
   max-width: 70%;
 }
 
-/* line 246, ../sass/modules.scss */
+/* line 247, ../sass/modules.scss */
 .google-contact-name {
   font-size: 24px;
   line-height: 36px;
 }
 
-/* line 250, ../sass/modules.scss */
+/* line 251, ../sass/modules.scss */
 .google-contact-email-only {
   font-size: 24px;
   line-height: 36px;
 }
 
-/* line 254, ../sass/modules.scss */
+/* line 255, ../sass/modules.scss */
 .google-contact-email {
   font-size: 16px;
   line-height: 24px;
@@ -420,14 +421,14 @@ body {
   padding-left: 10px;
 }
 
-/* line 261, ../sass/modules.scss */
+/* line 262, ../sass/modules.scss */
 .ui-state-focus {
   border-bottom: 1px solid #bbbbbb;
 }
 
 /* 	Social network connect
 	------------------------------------------------------- */
-/* line 268, ../sass/modules.scss */
+/* line 269, ../sass/modules.scss */
 .accounts {
   position: fixed;
   bottom: 0;
@@ -438,7 +439,7 @@ body {
   overflow: visible;
 }
 
-/* line 277, ../sass/modules.scss */
+/* line 278, ../sass/modules.scss */
 .channel-toggle {
   display: block;
   color: rgba(204, 204, 204, 0.5);
@@ -449,16 +450,26 @@ body {
   text-shadow: 1px 4px 6px #cccccc, 0 0 0px black, 1px 4px 6px #cccccc;
 }
 
+/* line 288, ../sass/modules.scss */
+.fb-connected {
+  color: blue;
+}
+
+/* line 292, ../sass/modules.scss */
+.g-connected {
+  color: red;
+}
+
 /* 	Helper text
 	------------------------------------------------------- */
-/* line 290, ../sass/modules.scss */
+/* line 299, ../sass/modules.scss */
 .helper {
   font-size: 20px;
   line-height: 30px;
   display: inline-block;
 }
 
-/* line 296, ../sass/modules.scss */
+/* line 305, ../sass/modules.scss */
 .get-started {
   padding: 6px 12px;
   left: -400px;

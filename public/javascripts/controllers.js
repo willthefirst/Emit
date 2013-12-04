@@ -120,6 +120,11 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                         });
                     });
                     $this.val('');
+
+                    if ($scope.addresses.length === 1) {
+                        makeSendable(true);
+                    }
+
                     return false;
                 };
             });
@@ -214,8 +219,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
         };
 
         function makeSendable( sendable ) {
-            console.log(sendable);
-            var $submit = $('msg-submit');
+            var $submit = $('.msg-submit');
             if(!sendable) {
                 $submit.addClass('disabled');
             }
@@ -337,8 +341,6 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
             content = content.replace(/\n/g, '<br>');
             hiddenDiv.html(content + '<br class="lbr">');
-
-            console.log(hiddenDiv.height());
 
             $(this).css('height', (hiddenDiv.height()+50));
         });

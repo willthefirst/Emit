@@ -52,7 +52,10 @@ exports.index = function(req, res){
             res.cookie('fb_id', account.facebook.id);
             res.cookie('fb_tok', account.facebook.long_lived_token);
 
-            res.render('index');
+            res.render('index', {
+                fbStatus: 'fb-connected',
+                gStatus: 'g-connected'
+            });
 
         });
 
@@ -67,12 +70,53 @@ exports.index = function(req, res){
         res.clearCookie('fb_id');
         res.clearCookie('fb_tok');
 
-        res.render('index');
+
+        res.render('index', {
+            fbStatus: '',
+            gStatus: ''
+        });
     }
 
 };
 
 exports.partials = function(req, res) {
     var name = req.params.name;
-    res.render('partials/' + name);
+
+
+    if(req.session.tmpUser) {
+
+        var fb_connected, g_connected;
+        console.log(req.session.tmpUser);
+        if( req.session.tmpUser.googleConnected ) {
+            console.log('Yes Google');
+            g_connected = 'g-connected';
+        }
+        if( req.session.tmpUser.facebookConnected ) {
+            console.log('Yes Facebook');
+            fb_connected = 'fb-connected';
+        }
+
+        Accounts.findOne({ userId : req.session.tmpUser.username}, function(err, account) {
+            if (err) {
+                console.log('Error:', err);
+                return handleError(err);
+            }
+
+            res.render('partials/' + name, {
+                fbStatus: fb_connected,
+                gStatus: g_connected
+            });
+
+        });
+
+    }
+
+    // Else: no tmpUser
+    else {
+
+        res.render('partials/' + name, {
+            fbStatus: '',
+            gStatus: ''
+        });
+    }
 };
