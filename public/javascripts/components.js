@@ -12,7 +12,6 @@ angular.module('emit.components', []).
 						case 'removeable':
 							break;
 						case 'sending':
-							console.log('sending');
 							element.html('<a class="waiting approved-contacts__remove">⨯</a>');
 							break;
 						case 'success':

@@ -134,19 +134,42 @@
 
 %inlay {
 	background-color: $gray-dark;
-	@include border-radius(2px);
 	border: none;
 	@include box-shadow(0px 0px 3px #999 inset);
 }
 
 .msg-submit {
-	@extend %inlay;
+	border: none;
+	margin: 0;
+	margin-bottom: 0;
 	display: block;
 	@extend %font;
 	@include size-3;
 	padding-left: 12px;
 	padding-right: 12px;
 	cursor: pointer;
+	position: fixed;
+	top: 0;
+	right: 0;
+	box-shadow: 0 1px 3px #999;
+	-webkit-transition: all .2s ease;
+	-moz-transition: all .2s ease;
+	-ms-transition: all .2s ease;
+	-o-transition: all .2s ease;
+	transition: all .2s ease;
+
+
+	&.disabled {
+		 -webkit-transform: translateX( 80px );
+		 -moz-transform: translateX( 80px );
+		 -ms-transform: translateX( 80px );
+		 -o-transform: translateX( 80px );
+		 transform: translateX( 80px );
+	}
+
+	&:hover {
+		outline: none;
+	}
 
 	&:focus {
 		outline: none;
@@ -181,6 +204,13 @@
 	@include size-4;
 	@extend %font;
 	width: 90%;
+	min-height: 40px;
+	-webkit-transition: height .1s ease;
+	-moz-transition: height .1s ease;
+	-ms-transition: height .1s ease;
+	-o-transition: height .1s ease;
+	transition: height .1s ease;
+
 
 	@media screen and (min-width: 620px) {
 		@include size-3;

@@ -92,14 +92,13 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             var email_regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
             if (string === 'My Facebook Timeline') {
-                alert('Facebook');
                 return 'facebook';
             }
             else if ( email_regex.test(string) ) {
                 return 'email';
             }
             else {
-                alert('Invalid address');
+                alert('Please enter a valid recipient.');
                 return false;
             }
         }
@@ -178,6 +177,10 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                         });
                         $this.val('');
 
+                        if ($scope.addresses.length === 1) {
+                            makeSendable(true);
+                        }
+
                     });
 
                     return false;
@@ -205,6 +208,20 @@ controller('AppCtrl', function($scope, $http, $cookies) {
         $scope.delete = function ( idx ) {
             var address_to_delete = $scope.addresses[idx];
             $scope.addresses.splice(idx, 1);
+            if ($scope.addresses.length < 1) {
+                makeSendable(false);
+            }
+        };
+
+        function makeSendable( sendable ) {
+            console.log(sendable);
+            var $submit = $('msg-submit');
+            if(!sendable) {
+                $submit.addClass('disabled');
+            }
+            else {
+                $submit.removeClass('disabled');
+            }
         };
 
         // Submit stuff
@@ -316,11 +333,14 @@ controller('AppCtrl', function($scope, $http, $cookies) {
         txt.on('keyup', function () {
 
             content = $(this).val();
+            console.log(content);
 
             content = content.replace(/\n/g, '<br>');
             hiddenDiv.html(content + '<br class="lbr">');
 
-            $(this).css('height', (hiddenDiv.height()+60));
+            console.log(hiddenDiv.height());
+
+            $(this).css('height', (hiddenDiv.height()+50));
         });
 
         // Show/hide relevant section
