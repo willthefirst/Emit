@@ -72,3 +72,8 @@ routes.initialize(app);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+var cfg = require('./config.js').Config;
+
+console.log(cfg);
+

@@ -7,7 +7,7 @@ var https = require('https');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook');
 var LocalStrategy = require('passport-local').Strategy;
-
+var cfg = require('../config.js').Config;
 
 // Serialize stuff one time for sessions
 exports.serialize = function(passport) {
@@ -27,7 +27,7 @@ exports.serialize = function(passport) {
 var google_params = {
     client_id: '363206404232.apps.googleusercontent.com',
     client_secret: 'Dnd6HuZBwpZnh6XNF1Pgyx2h',
-    callbackURL: 'http://localhost:3000/user/google/auth/callback',
+    callbackURL: 'http://' + cfg.address + '/user/google/auth/callback',
     access_token: ''
 };
 
@@ -35,7 +35,7 @@ var google_params = {
 var facebook_params = {
     client_id: "348612998615744",
     client_secret: "88d7cce889bd0623710ec980724a7622",
-    callbackURL: "http://localhost:3000/user/facebook/auth/callback",
+    callbackURL: 'http://' + cfg.address + '/user/facebook/auth/callback',
     access_token: '',
     long_lived_token: ''
 };
