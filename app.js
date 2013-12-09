@@ -44,6 +44,13 @@ if ('development' == app.get('env')) {
   // set the db to the local one
   var mongoose_uri = 'mongodb://localhost/emit';
 }
+// Development only
+else ('production' == app.get('env')) {
+  app.use(express.errorHandler());
+
+  // set the db to the local one
+  var mongoose_uri = 'mongodb://heroku_app20218999:c789199530da84391d9ac77da112ce5d@ds053728.mongolab.com:53728/heroku_app20218999';
+}
 
 // Connect to the db
 mongoose.connect( mongoose_uri );
