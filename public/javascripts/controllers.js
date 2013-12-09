@@ -380,6 +380,22 @@ controller('AppCtrl', function($scope, $http, $cookies) {
         $(".msg-body__textarea").on('focus', focusBody);
         $('.msg-to__input').on('focus', focusTo);
 
+        $('.channel-toggle').on('click', function(event) {
+            event.preventDefault();
+            var win = window.open(event.target.href, "windowname1", 'width=800, height=600');
+            var home = window.document.URL;
+            var pollTimer   =   window.setInterval(function() {
+                try {
+                    console.log(win.document.URL);
+                    if (win.document.URL.indexOf(home) != -1) {
+                        window.clearInterval(pollTimer);
+                        win.close();
+                        window.location.reload();
+                    }
+                } catch(e) {
+                }
+            }, 500);
+        });
 
         // Shortcut to send
         // $(document).keydown(function(e) {

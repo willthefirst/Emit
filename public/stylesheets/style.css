@@ -294,6 +294,7 @@ body {
 
 /* line 141, ../sass/modules.scss */
 .msg-submit {
+  background-color: #efefef;
   border: none;
   margin: 0;
   margin-bottom: 0;
@@ -313,7 +314,7 @@ body {
   -o-transition: all .2s ease;
   transition: all .2s ease;
 }
-/* line 162, ../sass/modules.scss */
+/* line 163, ../sass/modules.scss */
 .msg-submit.disabled {
   -webkit-transform: translateX(80px);
   -moz-transform: translateX(80px);
@@ -321,22 +322,22 @@ body {
   -o-transform: translateX(80px);
   transform: translateX(80px);
 }
-/* line 170, ../sass/modules.scss */
+/* line 171, ../sass/modules.scss */
 .msg-submit:hover {
   outline: none;
 }
-/* line 174, ../sass/modules.scss */
+/* line 175, ../sass/modules.scss */
 .msg-submit:focus {
   outline: none;
 }
 
 /* 	Message:body -------------------------------------------- */
-/* line 182, ../sass/modules.scss */
+/* line 183, ../sass/modules.scss */
 #msg-compose.focus {
   box-shadow: 0 -2 2px #585858;
 }
 
-/* line 187, ../sass/modules.scss */
+/* line 188, ../sass/modules.scss */
 .msg-body {
   background-color: #cccccc;
   border-top: 1px solid #bbbbbb;
@@ -349,7 +350,7 @@ body {
   z-index: 1;
 }
 
-/* line 199, ../sass/modules.scss */
+/* line 200, ../sass/modules.scss */
 .msg-body__textarea, .hiddendiv {
   display: block;
   background-color: inherit;
@@ -367,18 +368,18 @@ body {
   min-height: 500px;
 }
 @media screen and (min-width: 620px) {
-  /* line 199, ../sass/modules.scss */
+  /* line 200, ../sass/modules.scss */
   .msg-body__textarea, .hiddendiv {
     font-size: 24px;
     line-height: 36px;
   }
 }
-/* line 220, ../sass/modules.scss */
+/* line 221, ../sass/modules.scss */
 .msg-body__textarea:focus, .hiddendiv:focus {
   outline: none;
 }
 
-/* line 225, ../sass/modules.scss */
+/* line 226, ../sass/modules.scss */
 .hiddendiv {
   display: none;
   white-space: pre-wrap;
@@ -386,33 +387,33 @@ body {
   overflow: hidden;
 }
 
-/* line 234, ../sass/modules.scss */
+/* line 235, ../sass/modules.scss */
 .no-scroll {
   overflow: hidden;
 }
 
 /* 	Autocomplete
 	------------------------------------------------------- */
-/* line 241, ../sass/modules.scss */
+/* line 242, ../sass/modules.scss */
 .ui-autocomplete {
   background-color: #efefef;
   padding: 0px 20px 10px;
   max-width: 70%;
 }
 
-/* line 247, ../sass/modules.scss */
+/* line 248, ../sass/modules.scss */
 .google-contact-name {
   font-size: 24px;
   line-height: 36px;
 }
 
-/* line 251, ../sass/modules.scss */
+/* line 252, ../sass/modules.scss */
 .google-contact-email-only {
   font-size: 24px;
   line-height: 36px;
 }
 
-/* line 255, ../sass/modules.scss */
+/* line 256, ../sass/modules.scss */
 .google-contact-email {
   font-size: 16px;
   line-height: 24px;
@@ -421,14 +422,14 @@ body {
   padding-left: 10px;
 }
 
-/* line 262, ../sass/modules.scss */
+/* line 263, ../sass/modules.scss */
 .ui-state-focus {
   border-bottom: 1px solid #bbbbbb;
 }
 
 /* 	Social network connect
 	------------------------------------------------------- */
-/* line 269, ../sass/modules.scss */
+/* line 270, ../sass/modules.scss */
 .accounts {
   position: fixed;
   bottom: 0;
@@ -439,7 +440,7 @@ body {
   overflow: visible;
 }
 
-/* line 278, ../sass/modules.scss */
+/* line 279, ../sass/modules.scss */
 .channel-toggle {
   display: block;
   color: rgba(204, 204, 204, 0.5);
@@ -450,14 +451,14 @@ body {
   text-shadow: 1px 4px 6px #cccccc, 0 0 0px black, 1px 4px 6px #cccccc;
 }
 
-/* line 288, ../sass/modules.scss */
+/* line 289, ../sass/modules.scss */
 .fb-connected {
   color: #345296;
   background-color: #cccccc;
   text-shadow: #cccccc 1px 3px 0px;
 }
 
-/* line 294, ../sass/modules.scss */
+/* line 295, ../sass/modules.scss */
 .g-connected {
   color: #883227;
   background-color: #cccccc;
@@ -466,14 +467,14 @@ body {
 
 /* 	Helper text
 	------------------------------------------------------- */
-/* line 303, ../sass/modules.scss */
+/* line 304, ../sass/modules.scss */
 .helper {
   font-size: 20px;
   line-height: 30px;
   display: inline-block;
 }
 
-/* line 309, ../sass/modules.scss */
+/* line 310, ../sass/modules.scss */
 .get-started {
   padding: 6px 12px;
   left: -400px;
