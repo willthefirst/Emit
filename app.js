@@ -38,16 +38,21 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(app.router);
 
 
-var mongoose_uri = 'mongodb://heroku_app20218999:c789199530da84391d9ac77da112ce5d@ds053728.mongolab.com:53728/heroku_app20218999';
+var mongoose_uri;
 app.use(express.errorHandler());
 
-// Development only
-if ('development' == app.get('env')) {
-console.log('Were in development');
+// development only
+app.configure('development', function(){
+	console.log('Were in development');
+	// set the db to the local one
+	mongoose_uri = 'mongodb://localhost/emit';
+});
 
-  // set the db to the local one
-  mongoose_uri = 'mongodb://localhost/emit';
-}
+// production only
+app.configure('production', function(){
+	console.log('Were in production');
+	mongoose_uri = 'mongodb://heroku_app20218999:c789199530da84391d9ac77da112ce5d@ds053728.mongolab.com:53728/heroku_app20218999';
+});
 
 // Connect to the db
 mongoose.connect( mongoose_uri );
