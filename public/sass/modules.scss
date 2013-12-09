@@ -286,11 +286,15 @@
 }
 
 .fb-connected {
-	color: blue;
+	color: #345296;
+	background-color: $gray;
+	text-shadow: $gray 1px 3px 0px;
 }
 
 .g-connected {
-	color: red;
+	color: #883227;
+	background-color: rgb(204, 204, 204);
+	text-shadow: rgb(224, 224, 224) 1px 1px 0px;
 }
 
 /* 	Helper text

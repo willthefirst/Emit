@@ -173,7 +173,7 @@ function userHandler( type, req, accessToken, refreshToken, profile, done ) {
             if (account) {
                 // Send the associated tmpUser back to the session.
                 User.findOne({
-                    'username': new_account.userId
+                    'username': account.userId
                 }, function(err, user) {
                     if (err) {
                         console.log('Error:', err);

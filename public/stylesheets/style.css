@@ -452,24 +452,28 @@ body {
 
 /* line 288, ../sass/modules.scss */
 .fb-connected {
-  color: blue;
+  color: #345296;
+  background-color: #cccccc;
+  text-shadow: #cccccc 1px 3px 0px;
 }
 
-/* line 292, ../sass/modules.scss */
+/* line 294, ../sass/modules.scss */
 .g-connected {
-  color: red;
+  color: #883227;
+  background-color: #cccccc;
+  text-shadow: #e0e0e0 1px 1px 0px;
 }
 
 /* 	Helper text
 	------------------------------------------------------- */
-/* line 299, ../sass/modules.scss */
+/* line 303, ../sass/modules.scss */
 .helper {
   font-size: 20px;
   line-height: 30px;
   display: inline-block;
 }
 
-/* line 305, ../sass/modules.scss */
+/* line 309, ../sass/modules.scss */
 .get-started {
   padding: 6px 12px;
   left: -400px;

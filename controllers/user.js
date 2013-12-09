@@ -258,16 +258,16 @@ function getFacebookToken(req) {
             long_lived_token = long_lived_token.split('access_token=');
             long_lived_token = long_lived_token[1].split('&');
             long_lived_token = long_lived_token[0];
-            // Accounts.findOrCreate({
-            //     'userId': req.session.tmpUser.username
-            // }, function(err, account) {
-            //     account.facebook.long_lived_token = long_lived_token;
-            //     req.account.facebook.long_lived_token = long_lived_token;
-            //     account.save(function(err) {
-            //         if (err) return handleError(err);
-            //         console.log('Facebook long-lived token updated');
-            //     });
-            // });
+            Accounts.findOrCreate({
+                'userId': req.session.tmpUser.username
+            }, function(err, account) {
+                account.facebook.long_lived_token = long_lived_token;
+                req.account.facebook.long_lived_token = long_lived_token;
+                account.save(function(err) {
+                    if (err) return handleError(err);
+                    console.log('Facebook long-lived token updated');
+                });
+            });
         });
     });
 }
