@@ -39,6 +39,7 @@ app.use(app.router);
 
 // Development only
 if ('development' == app.get('env')) {
+console.log('Were in development');
   app.use(express.errorHandler());
 
   // set the db to the local one
@@ -47,6 +48,7 @@ if ('development' == app.get('env')) {
 
 // Production only
 else if ('production' == app.get('env')) {
+	console.log('Were in production');
   app.use(express.errorHandler());
 
   // set the db to the local one
