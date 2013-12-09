@@ -51,13 +51,17 @@ app.configure('development', function(){
 // production only
 app.configure('production', function(){
 	console.log('Were in production');
-	mongoose_uri = 'mongodb://heroku_app20218999:c789199530da84391d9ac77da112ce5d@ds053728.mongolab.com:53728/heroku_app20218999';
+	mongoose_uri = process.env.MONGOLAB_URI;
 });
 
 // Connect to the db
-mongoose.connect( mongoose_uri );
-mongoose.connection.on('open', function(){
-  console.log("Connected to Mongoose") ;
+
+mongoose.connect( mongoose_uri, function (err, res) {
+  if (err) {
+    console.log ('ERROR connecting to: ' + mongoose_uri + '. ' + err);
+  } else {
+    console.log ('Succeeded connecting to: ' + mongoose_uri);
+  }
 });
 
 // Set up passport
@@ -72,8 +76,3 @@ routes.initialize(app);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
-
-var cfg = require('./config.js').Config;
-
-console.log(cfg);
-
