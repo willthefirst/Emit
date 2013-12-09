@@ -44,8 +44,9 @@ if ('development' == app.get('env')) {
   // set the db to the local one
   var mongoose_uri = 'mongodb://localhost/emit';
 }
-// Development only
-else ('production' == app.get('env')) {
+
+// Production only
+else if ('production' == app.get('env')) {
   app.use(express.errorHandler());
 
   // set the db to the local one
