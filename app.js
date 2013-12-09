@@ -37,22 +37,16 @@ app.use(require('express-jquery')('/jquery.js'));
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(app.router);
 
+
+var mongoose_uri = 'mongodb://heroku_app20218999:c789199530da84391d9ac77da112ce5d@ds053728.mongolab.com:53728/heroku_app20218999';
+app.use(express.errorHandler());
+
 // Development only
 if ('development' == app.get('env')) {
 console.log('Were in development');
-  app.use(express.errorHandler());
 
   // set the db to the local one
-  var mongoose_uri = 'mongodb://localhost/emit';
-}
-
-// Production only
-else if ('production' == app.get('env')) {
-	console.log('Were in production');
-  app.use(express.errorHandler());
-
-  // set the db to the local one
-  var mongoose_uri = 'mongodb://heroku_app20218999:c789199530da84391d9ac77da112ce5d@ds053728.mongolab.com:53728/heroku_app20218999';
+  mongoose_uri = 'mongodb://localhost/emit';
 }
 
 // Connect to the db
