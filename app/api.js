@@ -214,6 +214,33 @@ function userHandler( type, req, accessToken, refreshToken, profile, done ) {
     }
     // Else if there is a tmpUser in session: Authorization situation
     else {
+
+        if (type === 'facebook') {
+            User.findOneAndUpdate({ username : req.session.tmpUser.username}, {
+                facebookConnected : true
+            }, function(err, user) {
+                if (err) {
+                    console.log('Error:', err);
+                    return handleError(err);
+                }
+                console.log('User is now connected to Facebok');
+                req.session.tmpUser = user;
+            });
+        }
+        else {
+            User.findOneAndUpdate({ username : req.session.tmpUser.username}, {
+                googleConnected : true
+            }, function(err, user) {
+                if (err) {
+                    console.log('Error:', err);
+                    return handleError(err);
+                }
+                console.log('User is now connected to Google');
+                req.session.tmpUser = user;
+            });
+        }
+
+
         console.log('tmpUser exists in session');
         // Then at least one account must be connected and associated with tmp user (google or facebook)
         Accounts.findOneAndUpdate({ userId : req.session.tmpUser.username }, update_account, function(err, account) {

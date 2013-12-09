@@ -86,7 +86,7 @@ exports.partials = function(req, res) {
     if(req.session.tmpUser) {
 
         var fb_connected, g_connected;
-        console.log(req.session.tmpUser);
+        console.log('Tmp user:',  req.session.tmpUser);
         if( req.session.tmpUser.googleConnected ) {
             console.log('Yes Google');
             g_connected = 'g-connected';
@@ -113,6 +113,7 @@ exports.partials = function(req, res) {
 
     // Else: no tmpUser
     else {
+        console.log('No Tmp User');
 
         res.render('partials/' + name, {
             fbStatus: '',
