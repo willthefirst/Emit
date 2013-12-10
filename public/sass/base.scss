@@ -106,8 +106,14 @@ body {
 
 .wrapper-vert {
 	@include clearfix;
-	padding-bottom: 20px;
-	padding-top: 20px;
+	padding-bottom: 16px;
+	padding-top: 16px;
+
+	@media screen and (min-width: 620px) {
+		padding-bottom: 20px;
+		padding-top: 20px;
+
+	}
 }
 
 .wrapper-hor {

@@ -983,11 +983,18 @@ body {
 .wrapper-vert {
   overflow: hidden;
   *zoom: 1;
-  padding-bottom: 20px;
-  padding-top: 20px;
+  padding-bottom: 16px;
+  padding-top: 16px;
+}
+@media screen and (min-width: 620px) {
+  /* line 107, ../sass/base.scss */
+  .wrapper-vert {
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
 }
 
-/* line 113, ../sass/base.scss */
+/* line 119, ../sass/base.scss */
 .wrapper-hor {
   overflow: hidden;
   *zoom: 1;
@@ -997,7 +1004,7 @@ body {
 
 /* 	Utility
 	------------------------------------------------------- */
-/* line 122, ../sass/base.scss */
+/* line 128, ../sass/base.scss */
 .relative {
   position: relative;
 }
@@ -1026,7 +1033,20 @@ body {
   background-color: #bababa;
 }
 
-/* line 31, ../sass/modules.scss */
+/* line 27, ../sass/modules.scss */
+.msg-to {
+  font-size: 20px;
+  line-height: 30px;
+}
+@media screen and (min-width: 620px) {
+  /* line 27, ../sass/modules.scss */
+  .msg-to {
+    font-size: 24px;
+    line-height: 36px;
+  }
+}
+
+/* line 36, ../sass/modules.scss */
 .msg-to__flex {
   flex: 1 1 100%;
   display: flex;
@@ -1035,13 +1055,19 @@ body {
   padding: 0 2%;
 }
 
-/* line 42, ../sass/modules.scss */
+/* line 47, ../sass/modules.scss */
 .msg-to__addresses {
   flex: 1;
-  margin: 0 0 0 20px;
+  margin: -1px 0 0 8px;
+}
+@media screen and (min-width: 620px) {
+  /* line 47, ../sass/modules.scss */
+  .msg-to__addresses {
+    margin: -2px 0 0 20px;
+  }
 }
 
-/* line 47, ../sass/modules.scss */
+/* line 56, ../sass/modules.scss */
 .msg-to__input {
   font-family: inherit;
   font-size: inherit;
@@ -1052,32 +1078,32 @@ body {
   width: 100%;
   color: inherit;
 }
-/* line 57, ../sass/modules.scss */
+/* line 66, ../sass/modules.scss */
 .msg-to__input:focus {
   outline: none;
 }
 
-/* line 62, ../sass/modules.scss */
+/* line 71, ../sass/modules.scss */
 .ui-helper-hidden-accessible {
   display: none;
 }
 
-/* line 66, ../sass/modules.scss */
+/* line 75, ../sass/modules.scss */
 .approved-contacts__remove {
   display: inline-block;
   cursor: pointer;
 }
-/* line 70, ../sass/modules.scss */
+/* line 79, ../sass/modules.scss */
 .approved-contacts__remove:hover {
   color: #a74747;
 }
 
-/* line 75, ../sass/modules.scss */
+/* line 84, ../sass/modules.scss */
 .icon-address {
   font-size: 18px;
 }
 
-/* line 79, ../sass/modules.scss */
+/* line 88, ../sass/modules.scss */
 .waiting {
   -webkit-animation: spin 2s linear infinite;
   -moz-animation: spin 2s linear infinite;
@@ -1089,30 +1115,30 @@ body {
 }
 
 @-webkit-keyframes spin {
-  /* line 90, ../sass/modules.scss */
+  /* line 99, ../sass/modules.scss */
   0% {
     -webkit-transform: rotateZ(0deg);
   }
 
-  /* line 91, ../sass/modules.scss */
+  /* line 100, ../sass/modules.scss */
   100% {
     -webkit-transform: rotateZ(500deg);
   }
 }
 
-/* line 94, ../sass/modules.scss */
+/* line 103, ../sass/modules.scss */
 .to-error {
   display: inline-block;
   position: relative;
   cursor: pointer;
   color: #a74747;
 }
-/* line 101, ../sass/modules.scss */
+/* line 110, ../sass/modules.scss */
 .to-error:hover .to-error__message {
   display: block;
 }
 
-/* line 107, ../sass/modules.scss */
+/* line 116, ../sass/modules.scss */
 .to-error__message {
   display: none;
   position: absolute;
@@ -1126,7 +1152,7 @@ body {
   top: 110%;
   box-shadow: 1px 1px 4px #aaa;
 }
-/* line 119, ../sass/modules.scss */
+/* line 128, ../sass/modules.scss */
 .to-error__message:before {
   position: absolute;
   bottom: 100%;
@@ -1141,7 +1167,7 @@ body {
 }
 
 /* 	Message:submit  -------------------------------------------- */
-/* line 135, ../sass/modules.scss */
+/* line 144, ../sass/modules.scss */
 .helper {
   background-color: #bbbbbb;
   border: none;
@@ -1150,7 +1176,7 @@ body {
   box-shadow: 0px 0px 3px #999999 inset;
 }
 
-/* line 141, ../sass/modules.scss */
+/* line 150, ../sass/modules.scss */
 .msg-submit {
   background-color: #efefef;
   border: none;
@@ -1172,7 +1198,7 @@ body {
   -o-transition: all .2s ease;
   transition: all .2s ease;
 }
-/* line 163, ../sass/modules.scss */
+/* line 172, ../sass/modules.scss */
 .msg-submit.disabled {
   -webkit-transform: translateX(80px);
   -moz-transform: translateX(80px);
@@ -1180,22 +1206,22 @@ body {
   -o-transform: translateX(80px);
   transform: translateX(80px);
 }
-/* line 171, ../sass/modules.scss */
+/* line 180, ../sass/modules.scss */
 .msg-submit:hover {
   outline: none;
 }
-/* line 175, ../sass/modules.scss */
+/* line 184, ../sass/modules.scss */
 .msg-submit:focus {
   outline: none;
 }
 
 /* 	Message:body -------------------------------------------- */
-/* line 183, ../sass/modules.scss */
+/* line 192, ../sass/modules.scss */
 #msg-compose.focus {
   box-shadow: 0 -2 2px #585858;
 }
 
-/* line 188, ../sass/modules.scss */
+/* line 197, ../sass/modules.scss */
 .msg-body {
   background-color: #cccccc;
   border-top: 1px solid #bbbbbb;
@@ -1208,7 +1234,7 @@ body {
   z-index: 1;
 }
 
-/* line 200, ../sass/modules.scss */
+/* line 209, ../sass/modules.scss */
 .msg-body__textarea, .hiddendiv {
   display: block;
   background-color: inherit;
@@ -1226,18 +1252,18 @@ body {
   min-height: 500px;
 }
 @media screen and (min-width: 620px) {
-  /* line 200, ../sass/modules.scss */
+  /* line 209, ../sass/modules.scss */
   .msg-body__textarea, .hiddendiv {
     font-size: 24px;
     line-height: 36px;
   }
 }
-/* line 221, ../sass/modules.scss */
+/* line 230, ../sass/modules.scss */
 .msg-body__textarea:focus, .hiddendiv:focus {
   outline: none;
 }
 
-/* line 226, ../sass/modules.scss */
+/* line 235, ../sass/modules.scss */
 .hiddendiv {
   display: none;
   white-space: pre-wrap;
@@ -1245,34 +1271,40 @@ body {
   overflow: hidden;
 }
 
-/* line 235, ../sass/modules.scss */
+/* line 244, ../sass/modules.scss */
 .no-scroll {
   overflow: hidden;
 }
 
 /* 	Autocomplete
 	------------------------------------------------------- */
-/* line 242, ../sass/modules.scss */
+/* line 251, ../sass/modules.scss */
 .ui-autocomplete {
   background-color: #efefef;
-  padding: 0px 20px 10px;
+  padding: 5px 4px 5px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
   line-height: 18px;
+  max-width: 100%;
 }
 @media screen and (min-width: 620px) {
-  /* line 242, ../sass/modules.scss */
+  /* line 251, ../sass/modules.scss */
   .ui-autocomplete {
+    padding: 0px 20px 10px;
     line-height: inherit;
   }
 }
 
-/* line 253, ../sass/modules.scss */
+/* line 267, ../sass/modules.scss */
 .google-contact-name, .google-contact-email-only {
   font-size: 16px;
   line-height: 24px;
   display: block;
 }
 @media screen and (min-width: 620px) {
-  /* line 253, ../sass/modules.scss */
+  /* line 267, ../sass/modules.scss */
   .google-contact-name, .google-contact-email-only {
     font-size: 24px;
     line-height: 36px;
@@ -1281,7 +1313,7 @@ body {
   }
 }
 
-/* line 264, ../sass/modules.scss */
+/* line 278, ../sass/modules.scss */
 .google-contact-email {
   font-size: 16px;
   line-height: 24px;
@@ -1289,26 +1321,26 @@ body {
   color: #8b8b8b;
 }
 @media screen and (min-width: 620px) {
-  /* line 264, ../sass/modules.scss */
+  /* line 278, ../sass/modules.scss */
   .google-contact-email {
     padding-left: 10px;
   }
 }
 
 @media screen and (min-width: 620px) {
-  /* line 276, ../sass/modules.scss */
+  /* line 290, ../sass/modules.scss */
   .ui-state-focus {
     border-bottom: 1px solid #bbbbbb;
   }
 }
 
-/* line 283, ../sass/modules.scss */
+/* line 297, ../sass/modules.scss */
 .ui-menu-item {
   cursor: pointer;
   padding-bottom: 4px;
 }
 @media screen and (min-width: 620px) {
-  /* line 283, ../sass/modules.scss */
+  /* line 297, ../sass/modules.scss */
   .ui-menu-item {
     padding-bottom: 0;
   }
@@ -1316,7 +1348,7 @@ body {
 
 /* 	Social network connect
 	------------------------------------------------------- */
-/* line 297, ../sass/modules.scss */
+/* line 311, ../sass/modules.scss */
 .settings-toggle {
   position: fixed;
   right: 0;
@@ -1327,7 +1359,7 @@ body {
   cursor: pointer;
 }
 
-/* line 307, ../sass/modules.scss */
+/* line 321, ../sass/modules.scss */
 .accounts {
   -webkit-transition: -webkit-transform .1s linear;
   -moz-transition: -moz-transform .1s linear;
@@ -1349,7 +1381,7 @@ body {
   text-align: left;
   overflow: visible;
 }
-/* line 327, ../sass/modules.scss */
+/* line 341, ../sass/modules.scss */
 .accounts.active {
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
@@ -1359,7 +1391,7 @@ body {
   box-shadow: 1px 0 1px #757575 inset;
 }
 
-/* line 337, ../sass/modules.scss */
+/* line 351, ../sass/modules.scss */
 .channel-toggle {
   text-decoration: none;
   display: table;
@@ -1368,7 +1400,7 @@ body {
   border-bottom: 1px solid gray;
 }
 
-/* line 345, ../sass/modules.scss */
+/* line 359, ../sass/modules.scss */
 .service {
   color: rgba(204, 204, 204, 0.2);
   font-weight: 700;
@@ -1379,7 +1411,7 @@ body {
   width: 100%;
 }
 
-/* line 355, ../sass/modules.scss */
+/* line 369, ../sass/modules.scss */
 .logout {
   text-decoration: none;
   font-size: 24px;
@@ -1389,25 +1421,25 @@ body {
   left: 0;
   bottom: 0;
 }
-/* line 363, ../sass/modules.scss */
+/* line 377, ../sass/modules.scss */
 .logout:visited {
   color: inherit;
 }
 
-/* line 368, ../sass/modules.scss */
+/* line 382, ../sass/modules.scss */
 .fb-connected, .g-connected {
   background-color: #1d1d1d;
   box-shadow: 0 0 10px #070707 inset;
   border-bottom: 1px solid #8b8b8b;
 }
 
-/* line 377, ../sass/modules.scss */
+/* line 391, ../sass/modules.scss */
 .fb-connected .service {
   text-shadow: 1px 2px 6px #1d1d1d, 0 0 0px black, 1px 2px 6px #1d1d1d;
   color: #345296;
 }
 
-/* line 386, ../sass/modules.scss */
+/* line 400, ../sass/modules.scss */
 .g-connected .service {
   text-shadow: #1d1d1d 1px 3px 0px;
   color: #883227;
@@ -1415,14 +1447,14 @@ body {
 
 /* 	Helper text
 	------------------------------------------------------- */
-/* line 395, ../sass/modules.scss */
+/* line 409, ../sass/modules.scss */
 .helper {
   font-size: 20px;
   line-height: 30px;
   display: inline-block;
 }
 
-/* line 401, ../sass/modules.scss */
+/* line 415, ../sass/modules.scss */
 .get-started {
   padding: 6px 12px;
   left: -400px;
