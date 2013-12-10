@@ -215,6 +215,10 @@ function userHandler( type, req, accessToken, refreshToken, profile, done ) {
     // Else if there is a tmpUser in session: Authorization situation
     else {
 
+        console.log('tmpUser exists in session');
+        // Then at least one account must be connected and associated with tmp user (google or facebook)
+
+        // Update User model to show that they have conencted another
         if (type === 'facebook') {
             User.findOneAndUpdate({ username : req.session.tmpUser.username}, {
                 facebookConnected : true
@@ -223,7 +227,7 @@ function userHandler( type, req, accessToken, refreshToken, profile, done ) {
                     console.log('Error:', err);
                     return handleError(err);
                 }
-                console.log('User is now connected to Facebok');
+                console.log('User is now connected to Facebook');
                 req.session.tmpUser = user;
             });
         }
@@ -240,9 +244,38 @@ function userHandler( type, req, accessToken, refreshToken, profile, done ) {
             });
         }
 
+        // Remove duplicate user
+        User.findOneAndRemove( { username: new_account.userId }, function(err, user) {
+            if (err) {
+                console.log('Error:', err);
+                return handleError(err);
+            }
 
-        console.log('tmpUser exists in session');
-        // Then at least one account must be connected and associated with tmp user (google or facebook)
+            if (user) {
+                console.log('Removed duplicate user:', new_account.userId);
+            }
+            else {
+                console.log('No duplicate user to be found.');
+            }
+
+        });
+
+        // Delete duplicate account
+        Accounts.findOneAndRemove( id_query, function(err, account) {
+            if (err) {
+                console.log('Error:', err);
+                return handleError(err);
+            }
+
+            if (account) {
+                console.log('Removed duplicate account:', account.userId);
+            }
+            else {
+                console.log('No duplicate account to be found.');
+            }
+        });
+
+        // Merge new information into existing account
         Accounts.findOneAndUpdate({ userId : req.session.tmpUser.username }, update_account, function(err, account) {
             if (err) {
                 console.log('Error:', err);
