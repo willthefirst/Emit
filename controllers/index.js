@@ -50,7 +50,6 @@ exports.index = function(req, res){
 
             // Facebook
             res.cookie('fb_id', account.facebook.id);
-            res.cookie('fb_tok', account.facebook.long_lived_token);
 
             res.render('index', {
                 fbStatus: 'fb-connected',
@@ -68,8 +67,6 @@ exports.index = function(req, res){
 
         res.clearCookie('g_id');
         res.clearCookie('fb_id');
-        res.clearCookie('fb_tok');
-
 
         res.render('index', {
             fbStatus: '',
@@ -114,6 +111,9 @@ exports.partials = function(req, res) {
     // Else: no tmpUser
     else {
         console.log('No Tmp User');
+
+        res.clearCookie('g_id');
+        res.clearCookie('fb_id');
 
         res.render('partials/' + name, {
             fbStatus: '',

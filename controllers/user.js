@@ -75,7 +75,6 @@ exports.facebookConfig = function(req, res, next) {
     getFacebookToken(req);
 };
 
-
 exports.returnGoogleContacts = function(req, res) {
     var google_contacts;
 
@@ -111,17 +110,6 @@ exports.returnFacebookContacts = function(req, res) {
         fb_contacts.push(fb_timeline_contact);
         res.json(fb_contacts);
     });
-};
-
-function trimForSubject( string, max_length ) {
-    if (string) {
-        string = string.substr(0, max_length);
-        string = string.substr(0, Math.min(string.length, string.lastIndexOf(" "))) + '...';
-    }
-    else {
-        string = '';
-    }
-    return string;
 };
 
 exports.sendEmail = function(req, res) {
@@ -235,6 +223,11 @@ exports.postToTimeline = function(req, res) {
     });
 };
 
+exports.logout = function(req, res) {
+    req.session.destroy();
+    res.render('index');
+};
+
 function getFacebookToken(req) {
     var long_lived_token;
     var options = {
@@ -270,4 +263,15 @@ function getFacebookToken(req) {
             });
         });
     });
-}
+};
+
+function trimForSubject( string, max_length ) {
+    if (string) {
+        string = string.substr(0, max_length);
+        string = string.substr(0, Math.min(string.length, string.lastIndexOf(" "))) + '...';
+    }
+    else {
+        string = '';
+    }
+    return string;
+};
