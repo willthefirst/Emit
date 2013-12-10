@@ -72,22 +72,23 @@
 	}
 }
 
+.icon-address {
+	font-size: 18px;
+}
+
 .waiting {
-	-webkit-transform-origin: 50% 64%;
-	-moz-transform-origin: 50% 64%;
-	-ms-transform-origin: 50% 64%;
-	-o-transform-origin: 50% 64%;
-	transform-origin: 50% 64%;
-	-webkit-animation: spin .6s linear infinite;
-	-moz-animation: spin .6s linear infinite;
-	-ms-animation: spin .6s linear infinite;
-	-o-animation: spin .6s linear infinite;
-	animation: spin .6s linear infinite;
+	-webkit-animation: spin 2s linear infinite;
+	-moz-animation: spin 2s linear infinite;
+	-ms-animation: spin 2s linear infinite;
+	-o-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+	-webkit-backface-visibility: hidden;
+	-webkit-perspective: 1000;
 }
 
 @-webkit-keyframes spin {
-	from { -webkit-transform: rotateZ(0deg); }
-	to { -webkit-transform: rotateZ(360deg); }
+	0% { -webkit-transform: rotateZ(0deg); }
+	100% { -webkit-transform: rotateZ(500deg); }
 }
 
 .to-error {

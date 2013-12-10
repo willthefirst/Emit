@@ -12,13 +12,13 @@ angular.module('emit.components', []).
 						case 'removeable':
 							break;
 						case 'sending':
-							element.html('<a class="waiting approved-contacts__remove">⨯</a>');
+							element.html('<a class="waiting approved-contacts__remove"><i class="icon-spinner_2 icon-address"></i></a>');
 							break;
 						case 'success':
-							element.html('✓');
+							element.html('<i class="icon-check icon-address"></i>');
 							break;
 						case 'error':
-							element.html('<a class="to-error">!<div class="to-error__message">' + scope.address.error + '</div></a>');
+							element.html('<a class="to-error"><i class="icon-warning_alt icon-address"></i><div class="to-error__message">' + scope.address.error + '</div></a>');
 							break;
 					}
 				});

@@ -9,7 +9,7 @@
                 <!-- TODO
                 Add a class name to this span that reflects the type of contact (address.type) -->
                 <span class="approved-contacts__address">{{ address.address }}</span>
-                <address-status><a ng-click="delete($index)" class="approved-contacts__remove">⨯</a></address-status>
+                <address-status><a ng-click="delete($index)" class="approved-contacts__remove"><i class="icon-cross_mark icon-address"></i></a></address-status>
             </div>
           </div>
         </div>
@@ -33,7 +33,7 @@
     <a href="/user/facebook/auth" class="channel-toggle <%= fbStatus %>">
       <span class="service">facebook</span>
     </a>
-    <a href="/logout" class="logout">
+    <a href="/logout" target="_self" class="logout">
       <i class="icon-signout"></i>
       logout
     </a>

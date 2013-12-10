@@ -1073,44 +1073,46 @@ body {
 }
 
 /* line 75, ../sass/modules.scss */
+.icon-address {
+  font-size: 18px;
+}
+
+/* line 79, ../sass/modules.scss */
 .waiting {
-  -webkit-transform-origin: 50% 64%;
-  -moz-transform-origin: 50% 64%;
-  -ms-transform-origin: 50% 64%;
-  -o-transform-origin: 50% 64%;
-  transform-origin: 50% 64%;
-  -webkit-animation: spin .6s linear infinite;
-  -moz-animation: spin .6s linear infinite;
-  -ms-animation: spin .6s linear infinite;
-  -o-animation: spin .6s linear infinite;
-  animation: spin .6s linear infinite;
+  -webkit-animation: spin 2s linear infinite;
+  -moz-animation: spin 2s linear infinite;
+  -ms-animation: spin 2s linear infinite;
+  -o-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
 }
 
 @-webkit-keyframes spin {
-  /* line 89, ../sass/modules.scss */
-  from {
+  /* line 90, ../sass/modules.scss */
+  0% {
     -webkit-transform: rotateZ(0deg);
   }
 
-  /* line 90, ../sass/modules.scss */
-  to {
-    -webkit-transform: rotateZ(360deg);
+  /* line 91, ../sass/modules.scss */
+  100% {
+    -webkit-transform: rotateZ(500deg);
   }
 }
 
-/* line 93, ../sass/modules.scss */
+/* line 94, ../sass/modules.scss */
 .to-error {
   display: inline-block;
   position: relative;
   cursor: pointer;
   color: #a74747;
 }
-/* line 100, ../sass/modules.scss */
+/* line 101, ../sass/modules.scss */
 .to-error:hover .to-error__message {
   display: block;
 }
 
-/* line 106, ../sass/modules.scss */
+/* line 107, ../sass/modules.scss */
 .to-error__message {
   display: none;
   position: absolute;
@@ -1124,7 +1126,7 @@ body {
   top: 110%;
   box-shadow: 1px 1px 4px #aaa;
 }
-/* line 118, ../sass/modules.scss */
+/* line 119, ../sass/modules.scss */
 .to-error__message:before {
   position: absolute;
   bottom: 100%;
@@ -1139,7 +1141,7 @@ body {
 }
 
 /* 	Message:submit  -------------------------------------------- */
-/* line 134, ../sass/modules.scss */
+/* line 135, ../sass/modules.scss */
 .helper {
   background-color: #bbbbbb;
   border: none;
@@ -1148,7 +1150,7 @@ body {
   box-shadow: 0px 0px 3px #999999 inset;
 }
 
-/* line 140, ../sass/modules.scss */
+/* line 141, ../sass/modules.scss */
 .msg-submit {
   background-color: #efefef;
   border: none;
@@ -1170,7 +1172,7 @@ body {
   -o-transition: all .2s ease;
   transition: all .2s ease;
 }
-/* line 162, ../sass/modules.scss */
+/* line 163, ../sass/modules.scss */
 .msg-submit.disabled {
   -webkit-transform: translateX(80px);
   -moz-transform: translateX(80px);
@@ -1178,22 +1180,22 @@ body {
   -o-transform: translateX(80px);
   transform: translateX(80px);
 }
-/* line 170, ../sass/modules.scss */
+/* line 171, ../sass/modules.scss */
 .msg-submit:hover {
   outline: none;
 }
-/* line 174, ../sass/modules.scss */
+/* line 175, ../sass/modules.scss */
 .msg-submit:focus {
   outline: none;
 }
 
 /* 	Message:body -------------------------------------------- */
-/* line 182, ../sass/modules.scss */
+/* line 183, ../sass/modules.scss */
 #msg-compose.focus {
   box-shadow: 0 -2 2px #585858;
 }
 
-/* line 187, ../sass/modules.scss */
+/* line 188, ../sass/modules.scss */
 .msg-body {
   background-color: #cccccc;
   border-top: 1px solid #bbbbbb;
@@ -1206,7 +1208,7 @@ body {
   z-index: 1;
 }
 
-/* line 199, ../sass/modules.scss */
+/* line 200, ../sass/modules.scss */
 .msg-body__textarea, .hiddendiv {
   display: block;
   background-color: inherit;
@@ -1224,18 +1226,18 @@ body {
   min-height: 500px;
 }
 @media screen and (min-width: 620px) {
-  /* line 199, ../sass/modules.scss */
+  /* line 200, ../sass/modules.scss */
   .msg-body__textarea, .hiddendiv {
     font-size: 24px;
     line-height: 36px;
   }
 }
-/* line 220, ../sass/modules.scss */
+/* line 221, ../sass/modules.scss */
 .msg-body__textarea:focus, .hiddendiv:focus {
   outline: none;
 }
 
-/* line 225, ../sass/modules.scss */
+/* line 226, ../sass/modules.scss */
 .hiddendiv {
   display: none;
   white-space: pre-wrap;
@@ -1243,33 +1245,33 @@ body {
   overflow: hidden;
 }
 
-/* line 234, ../sass/modules.scss */
+/* line 235, ../sass/modules.scss */
 .no-scroll {
   overflow: hidden;
 }
 
 /* 	Autocomplete
 	------------------------------------------------------- */
-/* line 241, ../sass/modules.scss */
+/* line 242, ../sass/modules.scss */
 .ui-autocomplete {
   background-color: #efefef;
   padding: 0px 20px 10px;
   max-width: 70%;
 }
 
-/* line 247, ../sass/modules.scss */
+/* line 248, ../sass/modules.scss */
 .google-contact-name {
   font-size: 24px;
   line-height: 36px;
 }
 
-/* line 251, ../sass/modules.scss */
+/* line 252, ../sass/modules.scss */
 .google-contact-email-only {
   font-size: 24px;
   line-height: 36px;
 }
 
-/* line 255, ../sass/modules.scss */
+/* line 256, ../sass/modules.scss */
 .google-contact-email {
   font-size: 16px;
   line-height: 24px;
@@ -1278,14 +1280,14 @@ body {
   padding-left: 10px;
 }
 
-/* line 262, ../sass/modules.scss */
+/* line 263, ../sass/modules.scss */
 .ui-state-focus {
   border-bottom: 1px solid #bbbbbb;
 }
 
 /* 	Social network connect
 	------------------------------------------------------- */
-/* line 269, ../sass/modules.scss */
+/* line 270, ../sass/modules.scss */
 .settings-toggle {
   position: fixed;
   right: 0;
@@ -1296,7 +1298,7 @@ body {
   cursor: pointer;
 }
 
-/* line 279, ../sass/modules.scss */
+/* line 280, ../sass/modules.scss */
 .accounts {
   -webkit-transition: -webkit-transform .1s linear;
   -moz-transition: -moz-transform .1s linear;
@@ -1318,7 +1320,7 @@ body {
   text-align: left;
   overflow: visible;
 }
-/* line 299, ../sass/modules.scss */
+/* line 300, ../sass/modules.scss */
 .accounts.active {
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
@@ -1328,7 +1330,7 @@ body {
   box-shadow: 1px 0 1px #757575 inset;
 }
 
-/* line 309, ../sass/modules.scss */
+/* line 310, ../sass/modules.scss */
 .channel-toggle {
   text-decoration: none;
   display: table;
@@ -1337,7 +1339,7 @@ body {
   border-bottom: 1px solid gray;
 }
 
-/* line 317, ../sass/modules.scss */
+/* line 318, ../sass/modules.scss */
 .service {
   color: rgba(204, 204, 204, 0.2);
   font-weight: 700;
@@ -1348,7 +1350,7 @@ body {
   width: 100%;
 }
 
-/* line 327, ../sass/modules.scss */
+/* line 328, ../sass/modules.scss */
 .logout {
   text-decoration: none;
   font-size: 24px;
@@ -1358,25 +1360,25 @@ body {
   left: 0;
   bottom: 0;
 }
-/* line 335, ../sass/modules.scss */
+/* line 336, ../sass/modules.scss */
 .logout:visited {
   color: inherit;
 }
 
-/* line 340, ../sass/modules.scss */
+/* line 341, ../sass/modules.scss */
 .fb-connected, .g-connected {
   background-color: #1d1d1d;
   box-shadow: 0 0 10px #070707 inset;
   border-bottom: 1px solid #8b8b8b;
 }
 
-/* line 349, ../sass/modules.scss */
+/* line 350, ../sass/modules.scss */
 .fb-connected .service {
   text-shadow: 1px 2px 6px #1d1d1d, 0 0 0px black, 1px 2px 6px #1d1d1d;
   color: #345296;
 }
 
-/* line 358, ../sass/modules.scss */
+/* line 359, ../sass/modules.scss */
 .g-connected .service {
   text-shadow: #1d1d1d 1px 3px 0px;
   color: #883227;
@@ -1384,14 +1386,14 @@ body {
 
 /* 	Helper text
 	------------------------------------------------------- */
-/* line 367, ../sass/modules.scss */
+/* line 368, ../sass/modules.scss */
 .helper {
   font-size: 20px;
   line-height: 30px;
   display: inline-block;
 }
 
-/* line 373, ../sass/modules.scss */
+/* line 374, ../sass/modules.scss */
 .get-started {
   padding: 6px 12px;
   left: -400px;
