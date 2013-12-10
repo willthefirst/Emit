@@ -69,8 +69,8 @@ exports.index = function(req, res){
         res.clearCookie('fb_id');
 
         res.render('index', {
-            fbStatus: '',
-            gStatus: ''
+            fbStatus: 'fb-disconnected',
+            gStatus: 'g-disconnected'
         });
     }
 
@@ -82,7 +82,9 @@ exports.partials = function(req, res) {
 
     if(req.session.tmpUser) {
 
-        var fb_connected, g_connected;
+        var fb_connected = 'fb-disconnected',
+            g_connected = 'g-disconnected';
+
         console.log('Tmp user:',  req.session.tmpUser);
         if( req.session.tmpUser.googleConnected ) {
             console.log('Yes Google');
@@ -116,8 +118,8 @@ exports.partials = function(req, res) {
         res.clearCookie('fb_id');
 
         res.render('partials/' + name, {
-            fbStatus: '',
-            gStatus: ''
+            fbStatus: 'fb-disconnected',
+            gStatus: 'g-disconnected'
         });
     }
 };

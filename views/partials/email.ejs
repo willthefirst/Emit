@@ -20,11 +20,18 @@
         <textarea name="body" cols="60" row="1" class="msg-body__textarea" tabindex="2" ng-model="text"></textarea>
       </div>
     </div>
-    <input class="msg-submit disabled" id="submit" type="submit" value="send" tabindex="3"/>
+    <button class="msg-submit disabled" id="submit" type="submit" value="send" tabindex="3"/>
+    <i class="icon-spread"></i>
+    </button>
   </form>
 
+  <i class="icon-settings settings-toggle"></i>
   <div class="accounts">
-    <a href="/logout">Logout</a>
-    <a href="/user/google/auth" class="channel-toggle <%= gStatus %>">G</a>
-    <a href="/user/facebook/auth" class="channel-toggle <%= fbStatus %>">f</a>
+    <a href="/user/google/auth" class="channel-toggle <%= gStatus %>">
+      <span class="service">Gmail</span>
+    </a>
+    <a href="/user/facebook/auth" class="channel-toggle <%= fbStatus %>">
+      <span class="service">facebook</span>
+    </a>
+    <a class="logout" href="/logout"><i class="icon-signout"></i> logout</a>
   </div>

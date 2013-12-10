@@ -59,7 +59,6 @@ controller('AppCtrl', function($scope, $http, $cookies) {
         var gmailUser = $cookies.g_id;
         var facebookUser = $cookies.fb_id;
         $scope.addresses = [];
-        console.log($scope.addresses);
 
         var all_contacts = [];
 
@@ -382,7 +381,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
 
         $('.channel-toggle').on('click', function(event) {
             event.preventDefault();
-            var win = window.open(event.target.href, "windowname1", 'width=800, height=600');
+            var win = window.open($(this)[0].href, "windowname1", 'width=800, height=600');
             var home = window.document.URL;
             var pollTimer   =   window.setInterval(function() {
                 try {
@@ -395,6 +394,10 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 } catch(e) {
                 }
             }, 500);
+        });
+
+        $('.settings-toggle').on('click', function() {
+            $('.accounts').toggleClass('active');
         });
 
         // Shortcut to send

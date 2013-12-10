@@ -47,7 +47,6 @@
 .msg-to__input {
 	font-family: inherit;
 	font-size: inherit;
-	line-height: inherit;
 	background-color: inherit;
 	border: none;
 	display: block;
@@ -267,35 +266,99 @@
 /* 	Social network connect
 	------------------------------------------------------- */
 
+.settings-toggle {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	padding: 8px;
+	z-index: 1;
+	line-height: 25px;
+	cursor: pointer;
+}
+
 .accounts {
+	-webkit-transition: -webkit-transform .1s linear;
+	-moz-transition: -moz-transform .1s linear;
+	-ms-transition: -ms-transform .1s linear;
+	-o-transition: -o-transform .1s linear;
+	transition: transform .1s linear;
+	-webkit-transform: translate3d(254px, 0, 0 );
+	-moz-transform: translate3d(254px, 0, 0 );
+	-ms-transform: translate3d(254px, 0, 0 );
+	-o-transform: translate3d(254px, 0, 0 );
+	transform: translate3d(254px, 0, 0 );
+	background-color: $black-1;
 	position: fixed;
 	bottom: 0;
 	right: 0;
+	top: 0;
 	@include clearfix;
-	text-align: center;
+	text-align: left;
 	overflow: visible; // For helper
+
+	&.active {
+		-webkit-transform: translate3d(0, 0, 0 );
+		-moz-transform: translate3d(0, 0, 0 );
+		-ms-transform: translate3d(0, 0, 0 );
+		-o-transform: translate3d(0, 0, 0 );
+		transform: translate3d(0, 0, 0 );
+		box-shadow: 1px 0 1px ($black-1 - 22) inset;
+	}
 }
 
 .channel-toggle {
-	display: block;
-	color: rgba(204, 204, 204, 0.5);
-	padding: 2px 10px;
 	text-decoration: none;
+	display: table;
+	text-align: center;
+	width: 100%;
+	border-bottom: 1px solid ($black-1 - 11);
+}
+
+.service {
+	color: rgba(204, 204, 204, 0.2);
 	font-weight: 700;
 	font-size: 40px;
-	text-shadow: 1px 4px 6px $gray, 0 0 0px #000, 1px 4px 6px $gray;
+	text-shadow: 1px 2px 6px $black-1, 0 0 0px #000, 1px 2px 6px $black-1;
+	display: table-cell;
+	padding: 40px;
+	width: 100%;
+}
+
+.logout {
+	text-decoration: none;
+	@include size-3;
+	position: absolute;
+	padding-left: 8px;
+	left: 0;
+	bottom: 0;
+
+	&:visited {
+		color: inherit;
+	}
+}
+
+%connected {
+	background-color: $black;
+	box-shadow: 0 0 10px ($black - 22) inset;
+	border-bottom: 1px solid ($black-1);
 }
 
 .fb-connected {
-	color: #345296;
-	background-color: $gray;
-	text-shadow: $gray 1px 3px 0px;
+	@extend %connected;
+
+	.service {
+		text-shadow: 1px 2px 6px $black, 0 0 0px #000, 1px 2px 6px $black;
+		color: #345296;
+	}
 }
 
 .g-connected {
-	color: #883227;
-	background-color: rgb(204, 204, 204);
-	text-shadow: rgb(224, 224, 224) 1px 1px 0px;
+	@extend %connected;
+
+	.service {
+		text-shadow: $black 1px 3px 0px;
+		color: #883227;
+	}
 }
 
 /* 	Helper text
