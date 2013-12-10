@@ -31,9 +31,9 @@ exports.saveGoogleAccount = function(req, res, next) {
 
     var options = {
         host: 'www.google.com',
-        path: '/m8/feeds/contacts/' + req.account.google.id + '/full/' + query_params.access_token + query_params.res_type + query_params.max_results
+        path: '/m8/feeds/contacts/' + req.account.google.id + '/full/' + query_params.access_token + query_params.res_type + '&group=http://www.google.com/m8/feeds/groups/' + req.account.google.id + '/base/6'+ query_params.max_results
     };
-
+        // m8/feeds/groups/willthefirst%40gmail.com/base/6
     https.get(options, function(res) {
 
         var json = '';
@@ -47,6 +47,7 @@ exports.saveGoogleAccount = function(req, res, next) {
         res.on('end', function() {
             //TODO figure out how to handle an error from Google's API.
             if (res.statusCode !== 200) {
+                console.log(options.path);
                 console.log("Access Token:", query_params.access_token);
                 console.log("Google responded with a", res.statusCode);
                 // res.redirect('error', {error:json});
