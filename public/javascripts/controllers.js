@@ -148,10 +148,6 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 return val.split(/,\s*/);
             }
 
-            var extractLast = function(term) {
-                return split(term).pop();
-            }
-
             // Set up autocomplete for email form
             $("#contacts").autocomplete({
 
@@ -171,7 +167,9 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                     }
                     var resultsArray = [];
                     var re = $.ui.autocomplete.escapeRegex(term);
-                    var matcher = new RegExp("\\b" + re, "i");
+
+                    // Match regex, case insensitive
+                    var matcher = new RegExp( re, "i");
                     var a = $.grep(array, function(item, index) {
                         if (matcher.test(item) && j < max) {
                             resultsArray.push(data[(array.indexOf(item))]);
@@ -179,8 +177,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                             return true;
                         }
                     });
-                    res($.ui.autocomplete.filter(resultsArray,
-                        extractLast(term)));
+                    res(resultsArray);
                 },
                 focus: function(event, ui) {
                     return false;
@@ -208,14 +205,22 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                     $('.ui-menu').width(650);
                 },
                 position: custom_pos,
+                minLength: 3,
                 delay: 0
             }).data("ui-autocomplete")._renderItem = function(ul, item) {
-
                 // Just display emails if there is no corresponsding first name.
+                console.log(item);
                 if (item.label === "") {
-                    return $("<li>")
-                        .append('<a><span class="google-contact-email-only">' + item.value + "</span></a>")
-                        .appendTo(ul);
+                    if (item.value !== "My Facebook Timeline") {
+                        return $("<li>")
+                            .append('<a><span class="google-contact-email-only">' + item.value + "</span></a>")
+                            .appendTo(ul);
+                    }
+                    else {
+                        return $("<li>")
+                            .append('<a class="fb-contact"><span>' + item.value + "</span></a>")
+                            .appendTo(ul);
+                    }
                 } else {
                     return $("<li>")
                         .append('<a><span class="google-contact-name">' + item.label + '</span><span class="google-contact-email">' + item.value + "</span></a>")
