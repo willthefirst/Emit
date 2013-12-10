@@ -98,8 +98,23 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             }
             else {
                 alert('Please enter a valid recipient.');
+                $('#contacts').focus();
                 return false;
             }
+        }
+
+        var custom_pos = {};
+
+        if ($( document ).width() <= 620) {
+            custom_pos = {
+                of: $(window),
+                my : "left top",
+                at: "left top+77"
+            }
+        }
+        else {
+            // Default
+            custom_pos = { my: "left top", at: "left bottom", collision: "none" }
         }
 
         //TODO: initialize autocomplete with all data returned.
@@ -192,6 +207,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
                 open: function() {
                     $('.ui-menu').width(650);
                 },
+                position: custom_pos,
                 delay: 0
             }).data("ui-autocomplete")._renderItem = function(ul, item) {
 

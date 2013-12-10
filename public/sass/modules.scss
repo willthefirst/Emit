@@ -242,26 +242,53 @@
 .ui-autocomplete {
 	background-color: $gray-light;
 	padding: 0px 20px 10px;
-	max-width: 70%;
+	line-height: 18px;
+
+	@media screen and (min-width: 620px ) {
+		// max-width: 70%;
+		line-height: inherit;
+	}
 }
 
-.google-contact-name {
-	@include size-3;
-}
+.google-contact-name, .google-contact-email-only {
+	@include size-5;
+	display: block;
 
-.google-contact-email-only {
-	@include size-3;
+	@media screen and (min-width: 620px ) {
+		@include size-3;
+		clear: none;
+		display: inline;
+	}
 }
 
 .google-contact-email {
 	@include size-5;
+
 	font-style: italic;
 	color: $black-1;
-	padding-left: 10px;
+
+	@media screen and (min-width: 620px ) {
+		padding-left: 10px;
+	}
+
 }
 
 .ui-state-focus {
-	border-bottom: 1px solid $gray-dark;
+
+	@media screen and (min-width: 620px ) {
+		border-bottom: 1px solid $gray-dark;
+	}
+}
+
+.ui-menu-item {
+	cursor: pointer;
+	padding-bottom: 4px;
+
+	@media screen and (min-width: 620px ) {
+		padding-bottom: 0;
+	}
+
+
 }
 
 /* 	Social network connect
