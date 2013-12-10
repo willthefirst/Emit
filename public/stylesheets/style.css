@@ -1281,7 +1281,7 @@ body {
 /* line 251, ../sass/modules.scss */
 .ui-autocomplete {
   background-color: #efefef;
-  padding: 5px 4px 5px;
+  padding: 5px 8px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;

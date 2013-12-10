@@ -109,7 +109,7 @@ controller('AppCtrl', function($scope, $http, $cookies) {
             custom_pos = {
                 of: $(window),
                 my : "left top",
-                at: "left top+77"
+                at: "left top+50"
             }
         }
         else {
