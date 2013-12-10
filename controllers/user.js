@@ -224,6 +224,7 @@ exports.postToTimeline = function(req, res) {
 };
 
 exports.logout = function(req, res) {
+    console.log('logout');
     req.session.destroy();
     res.render('index');
 };
